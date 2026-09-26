@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harshiyaan Collections — Demo</title>
+<meta name="description" content="Harshiyaan Collections — premium jewellery demo store with UPI-only checkout and admin management.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="razorpay-client.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* hc-gradient-added */
+body{background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);}
+
+:root{--ink:#1d1714;--muted:#766c66;--gold:#b08a48;--gold2:#d7bd83;--cream:#f8f3eb;--paper:#fffdf9;--line:rgba(29,23,20,.12);--shadow:0 24px 70px rgba(55,37,20,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}a{text-decoration:none;color:inherit}button,input,select{font:inherit}.container{width:min(1180px,92%);margin:auto}.serif{font-family:'Cormorant Garamond',serif}.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600}.btn{border:0;background:var(--ink);color:#fff;padding:14px 21px;border-radius:999px;cursor:pointer;transition:.3s}.btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(0,0,0,.12)}.btn.light{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn.gold{background:var(--gold);color:#fff}.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}.reveal.show{opacity:1;transform:none}
+
+/* Universal cart + responsive mobile menu fix */
+.mobile-menu-panel{position:fixed;top:64px;left:12px;right:12px;z-index:120;background:rgba(255,253,249,.98);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:0 22px 60px #0003;display:none}
+.mobile-menu-panel.open{display:block}
+.mobile-menu-panel a{display:block;padding:14px 15px;border-radius:12px;color:#2a211d;text-decoration:none;font-size:14px}
+.mobile-menu-panel a:hover,.mobile-menu-panel a:active{background:#f4ede3}
+.mobile-menu-panel .mobile-menu-location{margin-top:5px;background:#17120f;color:#fff}
+@media(min-width:901px){.mobile-menu-panel{display:none!important}}
+@media(max-width:900px){.cart-wrap,.menu{touch-action:manipulation;-webkit-tap-highlight-color:transparent;pointer-events:auto;position:relative;z-index:130}.cart-wrap{cursor:pointer}.menu{cursor:pointer}}
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(248,243,235,.78);backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:.3s}header.scrolled{border-color:var(--line);background:rgba(255,253,249,.92)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.brand-mark{width:42px;height:42px;display:grid;place-items:center;flex:0 0 42px}.brand-mark svg{width:40px;height:40px;display:block}.brand-wordmark{display:flex;flex-direction:column;line-height:1}.brand-wordmark strong{font-family:'Cormorant Garamond';font-size:22px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#6d1830}.brand-wordmark small{margin-top:5px;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:#b28636}.brand-subline{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#655b54;margin-top:4px}.navlinks{display:flex;gap:26px;font-size:13px;color:#4d4540}.navlinks a{position:relative}.navlinks a:after{content:'';position:absolute;left:0;bottom:-7px;width:0;height:1px;background:var(--gold);transition:.3s}.navlinks a:hover:after{width:100%}.nav-actions{display:flex;gap:8px}.iconbtn{border:1px solid var(--line);background:rgba(255,255,255,.5);width:39px;height:39px;border-radius:50%;cursor:pointer}.menu{display:none}
+.hero{min-height:100vh;padding-top:76px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:50px;overflow:hidden}.hero-copy{padding:80px 0}.hero h1 span{display:inline-block}.hero h1 em{font-style:normal}.hero h1 .presence-line{margin-top:12px}.hero h1{font-size:clamp(56px,7vw,100px);line-height:.82;font-weight:600;margin:16px 0 27px;letter-spacing:-.045em}.hero h1 em{font-weight:500;color:var(--gold);font-style:normal}.hero p{max-width:510px;color:var(--muted);font-size:16px;line-height:1.8}.hero-visual{height:690px;position:relative;display:grid;place-items:center}.hero-visual:before{content:'';position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#ead8b6 0,#f4e9d8 44%,transparent 69%);filter:blur(5px);animation:breath 6s ease-in-out infinite}.hero-card{position:relative;width:min(480px,90%);height:590px;border-radius:260px 260px 18px 18px;background:linear-gradient(145deg,#fdfaf4,#ece2d3);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;overflow:hidden;animation:float 7s ease-in-out infinite}.hero-card img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 25px 20px rgba(40,25,10,.15))}.hero-label{position:absolute;right:2%;bottom:8%;background:rgba(255,253,249,.88);backdrop-filter:blur(15px);padding:17px 20px;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:10px}.hero-label b{display:block;font-family:'Cormorant Garamond';font-size:24px}.hero-label span{font-size:11px;color:var(--muted)}@keyframes float{50%{transform:translateY(-12px)}}@keyframes breath{50%{transform:scale(1.05);opacity:.8}}
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;background:#fbf7f0}.marquee-track{display:inline-block;padding:17px 0;animation:marq 24s linear infinite;color:#8c7042;letter-spacing:.18em;text-transform:uppercase;font-size:11px}@keyframes marq{to{transform:translateX(-50%)}}
+.section{padding:105px 0}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:38px}.section h2{font-family:'Cormorant Garamond';font-size:58px;line-height:.9;margin:10px 0 0;font-weight:600}.section-head p{max-width:390px;color:var(--muted);line-height:1.7;font-size:14px}.categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px;row-gap:30px;padding:6px 2px 10px}.cat{position:relative;min-height:190px;margin:2px 0;padding:24px 22px 21px;border:1px solid rgba(91,57,42,.14);border-radius:18px;background:#f8efe8;text-align:left;overflow:hidden;cursor:pointer;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}.cat .cat-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.98;z-index:0;transition:transform .55s ease}.cat:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,250,246,.98) 0%,rgba(255,250,246,.92) 31%,rgba(255,250,246,.42) 57%,rgba(255,250,246,.06) 100%);z-index:1;pointer-events:none}.cat:after{content:'↗';position:absolute;right:17px;bottom:17px;width:35px;height:35px;border-radius:50%;background:#bd8d3b;color:#fff;display:grid;place-items:center;font-size:17px;z-index:3;transition:.3s}.cat:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(73,45,27,.16);border-color:rgba(176,138,72,.5)}.cat:hover .cat-photo{transform:scale(1.045)}.cat:hover:after{transform:translate(2px,-2px);background:#9d712a}.cat .cat-content{position:relative;z-index:2;max-width:63%}.cat .cat-num{display:block;font-family:'Cormorant Garamond';font-size:11px;letter-spacing:.28em;color:#a77b3d;margin-bottom:14px}.cat .cat-title{display:block;font-family:'Cormorant Garamond';font-size:27px;line-height:1;margin:0;color:#4b2029}.cat small{display:block;margin-top:12px;color:#776c65;font-size:12px;line-height:1.45;max-width:185px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:var(--paper);border:1px solid var(--line);overflow:hidden;transition:.35s;position:relative}.product:hover{transform:translateY(-6px);box-shadow:var(--shadow)}.product-img{height:340px;background:#f3ede3;display:grid;place-items:center;overflow:hidden;position:relative}.product-img img{width:100%;height:100%;object-fit:contain;transition:transform .7s ease}.product:hover .product-img img{transform:scale(1.045)}.tag{position:absolute;left:14px;top:14px;background:var(--ink);color:#fff;padding:7px 10px;font-size:10px;letter-spacing:.1em;text-transform:uppercase}.product-body{padding:19px}.product-body h3{font-family:'Cormorant Garamond';font-size:25px;margin:0 0 9px}.price{display:flex;gap:9px;align-items:center;margin-bottom:15px}.old{text-decoration:line-through;color:#9a918a;font-size:13px}.new{font-size:18px;font-weight:600}.offer{font-size:10px;color:#a56f27;letter-spacing:.12em;text-transform:uppercase}.product .btn{width:100%;padding:11px}
+.story{background:var(--ink);color:#fff}.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.story h2{color:#fff}.story p{color:#c7bfb7;line-height:1.9}.story-art{min-height:460px;background:linear-gradient(145deg,#3a2c24,#17120f);position:relative;overflow:hidden;display:grid;place-items:center}.story-art:after{content:'';position:absolute;width:350px;height:350px;border-radius:50%;border:1px solid rgba(215,189,131,.45);animation:spin 22s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.story-art img{position:relative;z-index:1;width:85%;max-height:430px;object-fit:contain;filter:drop-shadow(0 30px 25px #000)}
+.offers{background:#efe4d3}.offer-banner{display:grid;grid-template-columns:1.2fr .8fr;gap:0;background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);border:1px solid var(--line);overflow:hidden}.offer-copy{padding:55px}.offer-copy h3{font-family:'Cormorant Garamond';font-size:50px;line-height:.95;margin:12px 0}.offer-copy p{color:var(--muted);line-height:1.7}.offer-price{font-size:30px}.offer-img{min-height:330px;background:#eee4d6;display:grid;place-items:center}.offer-img img{width:100%;height:100%;object-fit:contain}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.step{background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);padding:32px}.step .num{font-family:'Cormorant Garamond';font-size:40px;color:var(--gold)}.step h3{font-family:'Cormorant Garamond';font-size:24px;margin:10px 0}.step p{font-size:13px;color:var(--muted);line-height:1.7}
+footer{background:#16120f;color:#fff;padding:65px 0 30px}.foot{display:flex;justify-content:space-between;gap:30px}.foot p{color:#aaa099;max-width:390px;line-height:1.7}.foot small{color:#776f69}.admin-link{margin-top:25px;display:inline-block;color:#d7bd83;font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(20,15,12,.6);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.panel{background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);width:min(920px,100%);max-height:92vh;overflow:auto;border-radius:18px;box-shadow:0 40px 100px #0005}.panel-head{padding:22px 25px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);z-index:2}.close{border:0;background:#eee7dd;width:34px;height:34px;border-radius:50%;cursor:pointer}.form{padding:25px;display:grid;gap:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#746b64}.field input,.field select{padding:13px;border:1px solid var(--line);background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);border-radius:9px;outline:none}.field input:focus{border-color:var(--gold)}.upload-box{border:1px dashed #cbb98f;background:#fbf6ed;border-radius:14px;min-height:180px;display:grid;place-items:center;cursor:pointer;overflow:hidden;position:relative;transition:.25s}.upload-box:hover{border-color:var(--gold);transform:translateY(-1px)}.upload-plus{width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:32px;line-height:1}.upload-hint{text-align:center}.upload-hint b{display:block;font-family:'Cormorant Garamond';font-size:23px}.upload-hint span{font-size:11px;color:var(--muted)}.upload-preview{width:100%;height:180px;object-fit:contain;background:#f3ede3}.remove-img{position:absolute;right:10px;top:10px;border:0;background:#17120f;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;z-index:2}.order-summary{background:#f7f0e7;padding:17px;border-radius:12px}.payment-box{border:1px dashed #c9a96d;background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);padding:20px;text-align:center;border-radius:12px}.qr{width:130px;height:130px;margin:12px auto;background:repeating-conic-gradient(#17120f 0 8deg,#fff 8deg 16deg);border:10px solid white;box-shadow:0 5px 20px #0002}.admin{padding:25px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}.tab{border:1px solid var(--line);background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);padding:9px 13px;border-radius:999px;cursor:pointer;font-size:12px}.tab.active{background:var(--ink);color:#fff}.admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#f7f0e7;padding:20px;border-radius:12px}.stat b{display:block;font-family:'Cormorant Garamond';font-size:33px}.admin-section{display:none}.admin-section.active{display:block}.admin-card{border:1px solid var(--line);padding:15px;margin:10px 0;background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%)}.admin-card .row{display:flex;justify-content:space-between;gap:10px;align-items:center}.mini{font-size:12px;color:var(--muted);line-height:1.6}.notice{padding:12px;background:#edf7ef;border:1px solid #bcdac2;border-radius:9px;font-size:12px}.toast{position:fixed;right:20px;bottom:20px;background:#17120f;color:#fff;padding:14px 18px;border-radius:10px;z-index:200;opacity:0;transform:translateY(20px);transition:.3s}.toast.show{opacity:1;transform:none}
+@media(max-width:900px){.navlinks{display:none}.menu{display:block}.hero{grid-template-columns:1fr;padding-top:80px}.hero-copy{padding:55px 0 15px}.hero-visual{height:530px}.hero-card{height:480px}.categories{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,1fr)}.story-grid,.offer-banner{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.admin-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hero h1{font-size:62px}.section{padding:75px 0}.section h2{font-size:45px}.section-head{display:block}.categories{grid-template-columns:1fr}.products{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr}.hero-visual{height:460px}.hero-card{height:420px}.nav-actions .iconbtn:nth-child(2){display:none}}
+.cart-badge{position:absolute;top:-4px;right:-4px;background:var(--gold);color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;display:grid;place-items:center}.cart-wrap{position:relative}.track-card{padding:25px}.cart-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.qty{display:flex;align-items:center;gap:8px}.qty button{width:30px;height:30px;border:1px solid var(--line);background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);border-radius:50%;cursor:pointer}.track-status{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.status-pill{padding:8px 11px;border-radius:999px;background:#eee7dd;font-size:11px}.status-pill.active{background:var(--gold);color:#fff}.login-lock{max-width:420px;margin:auto;padding:30px}.social-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.social-links a{border:1px solid #4b4037;padding:10px 13px;border-radius:999px;color:#e7ddd3;font-size:12px}.admin-lock{background:#f7f0e7;padding:20px;border-radius:14px;margin-bottom:15px}
+
+/* FINAL LUXURY HERO / COLLECTIONS POLISH */
+body{background:#f6efe5;position:relative;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:-1;background:radial-gradient(circle at 12% 18%,rgba(213,174,123,.16),transparent 25%),radial-gradient(circle at 86% 12%,rgba(188,113,132,.12),transparent 24%),radial-gradient(circle at 52% 92%,rgba(223,194,150,.14),transparent 28%);animation:ambient 18s ease-in-out infinite alternate}
+@keyframes ambient{0%{transform:translate3d(-1%,0,0) scale(1)}50%{transform:translate3d(1%,1%,0) scale(1.025)}100%{transform:translate3d(-.5%,-1%,0) scale(1.01)}}
+.hero{width:100%;max-width:none;min-height:680px;padding:76px 6vw 48px;grid-template-columns:44% 56%;gap:0;background:linear-gradient(115deg,#f5eee4 0%,#f8f3eb 48%,#f1e7d9 100%);position:relative}
+.hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 45%,rgba(255,255,255,.78),transparent 33%);pointer-events:none}
+.hero-copy{padding:72px 0;position:relative;z-index:2}
+.hero h1{font-size:clamp(62px,7.4vw,108px);line-height:.83;letter-spacing:-.055em;margin:18px 0 30px}
+.hero h1 em{color:#b17d2e}
+.hero p{max-width:490px;font-size:15px;line-height:1.8;color:#756d66}
+.hero-visual{height:600px;position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
+.hero-visual:before{width:620px;height:620px;background:radial-gradient(circle,rgba(235,218,190,.72) 0,rgba(246,237,222,.55) 45%,transparent 69%);animation:breath 7s ease-in-out infinite}
+.hero-card{width:min(650px,100%);height:560px;border-radius:0;background:transparent;box-shadow:none;overflow:visible;animation:none}
+.hero-card img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 30px 22px rgba(58,38,20,.18));animation:heroFloat 6s ease-in-out infinite}
+@keyframes heroFloat{50%{transform:translateY(-9px) scale(1.012)}}
+.hero-label{right:4%;bottom:4%;background:rgba(255,253,249,.78);border-color:rgba(170,130,72,.22);box-shadow:0 14px 35px rgba(73,45,27,.10)}
+.section{padding:105px 0}
+#collections{background:linear-gradient(180deg,#f8f1e8 0%,#f6eee5 100%);position:relative}
+#collections:before{content:"";position:absolute;left:0;right:0;top:0;height:180px;background:radial-gradient(circle at 20% 30%,rgba(214,167,123,.13),transparent 32%),radial-gradient(circle at 80% 25%,rgba(185,108,126,.10),transparent 30%);pointer-events:none}
+.section-head,.categories{position:relative;z-index:1}
+.categories{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px;row-gap:30px;padding:6px 2px 10px}
+.cat{min-height:190px;border-radius:18px;background:#f8efe8;box-shadow:0 5px 18px rgba(65,42,25,.035)}
+.cat:before{background:linear-gradient(90deg,rgba(255,250,246,.98) 0%,rgba(255,250,246,.86) 30%,rgba(255,250,246,.22) 62%,rgba(255,250,246,.02) 100%)}
+.cat-photo{opacity:1;filter:saturate(.98) contrast(1.01)}
+.cat:hover{transform:translateY(-6px);box-shadow:0 20px 45px rgba(73,45,27,.15)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto;padding:110px 6vw 40px}.hero-copy{padding:25px 0 10px}.hero-visual{height:420px}.hero-card{height:390px}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.categories{grid-template-columns:1fr}.hero h1{font-size:64px}.hero-visual{height:340px}.hero-card{height:320px}}
+.hero-empty{width:100%;height:100%;display:grid;place-items:center;align-content:center;gap:8px;color:#9a7a45;text-align:center;letter-spacing:.18em;background:linear-gradient(145deg,#fbf5eb,#eee1cf)}.hero-empty span{font-size:11px;font-weight:600}.hero-empty small{font-size:10px;letter-spacing:.08em;color:#897d72}.hero-card>img{width:100%;height:100%;object-fit:cover;mix-blend-mode:normal;filter:none}
+/* Razorpay-friendly clean visual background */
+body{background:linear-gradient(135deg,#ffffff 0%,#faf7ff 42%,#eee4ff 100%);}
+.hero{background:linear-gradient(115deg,#ffffff 0%,#faf7ff 48%,#e9dcff 100%) !important;}
+.hero-card{background:linear-gradient(145deg,#ffffff,#f1e7ff) !important;}
+.story-art{background:linear-gradient(145deg,#ffffff,#f0e5ff) !important;}
+/* hc-purple-white-final */
+body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);background-attachment:fixed;}
+
+/* Google Maps location button — responsive across desktop, tablet and mobile */
+.nav-actions{align-items:center;flex-shrink:0}
+.map-top-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:39px;padding:0 13px;border:1px solid rgba(176,138,72,.30);border-radius:999px;background:rgba(255,255,255,.72);color:#6d1830;box-shadow:0 7px 22px rgba(73,45,27,.07);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.map-top-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(73,45,27,.13);background:#fff}
+.map-pin{font-size:18px;line-height:1;color:#b08a48}
+.map-label{line-height:1}
+@media(max-width:1100px){.nav{height:72px}.navlinks{gap:16px}.map-top-btn{padding:0 10px}.map-label{display:none}.map-top-btn{width:39px;padding:0}}
+@media(max-width:900px){.nav{height:68px}.nav-actions{gap:7px}.map-top-btn{display:inline-flex;width:39px;height:39px;min-height:39px}.map-pin{font-size:19px}.hero{padding-top:92px}}
+@media(max-width:560px){.nav{height:64px}.brand-mark{width:34px;height:34px;flex-basis:34px}.brand-mark svg{width:34px;height:34px}.brand-wordmark strong{font-size:18px}.brand-wordmark small{font-size:8px;margin-top:4px}.brand-subline{display:none}.nav-actions{gap:6px}.map-top-btn,.iconbtn{width:37px;height:37px;min-height:37px}.map-label{display:none}.hero{padding-top:82px}}
+
+.location-box .btn{min-height:42px}.location-box button:disabled{opacity:.65;cursor:wait}@media(max-width:560px){.location-box{padding:14px!important}.location-box>div:first-child{align-items:flex-start}.location-box .btn{width:100%;font-size:13px;padding:11px 14px}.location-box .mini{line-height:1.5}}.hc-floating-cart{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:1px solid rgba(184,138,50,.45);background:linear-gradient(135deg,#15100c,#6e4a18);color:#fff;font-size:24px;display:grid;place-items:center;z-index:9999;box-shadow:0 12px 35px rgba(0,0,0,.25);cursor:pointer}.hc-float-badge{position:absolute;right:-2px;top:-4px;min-width:21px;height:21px;padding:0 5px;border-radius:999px;background:#b88a32;color:#fff;font:700 11px Arial;display:grid;place-items:center}.hc-cart-pulse{animation:hcPulse .45s ease}@keyframes hcPulse{50%{transform:scale(1.12)}}@media(max-width:600px){.hc-floating-cart{right:16px;bottom:16px;width:56px;height:56px}}
+</style>
+
+
+<style id="scroll-letter-animation">
+/* Word-safe luxury scroll reveal: words never break between letters */
+.reveal-letters{
+  overflow:visible;
+  word-break:normal;
+  overflow-wrap:normal;
+  white-space:normal;
+}
+.reveal-letters .word{
+  display:inline-block;
+  margin-right:.20em;
+  margin-right:.20em;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+.reveal-letters .letter{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(115%) rotate(4deg);
+  filter:blur(4px);
+  transition:
+    opacity .62s cubic-bezier(.16,1,.3,1),
+    transform .62s cubic-bezier(.16,1,.3,1),
+    filter .62s ease;
+  transition-delay:calc(var(--i) * 18ms);
+}
+.reveal-letters.is-visible .letter{
+  opacity:1;
+  transform:translateY(0) rotate(0);
+  filter:blur(0);
+}
+.scroll-fade{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1);
+}
+.scroll-fade.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+@media(max-width:600px){
+  .reveal-letters .word{white-space:nowrap;}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal-letters .letter,.scroll-fade{
+    transition:none;
+    transform:none;
+    filter:none;
+    opacity:1;
+  }
+}
+</style>
+<style id="hc-img-fallback">img{font-family:Arial,sans-serif;}img.hc-img-fallback{object-fit:contain!important;background:linear-gradient(135deg,#fff,#f4edff);padding:18px}</style>
+<style id="mobile-hero-buttons-fix">
+.hero-copy,.hero-actions,.hero-actions a{pointer-events:auto!important;}
+.hero-actions{position:relative;z-index:30!important;}
+.hero-actions .btn{position:relative;z-index:31!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+@media(max-width:560px){.hero-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important;width:100%;}.hero-actions .btn{min-height:48px;display:flex;align-items:center;justify-content:center;white-space:nowrap;}.hero-copy{z-index:10!important;}}
+</style>
+
+<style>
+@media (max-width:560px){
+  .map-top-btn .map-label{display:inline!important}
+  .map-top-btn{min-width:78px!important;width:auto!important;padding:0 10px!important;gap:5px!important;font-size:11px!important}
+  .nav-actions{gap:6px!important}
+  .cart-wrap{display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;z-index:50!important;pointer-events:auto!important}
+}
+</style>
+<style id="hc-razorpay-review-css">.hc-review-products{padding:72px 20px;background:linear-gradient(135deg,#fff,#faf5ff,#fff);border-top:1px solid #eee;border-bottom:1px solid #eee}.hc-review-inner{max-width:1180px;margin:auto;text-align:center}.hc-review-kicker{font-size:12px;font-weight:800;letter-spacing:.18em;opacity:.65;margin-bottom:10px}.hc-review-products h2{margin:0;font-size:clamp(28px,4vw,44px)}.hc-review-sub{margin:12px auto 32px;opacity:.72}.hc-review-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:left}.hc-review-card{background:#fff;border:1px solid #eadff2;border-radius:20px;overflow:hidden;box-shadow:0 12px 35px #32145014}.hc-review-card img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f7f2fb}.hc-review-info{padding:18px}.hc-review-info h3{margin:0 0 10px;font-size:18px}.hc-review-price{margin-bottom:15px}.hc-review-price s{opacity:.5;margin-right:7px}.hc-review-price strong{font-size:21px}.hc-review-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:12px;text-decoration:none;background:#6d3aa8;color:#fff;font-weight:700}@media(max-width:900px){.hc-review-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.hc-review-grid{grid-template-columns:1fr}.hc-review-products{padding:52px 14px}}</style>
+</head>
+<body data-admin-url="admin.html">
+<header id="header"><div class="container nav"><a href="#home" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="#collections">Collections</a><a href="#offers">Offers</a><a href="#house">The House</a><a href="#contact">Contact</a><a href="#track">Track Order</a></nav><div class="nav-actions"><a class="map-top-btn" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" aria-label="Open Harshiyaan Collections location in Google Maps"><span class="map-pin">⌖</span><span class="map-label">Location</span></a><button type="button" class="iconbtn menu" onclick="toggleMobileMenu(event)" title="Menu" aria-label="Open menu">☰</button></div></div></header><button type="button" id="hcFloatingCart" class="hc-floating-cart" onclick="hcSafeOpenCart(event)" aria-label="Open shopping cart" title="Open Cart">🛒<span id="hcFloatingCartBadge" class="hc-float-badge">0</span></button>
+<div id="mobileMenuPanel" class="mobile-menu-panel" aria-hidden="true">
+  <a href="#collections" onclick="closeMobileMenu()">Collections</a>
+  <a href="#offers" onclick="closeMobileMenu()">Offers</a>
+  <a href="#house" onclick="closeMobileMenu()">The House</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="#track" onclick="closeMobileMenu()">Track Order</a>
+  <a class="mobile-menu-location" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" onclick="closeMobileMenu()">📍 Location</a>
+</div>
+<main>
+<section class="hero container" id="home"><div class="hero-copy reveal"><div class="eyebrow">Harshiyaan Collections · 1 Gram Gold</div><h1 class="serif"><span>Jewellery <em>with</em></span><br><span class="presence-line">presence.</span></h1><p>Timeless pieces designed to bring traditional beauty into everyday elegance. Discover curated necklaces, earrings, bridal styles and more.</p><div class="hero-actions" style="display:flex;gap:10px;margin-top:27px;position:relative;z-index:20;pointer-events:auto"><a class="btn hero-jump" href="#collections" data-target="collections" onclick="event.stopPropagation();document.getElementById('collections').scrollIntoView({behavior:'smooth',block:'start'});return false;">Explore Collections</a><a class="btn light hero-jump" href="#offers" data-target="offers" onclick="event.stopPropagation();document.getElementById('offers').scrollIntoView({behavior:'smooth',block:'start'});return false;">View Offers</a></div></div><div class="hero-visual reveal"><div class="hero-card" id="homeHeroVisual"><img src="products/product1.png" alt="Featured Harshiyaan Collections jewellery"></div><div class="hero-label"><span>FEATURED COLLECTION</span><b>Harshiyaan Collections</b></div></div></section>
+
+<!-- PREMIUM 3D JEWELLERY EXPERIENCE -->
+<style id="premium-3d-style">
+#premium-experience{position:relative;min-height:1080px;overflow:hidden;background:radial-gradient(circle at 70% 35%,rgba(196,155,70,.16),transparent 30%),linear-gradient(135deg,#fff 0%,#f8f2ff 45%,#e8d7ff 100%);border-bottom:1px solid rgba(40,24,50,.09)}
+#premium-experience:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:80px 80px;mask-image:linear-gradient(to bottom,black,transparent 85%);pointer-events:none}
+.px-inner{width:min(1380px,94%);margin:auto;min-height:1080px;position:relative;display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:20px;padding:90px 0 130px}
+.px-copy{position:relative;z-index:3;padding-left:2vw}.px-kicker{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(77,40,89,.15);background:rgba(255,255,255,.45);backdrop-filter:blur(14px);padding:8px 13px;border-radius:999px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7a5722}.px-kicker i{width:6px;height:6px;background:#b58a3a;border-radius:50%;box-shadow:0 0 15px #c9a04c}.px-title{font-family:'Cormorant Garamond',serif;font-size:clamp(64px,8vw,128px);line-height:.78;letter-spacing:-.055em;margin:28px 0 26px;color:#281a2e;font-weight:600}.px-title em{font-style:normal;color:#a9792e}.px-copy p{max-width:490px;color:#685d68;font-size:15px;line-height:1.9;margin:0 0 30px}.px-actions{display:flex;gap:10px;flex-wrap:wrap}.px-btn{border:1px solid rgba(50,35,56,.16);background:rgba(255,255,255,.62);color:#281a2e;padding:13px 18px;border-radius:999px;cursor:pointer;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:.3s;box-shadow:0 8px 30px rgba(60,35,80,.07);backdrop-filter:blur(14px)}.px-btn:hover{transform:translateY(-3px);box-shadow:0 16px 35px rgba(60,35,80,.12)}.px-btn.primary{background:#281a2e;color:#fff;border-color:#281a2e}.px-meta{display:flex;gap:28px;margin-top:42px}.px-meta strong{font-family:'Cormorant Garamond';font-size:25px;display:block;color:#35203c}.px-meta span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#857985}
+.px-stage{height:760px;position:relative;display:grid;place-items:center}.px-canvas-wrap{position:relative;width:min(760px,100%);height:760px}.px-canvas-wrap:before{content:"";position:absolute;width:560px;height:560px;left:50%;top:48%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(226,202,244,.42) 48%,transparent 70%);filter:blur(8px)}#jewel-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}.px-canvas-wrap.dragging #jewel-canvas{cursor:grabbing}.px-ring-label{position:absolute;left:4%;bottom:10%;z-index:5;background:rgba(255,255,255,.62);backdrop-filter:blur(18px);border:1px solid rgba(50,35,56,.12);border-radius:18px;padding:15px 17px;box-shadow:0 18px 45px rgba(60,35,80,.12)}.px-ring-label b{font-family:'Cormorant Garamond';font-size:24px;color:#3c2443}.px-ring-label span{display:block;font-size:10px;color:#837784;letter-spacing:.11em;text-transform:uppercase;margin-top:3px}.px-scroll-note{position:absolute;right:4%;bottom:11%;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#8a7a8d;writing-mode:vertical-rl}.px-scroll-line{width:1px;height:72px;background:linear-gradient(#a77c34,transparent);margin:9px auto 0}
+.px-explain{position:absolute;left:50%;bottom:45px;transform:translateX(-50%);z-index:4;text-align:center;white-space:nowrap;color:#6d6070;font-size:11px;letter-spacing:.16em;text-transform:uppercase}.px-explain b{color:#8d6629}.px-hotspot{position:absolute;z-index:4;width:24px;height:24px;border:1px solid rgba(177,135,56,.7);border-radius:50%;background:rgba(255,255,255,.35);box-shadow:0 0 0 7px rgba(177,135,56,.08);animation:hotpulse 2.4s ease-in-out infinite;pointer-events:none}.px-hotspot.one{left:61%;top:25%}.px-hotspot.two{left:73%;top:51%;animation-delay:.7s}.px-hotspot.three{left:50%;top:69%;animation-delay:1.2s}@keyframes hotpulse{50%{transform:scale(1.25);opacity:.5}}
+.px-spec{position:absolute;right:2%;top:13%;z-index:4;width:160px;padding:14px;background:rgba(255,255,255,.42);backdrop-filter:blur(14px);border:1px solid rgba(50,35,56,.1);border-radius:14px}.px-spec span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#897d89}.px-spec strong{display:block;margin-top:6px;font-family:'Cormorant Garamond';font-size:22px;color:#36213d}
+@media(max-width:900px){.px-inner{grid-template-columns:1fr;min-height:auto;padding-top:90px}.px-copy{text-align:center;padding:0}.px-copy p{margin-left:auto;margin-right:auto}.px-actions,.px-meta{justify-content:center}.px-stage{height:620px}.px-canvas-wrap{height:620px}.px-explain{bottom:18px}.px-title{font-size:clamp(62px,16vw,100px)}.px-spec{top:5%;right:3%}.px-ring-label{left:5%;bottom:8%}.px-scroll-note{display:none}}
+@media(max-width:560px){#premium-experience{min-height:940px}.px-inner{width:92%;padding-bottom:55px}.px-stage,.px-canvas-wrap{height:500px}.px-canvas-wrap:before{width:370px;height:370px}.px-hotspot{display:none}.px-spec{display:none}.px-meta{gap:16px}.px-meta strong{font-size:21px}.px-meta span{font-size:8px}.px-ring-label{bottom:7%;padding:11px 13px}.px-ring-label b{font-size:20px}.px-explain{font-size:8px}}
+</style>
+<section id="premium-experience" aria-label="Harshiyaan 360 degree jewellery experience">
+  <div class="px-inner">
+    <div class="px-copy">
+      <span class="px-kicker"><i></i> Harshiyaan Signature Lab</span>
+      <h1 class="px-title">Jewellery<br><em>unfolded.</em></h1>
+      <p>Meet a new way to explore Harshiyaan. Rotate the signature piece through 360°, then scroll to separate its crafted components and reveal the details hidden inside the design.</p>
+      <div class="px-actions">
+        <button class="px-btn primary" id="pxExplode">Explode Design</button>
+        <button class="px-btn" id="pxSpin">Pause 360°</button>
+        <button class="px-btn" id="pxReset">Reset View</button>
+      </div>
+      <div class="px-meta">
+        <div><strong>360°</strong><span>Interactive View</span></div>
+        <div><strong>06</strong><span>Crafted Parts</span></div>
+        <div><strong>1g</strong><span>Gold Collection</span></div>
+      </div>
+    </div>
+    <div class="px-stage">
+      <div class="px-canvas-wrap" id="pxCanvasWrap">
+        <canvas id="jewel-canvas"></canvas>
+        <div class="px-hotspot one"></div><div class="px-hotspot two"></div><div class="px-hotspot three"></div>
+        <div class="px-spec"><span>Signature Object</span><strong>Regal Solitaire</strong><span>Rotate / Drag / Scroll</span></div>
+        <div class="px-ring-label"><b>Regal Solitaire</b><span>Scroll to disassemble</span></div>
+        <div class="px-scroll-note">Scroll to unfold<div class="px-scroll-line"></div></div>
+      </div>
+      <div class="px-explain">Drag to rotate · <b>scroll</b> to explode the craftsmanship</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee"><div class="marquee-track">HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · </div></div>
+<section class="section container" id="collections"><div class="section-head reveal"><div><div class="eyebrow">Curated for you</div><h2>Explore Collections</h2></div><p>From everyday classics to statement sets, browse the pieces that define the Harshiyaan aesthetic.</p></div><div class="categories reveal"><div class="cat" onclick="window.location.href='category-pages/new-arrivals.html'"><img class="cat-photo" src="category-images/new-arrivals.jpg" alt="New Arrivals jewellery"><div class="cat-content"><span class="cat-num">01</span><span class="cat-title">New Arrivals</span><small>Fresh styles & new stories</small></div></div><div class="cat" onclick="window.location.href='category-pages/black-beads.html'"><img class="cat-photo" src="category-images/black-beads.jpg" alt="Black Beads jewellery"><div class="cat-content"><span class="cat-num">02</span><span class="cat-title">Black Beads</span><small>Tradition in every bead</small></div></div><div class="cat" onclick="window.location.href='category-pages/bridal.html'"><img class="cat-photo" src="category-images/bridal.jpg" alt="Bridal jewellery"><div class="cat-content"><span class="cat-num">03</span><span class="cat-title">Bridal</span><small>Made for your special day</small></div></div><div class="cat" onclick="window.location.href='category-pages/long-haram.html'"><img class="cat-photo" src="category-images/long-haram.jpg" alt="Long Haram jewellery"><div class="cat-content"><span class="cat-num">04</span><span class="cat-title">Long Haram</span><small>Grace in every layer</small></div></div><div class="cat" onclick="window.location.href='category-pages/budget-range.html'"><img class="cat-photo" src="category-images/budget-range.jpg" alt="Budget Range jewellery"><div class="cat-content"><span class="cat-num">05</span><span class="cat-title">Budget Range</span><small>Beauty within your budget</small></div></div><div class="cat" onclick="window.location.href='category-pages/tali-chains.html'"><img class="cat-photo" src="category-images/tali-chains.jpg" alt="Tali Chains jewellery"><div class="cat-content"><span class="cat-num">06</span><span class="cat-title">Tali Chains</span><small>A symbol to cherish forever</small></div></div><div class="cat" onclick="window.location.href='category-pages/bangles.html'"><img class="cat-photo" src="category-images/bangles.jpg" alt="Bangles jewellery"><div class="cat-content"><span class="cat-num">07</span><span class="cat-title">Bangles</span><small>Tradition on your wrist</small></div></div><div class="cat" onclick="window.location.href='category-pages/nakshi.html'"><img class="cat-photo" src="category-images/nakshi.jpg" alt="Nakshi jewellery"><div class="cat-content"><span class="cat-num">08</span><span class="cat-title">Nakshi</span><small>Heritage crafted in art</small></div></div><div class="cat" onclick="window.location.href='category-pages/rings.html'"><img class="cat-photo" src="category-images/rings.jpg" alt="Rings jewellery"><div class="cat-content"><span class="cat-num">09</span><span class="cat-title">Rings</span><small>Tiny details, big statements</small></div></div><div class="cat" onclick="window.location.href='category-pages/bracelets.html'"><img class="cat-photo" src="category-images/bracelets.jpg" alt="Bracelets jewellery"><div class="cat-content"><span class="cat-num">10</span><span class="cat-title">Bracelets</span><small>Subtle, elegant & stylish</small></div></div><div class="cat" onclick="window.location.href='category-pages/combos.html'"><img class="cat-photo" src="category-images/combos.jpg" alt="Combos jewellery"><div class="cat-content"><span class="cat-num">11</span><span class="cat-title">Combos</span><small>More to love, beautifully paired</small></div></div><div class="cat" onclick="window.location.href='category-pages/beads.html'"><img class="cat-photo" src="category-images/beads.jpg" alt="Beads jewellery"><div class="cat-content"><span class="cat-num">12</span><span class="cat-title">Beads</span><small>Colour your style</small></div></div></div></section>
+
+
+
+<section class="section container" id="featured-products"><div class="section-head reveal"><div><div class="eyebrow">Shop our pieces</div><h2>Featured Jewellery</h2></div><p>Authentic product listings with clear Indian Rupee pricing. Prices shown include current offer pricing where applicable.</p></div><div class="products reveal"><article class="product"><div class="product-img"><span class="tag">20% OFF</span><img src="products/product1.png" alt="Temple Heritage Set jewellery" loading="lazy"></div><div class="product-body"><h3>Temple Heritage Set</h3><div class="price"><span class="old">₹2,500</span><span class="new">₹1,999</span></div><div class="offer">20% OFF</div><a class="btn" href="category-pages/new-arrivals.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">17% OFF</span><img src="products/product2.png" alt="Royal Ruby Pendant Set jewellery" loading="lazy"></div><div class="product-body"><h3>Royal Ruby Pendant Set</h3><div class="price"><span class="old">₹4,200</span><span class="new">₹3,499</span></div><div class="offer">17% OFF</div><a class="btn" href="category-pages/bridal.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">16% OFF</span><img src="products/product3.png" alt="Classic Black Bead Gold jewellery" loading="lazy"></div><div class="product-body"><h3>Classic Black Bead Gold</h3><div class="price"><span class="old">₹3,100</span><span class="new">₹2,599</span></div><div class="offer">16% OFF</div><a class="btn" href="category-pages/black-beads.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">21% OFF</span><img src="products/product4.png" alt="Floral Layered Collection jewellery" loading="lazy"></div><div class="product-body"><h3>Floral Layered Collection</h3><div class="price"><span class="old">₹3,800</span><span class="new">₹2,999</span></div><div class="offer">21% OFF</div><a class="btn" href="category-pages/combos.html">View Collection</a></div></article></div><p class="mini" style="margin-top:18px">All prices are displayed in Indian Rupees (₹). Product availability may vary.</p></section><section class="section offers" id="offers"><div class="container"><div class="section-head reveal"><div><div class="eyebrow">Limited time</div><h2>Special Offers</h2></div><p>Admin-managed offers can be changed anytime. Original price is shown with a strike-through and the current offer price is highlighted.</p></div><div class="offer-banner reveal" id="offerBanner"></div></div></section>
+<section class="section story" id="house"><div class="container story-grid"><div class="reveal"><div class="eyebrow">The House</div><h2>Made to feel<br>beautifully yours.</h2><p>Harshiyaan Collections brings together traditional Indian jewellery character with a clean, contemporary shopping experience. Every collection is presented with space, detail and a quiet luxury that lets the jewellery speak first.</p><p>For the final live store, product details, UPI payment verification and order notifications can be connected to a secure backend.</p></div><div class="story-art reveal" id="houseVisual"><img src="products/product2.png" alt="Harshiyaan Collections jewellery" style="width:100%;height:100%;object-fit:cover;border-radius:18px"></div></div></section>
+<section class="section container" id="how"><div class="section-head reveal"><div><div class="eyebrow">Simple shopping</div><h2>From selection<br>to doorstep.</h2></div></div><div class="steps reveal"><div class="step"><div class="num">01</div><h3>Select</h3><p>Choose the jewellery you love and select Buy Now.</p></div><div class="step"><div class="num">02</div><h3>Details</h3><p>Enter your name, mobile, email and complete delivery address with pincode.</p></div><div class="step"><div class="num">03</div><h3>UPI only</h3><p>Secure UPI payment is the only payment method. Cash on Delivery is not available.</p></div><div class="step"><div class="num">04</div><h3>Confirmed</h3><p>Once payment is confirmed, the order appears in the Harshiyaan admin dashboard.</p></div></div></section>
+<section class="section container" id="track"><div class="section-head reveal"><div><div class="eyebrow">Order tracking</div><h2>Track My Order</h2></div><p>Enter your Order ID and mobile number to view the latest order status and estimated delivery.</p></div><div class="track-card reveal"><div class="form-grid"><div class="field"><label>Order ID</label><input id="trackId" placeholder="HC-12345678"></div><div class="field"><label>Mobile Number</label><input id="trackMobile" inputmode="tel" placeholder="Your mobile number"></div></div><button class="btn gold" style="margin-top:15px" onclick="trackOrder()">Track Order</button><div id="trackResult" style="margin-top:18px"></div></div></section>
+<section id="razorpay-products" class="hc-review-products"><div class="hc-review-inner"><div class="hc-review-kicker">SHOP ONLINE</div><h2>Featured Jewellery &amp; Pricing</h2><p class="hc-review-sub">Browse our jewellery collections with clear product names and prices.</p><div class="hc-review-grid"><article class="hc-review-card"><img src="products/product1.png" alt="Temple Heritage Set"><div class="hc-review-info"><h3>Temple Heritage Set</h3><div class="hc-review-price"><s>₹2,500</s> <strong>₹1,999</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product2.png" alt="Royal Ruby Pendant Set"><div class="hc-review-info"><h3>Royal Ruby Pendant Set</h3><div class="hc-review-price"><s>₹4,200</s> <strong>₹3,499</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product3.png" alt="Classic Black Bead Gold"><div class="hc-review-info"><h3>Classic Black Bead Gold</h3><div class="hc-review-price"><s>₹3,100</s> <strong>₹2,599</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product4.png" alt="Floral Layered Collection"><div class="hc-review-info"><h3>Floral Layered Collection</h3><div class="hc-review-price"><s>₹3,800</s> <strong>₹2,999</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article></div></div></section>
+</main>
+<footer id="contact"><div class="container foot"><div><div class="brand" aria-label="Harshiyaan Collections"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></div><p>A premium jewellery storefront demo — designed for product discovery, UPI-only ordering and easy admin management.</p><div class="social-links"><a id="contactEmail" href="mailto:harshiayaan4@gmail.com">✉ Email</a><a id="contactInstagram" href="https://www.instagram.com/harshiyaan_jewellery?stkn=OWEzajh1b3VqMTgy" target="_blank" rel="noopener">Instagram ↗</a><a id="contactYoutube" href="https://youtu.be/F_3NiSjTQKc?si=CkRa06LFcFOqEsqU" target="_blank" rel="noopener">YouTube ↗</a></div><div class="policy-links" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px"><a href="contact.html">Contact Us</a><a href="pricing.html">Pricing</a><a href="shipping.html">Shipping Policy</a><a href="terms.html">Terms & Conditions</a><a href="privacy.html">Privacy Policy</a><a href="refund.html">Cancellation & Refund Policy</a></div></div><div><div class="eyebrow">Store</div><small>Online Payment: UPI only<br>COD: Not Available<br>© 2026 Harshiyaan Collections</small></div></div></footer>
+
+<div class="modal" id="orderModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Order enquiry</div><h2 class="serif" style="margin:4px 0;font-size:34px">Complete your order</h2></div><button type="button" class="close" data-close-modal="orderModal" aria-label="Close order">×</button></div><form class="form" id="orderForm"><div class="order-summary" id="orderSummary"></div><div class="form-grid"><div class="field"><label>Full Name</label><input required name="name"></div><div class="field"><label>Mobile Number</label><input required name="mobile" inputmode="tel"></div><div class="field"><label>Email</label><input type="email" name="email" placeholder="Optional"></div><div class="field"><label>House / Door No.</label><input required name="house"></div><div class="field"><label>Street</label><input required name="street"></div><div class="field"><label>Area / Locality</label><input required name="area"></div><div class="field"><label>City / Town</label><input required name="city"></div><div class="field"><label>District</label><input required name="district"></div><div class="field"><label>State</label><input required name="state" value="Andhra Pradesh"></div><div class="field"><label>Pincode</label><input required name="pincode" inputmode="numeric"></div></div>
+<div class="location-box" style="margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.5)">
+  <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+    <div><b>Delivery Location</b><div class="mini">Enter address manually, or share your exact Google Maps location.</div></div>
+    <button type="button" class="btn light" id="useLocationBtn" onclick="useCurrentLocation()">📍 Use My Exact Location</button>
+  </div>
+  <div id="locationStatus" class="mini" style="margin-top:9px">Manual address selected by default.</div>
+  <input type="hidden" name="locationMode" id="locationMode" value="manual">
+  <input type="hidden" name="latitude" id="latitude">
+  <input type="hidden" name="longitude" id="longitude">
+  <input type="hidden" name="mapsLink" id="mapsLink">
+</div>
+<div class="payment-box"><b>SECURE PAYMENT VIA RAZORPAY</b><div class="qr"></div><div class="mini">Razorpay-ready checkout · Live payment verification is handled securely by the merchant backend.</div><button type="button" class="btn gold" style="margin-top:14px" onclick="startRazorpayPayment()">Pay Securely with Razorpay</button></div><div class="notice">COD is not available. Razorpay Test Mode is enabled for checkout testing. Your order is recorded only after Razorpay payment signature verification succeeds.</div></form></div></div>
+
+<div class="modal" id="cartModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Shopping bag</div><h2 class="serif" style="margin:4px 0;font-size:34px">Your Cart</h2></div><button type="button" class="close" data-close-modal="cartModal" aria-label="Close cart">×</button></div><div class="admin" id="cartContent"></div></div></div>
+<div class="modal" id="trackModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Harshiyaan Collections</div><h2 class="serif" style="margin:4px 0;font-size:34px">Order Status</h2></div><button type="button" class="close" data-close-modal="trackModal" aria-label="Close order status">×</button></div><div class="admin" id="trackModalContent"></div></div></div>
+<div class="modal" id="adminLoginModal"><div class="panel"><div class="login-lock"><div class="eyebrow">Restricted Area</div><h2 class="serif" style="font-size:38px;margin:8px 0">Admin Lock 🔒</h2><p class="mini">Enter the admin password to open the dashboard.</p><div class="field" style="margin-top:18px"><label>Password</label><input id="adminPassword" type="password" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkAdmin()"></div><button class="btn gold" style="margin-top:14px;width:100%" onclick="checkAdmin()">Unlock Admin</button><div id="adminError" class="mini" style="color:#9a3d2f;margin-top:10px"></div></div></div></div>
+<div class="modal" id="adminModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Harshiyaan Collections</div><h2 class="serif" style="margin:4px 0;font-size:34px">Admin Dashboard</h2></div><button type="button" class="close" data-close-modal="adminModal" aria-label="Close admin">×</button></div><div class="admin" id="adminContent"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const defaultProducts=[
+{id:1001,name:'Temple Heritage Set',old:2500,price:1999,img:'products/product1.png',tag:'Special Offer',category:'New Arrivals'},
+{id:1002,name:'Royal Ruby Pendant Set',old:4200,price:3499,img:'products/product2.png',tag:'Featured',category:'Bridal'},
+{id:1003,name:'Classic Black Bead Gold',old:3100,price:2599,img:'products/product3.png',tag:'Bestseller',category:'Black Beads'},
+{id:1004,name:'Floral Layered Collection',old:3800,price:2999,img:'products/product4.png',tag:'New Arrival',category:'Combos'}
+];
+if(!localStorage.getItem('hc_demo_seed_v3')){
+  const existingProducts=JSON.parse(localStorage.getItem('hc_products')||'[]');
+  if(!existingProducts.length) localStorage.setItem('hc_products',JSON.stringify(defaultProducts));
+  const existingHero=localStorage.getItem('hc_home_hero_image');
+  if(!existingHero || existingHero==='__removed__') localStorage.setItem('hc_home_hero_image','products/product1.png');
+  localStorage.setItem('hc_demo_seed_v3','1');
+}
+let products=JSON.parse(localStorage.getItem('hc_products')||'[]');
+let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');
+let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
+let selected=null;
+let cart=JSON.parse(localStorage.getItem('hc_cart')||'[]');
+const ADMIN_PASSWORD='Harshiyaan@2026';
+function money(n){return '₹'+Number(n).toLocaleString('en-IN')}
+let activeCategory='all'; function renderProducts(){const grid=document.getElementById('productGrid');if(!grid)return;const list=activeCategory==='all'?products:products.filter(p=>(p.category||'New Arrivals')===activeCategory);grid.innerHTML=list.length?list.map(p=>`<article class="product reveal"><div class="product-img"><span class="tag">${p.tag||p.category||'Collection'}</span><img src="${p.img}" alt="${p.name}"></div><div class="product-body"><h3>${p.name}</h3><div class="price"><span class="old">${money(p.old)}</span><span class="new">${money(p.price)}</span></div><div class="offer">${p.old>p.price?'Special Offer':'Enquire for Price'}</div><button class="btn" onclick="addToCart(${p.id})" style="margin-top:13px">Add to Cart</button></div></article>`).join(''):`<div class="admin-card" style="grid-column:1/-1;text-align:center;padding:45px"><div class="eyebrow">${activeCategory==='all'?'All Collections':activeCategory}</div><h3 style="margin:8px 0;font-family:Cormorant Garamond;font-size:30px">No products yet</h3><p class="mini">Products added from Admin Dashboard will appear in this collection.</p></div>`;observe();} function filterCategory(category){activeCategory=category;renderProducts();const title=document.getElementById('categoryTitle');if(title)title.textContent=category+' Collection';const target=document.getElementById('categoryProducts');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});showToast(category+' selected');}
+function renderOffer(){let o=offers.find(x=>x.active);document.getElementById('offerBanner').innerHTML=o?`<div class="offer-copy"><div class="eyebrow">${o.title}</div><h3>${o.text}</h3><div class="price"><span class="old">${money(o.old)}</span><span class="offer-price">${money(o.price)}</span></div><button class="btn gold" onclick="openOrder(${o.productId})" style="margin-top:20px">Shop This Offer</button></div><div class="offer-img"><img src="${o.img}" alt="Offer"></div>`:'<div class="offer-copy"><h3>No active offers</h3><p>Offers can be published from the admin dashboard.</p></div>'}
+function addToCart(id){let p=products.find(x=>x.id==id);if(!p)return;let item=cart.find(x=>x.id===id);item?item.qty++:cart.push({id,qty:1});saveCart();showToast(p.name+' added to cart');}
+function saveCart(){localStorage.setItem('hc_cart',JSON.stringify(cart));updateCartBadge()}
+function updateCartBadge(){const n=cart.reduce((a,x)=>a+x.qty,0);const b=document.getElementById('cartBadge');if(b)b.textContent=n;const fb=document.getElementById('hcFloatingCartBadge');if(fb)fb.textContent=n;const f=document.getElementById('hcFloatingCart');if(f&&n>0){f.classList.remove('hc-cart-pulse');void f.offsetWidth;f.classList.add('hc-cart-pulse')}}
+function openCart(){renderCart();document.getElementById('cartModal').classList.add('open')}
+function renderCart(){let c=document.getElementById('cartContent');if(!cart.length){c.innerHTML='<div class="admin-card">Your cart is empty.</div>';return}let total=0;c.innerHTML=cart.map(i=>{let p=products.find(x=>x.id===i.id);if(!p)return '';total+=p.price*i.qty;return `<div class="cart-row"><div><b>${p.name}</b><div class="mini">${money(p.price)} each</div></div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><b>${i.qty}</b><button onclick="changeQty(${p.id},1)">+</button></div><strong>${money(p.price*i.qty)}</strong></div>`}).join('')+`<div class="order-summary" style="margin-top:18px"><b>Total: ${money(total)}</b></div><button class="btn gold" style="margin-top:14px;width:100%" onclick="checkoutCart()">Confirm Your Order — ${money(total)}</button>`}
+function changeQty(id,d){let i=cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();renderCart()}
+function checkoutCart(){if(!cart.length)return;let first=products.find(p=>p.id===cart[0].id);selected=first;let total=cart.reduce((sum,i)=>{let p=products.find(x=>x.id===i.id);return sum+(p?p.price*i.qty:0)},0);document.getElementById('orderSummary').innerHTML=`<b>${cart.length} product item(s)</b><br><strong>${money(total)}</strong><br><span class="mini">Razorpay · UPI available · COD unavailable · Estimated delivery 5–7 working days</span>`;closeModal('cartModal');document.getElementById('orderModal').classList.add('open')}
+function openOrder(id){addToCart(id);openCart()}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function useCurrentLocation(){
+  const status=document.getElementById('locationStatus'), btn=document.getElementById('useLocationBtn');
+  if(!navigator.geolocation){status.textContent='Location is not supported on this device. Please use the manual address.';return}
+  btn.disabled=true; btn.textContent='📍 Getting Location…'; status.textContent='Please allow location access in your browser…';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude.toFixed(6), lng=pos.coords.longitude.toFixed(6);
+    const link='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(lat+','+lng);
+    document.getElementById('locationMode').value='exact'; document.getElementById('latitude').value=lat; document.getElementById('longitude').value=lng; document.getElementById('mapsLink').value=link;
+    status.innerHTML='✅ Exact location captured. <a href="'+link+'" target="_blank" rel="noopener" style="color:#8a6428;text-decoration:underline">Open in Google Maps</a>';
+    btn.disabled=false; btn.textContent='📍 Update Exact Location';
+  },err=>{
+    let msg='Could not get your location. Please use the manual address.';
+    if(err.code===1) msg='Location permission was denied. Please allow location access or use the manual address.';
+    else if(err.code===3) msg='Location request timed out. Please try again or use the manual address.';
+    status.textContent='⚠️ '+msg; btn.disabled=false; btn.textContent='📍 Try Exact Location Again';
+  },{enableHighAccuracy:true,timeout:12000,maximumAge:0});
+}
+async function sendOrderEmailNotification(order){
+  try{
+    await fetch('https://script.google.com/macros/s/AKfycbwoDEDhdSwF3f0XAs-TqdnlFfF3v36ircXF3l8h0BQ-f7kRVT2hoyHW1k_7qJuyz56_1Q/exec',{method:'POST',mode:'no-cors',body:JSON.stringify(order)});
+    return true;
+  }catch(e){ console.warn('Order email request failed',e); return false; }
+}
+async function startRazorpayPayment(){const form=document.getElementById('orderForm');if(!form.reportValidity())return;const data=Object.fromEntries(new FormData(form).entries());const total=cart.length?cart.reduce((sum,i)=>{let p=products.find(x=>x.id===i.id);return sum+(p?p.price*i.qty:0)},0):selected?.price||0;if(!total)return;const delivery=new Date(Date.now()+6*86400000).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});const orderId='HC-'+Date.now().toString().slice(-8);const items=cart.length?cart.map(i=>{let p=products.find(x=>x.id===i.id);return p?p.name+' × '+i.qty:''}).filter(Boolean).join(', '):(selected?selected.name:'');const notes={customer_name:data.name||'',customer_mobile:data.mobile||'',customer_email:data.email||'',order_ref:orderId};try{showToast('Opening secure Razorpay checkout…');const result=await hcOpenRazorpayCheckout({amount:total,receipt:orderId,description:items,customer:data,notes});const order={id:orderId,date:new Date().toLocaleString(),product:items,productId:selected?selected.id:null,amount:total,payment:'Razorpay Test Mode',status:'Paid',delivery,customer:data,razorpayOrderId:result.response.razorpay_order_id,razorpayPaymentId:result.response.razorpay_payment_id};orders.unshift(order);localStorage.setItem('hc_orders',JSON.stringify(orders));await sendOrderEmailNotification(order);try{if(window.hcSendOrderToCloud)window.hcSendOrderToCloud(order)}catch(e){console.warn(e)}try{if('BroadcastChannel' in window){const ch=new BroadcastChannel('harshiyaan_orders');ch.postMessage({type:'NEW_ORDER',order});setTimeout(()=>ch.close(),500)}}catch(e){}cart=[];saveCart();closeModal('orderModal');document.getElementById('trackResult').innerHTML=`<div class="admin-card"><b>Payment Successful ✅</b><p>Order ID: <strong>${order.id}</strong><br>Total Paid: <strong>${money(order.amount)}</strong><br>Payment ID: <strong>${order.razorpayPaymentId}</strong><br>Expected Delivery: <strong>${order.delivery}</strong></p></div>`;document.getElementById('trackModalContent').innerHTML=document.getElementById('trackResult').innerHTML;document.getElementById('trackModal').classList.add('open');showToast('Payment successful — order confirmed');renderAdmin()}catch(e){console.error(e);showToast('Payment not completed: '+(e.message||'Please try again'))}}
+</script>
+<script>document.addEventListener("error",function(e){if(e.target&&e.target.tagName==="IMG"){e.target.classList.add("hc-img-fallback");}},true);</script>
+<script id="universal-cart-menu-fix">
+(function(){
+  window.hcSafeOpenCart=function(e){
+    if(e){e.preventDefault();e.stopPropagation();}
+    var modal=document.getElementById('cartModal');
+    if(!modal)return;
+    modal.classList.add('open');
+    modal.style.display='flex';
+    modal.removeAttribute('hidden');
+    try{ if(typeof window.renderCart==='function') window.renderCart(); }catch(err){ console.warn('Cart render error',err); }
+  };
+  window.toggleMobileMenu=function(e){
+    if(e){e.preventDefault();e.stopPropagation();}
+    var panel=document.getElementById('mobileMenuPanel');
+    if(!panel)return;
+    var open=panel.classList.toggle('open');
+    panel.setAttribute('aria-hidden',open?'false':'true');
+  };
+  window.closeMobileMenu=function(){
+    var panel=document.getElementById('mobileMenuPanel');
+    if(panel){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');}
+  };
+  document.addEventListener('click',function(e){
+    var panel=document.getElementById('mobileMenuPanel');
+    var menu=e.target.closest && e.target.closest('.menu');
+    if(panel && panel.classList.contains('open') && !panel.contains(e.target) && !menu) window.closeMobileMenu();
+  },true);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')window.closeMobileMenu();});
+  document.addEventListener('click',function(e){
+    var cart=e.target.closest && e.target.closest('.cart-wrap');
+    if(cart){window.hcSafeOpenCart(e);}
+  },true);
+})();
+</script>
+<script id="mobile-nav-standalone">
+(function(){
+  function go(id){
+    var target=document.getElementById(id);
+    if(!target)return;
+    var header=document.getElementById('header');
+    var offset=(header?header.offsetHeight:0)+8;
+    var y=target.getBoundingClientRect().top+window.pageYOffset-offset;
+    window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+  }
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest && e.target.closest('.hero-actions .hero-jump');
+    if(!btn)return;
+    e.preventDefault(); e.stopPropagation();
+    go(btn.getAttribute('data-target'));
+  },true);
+})();
+</script>
+<script type="module" id="premium-3d-engine">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+import { animate as motionAnimate, spring } from 'https://cdn.jsdelivr.net/npm/motion@12.23.24/+esm';
+import { createTimeline } from 'https://cdn.jsdelivr.net/npm/animejs@4.2.2/+esm';
+
+const canvas=document.getElementById('jewel-canvas');
+const wrap=document.getElementById('pxCanvasWrap');
+if(canvas){
+ const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ renderer.setSize(wrap.clientWidth,wrap.clientHeight,false);
+ renderer.outputColorSpace=THREE.SRGBColorSpace;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.12;
+ const scene=new THREE.Scene();
+ const camera=new THREE.PerspectiveCamera(32,wrap.clientWidth/wrap.clientHeight,.1,100);
+ camera.position.set(0,0,8.4);
+ const root=new THREE.Group(); scene.add(root);
+ const exploded=new THREE.Group(); root.add(exploded);
+
+ scene.add(new THREE.HemisphereLight(0xffffff,0x6b4a72,2.1));
+ const key=new THREE.DirectionalLight(0xfff1d4,4.4); key.position.set(4,6,6); scene.add(key);
+ const rim=new THREE.DirectionalLight(0xd9c5ff,3.2); rim.position.set(-5,2,-4); scene.add(rim);
+ const warm=new THREE.PointLight(0xffd28a,3,15); warm.position.set(1,-2,4); scene.add(warm);
+
+ const gold=new THREE.MeshPhysicalMaterial({color:0xc69a48,metalness:.9,roughness:.19,clearcoat:.7,clearcoatRoughness:.13});
+ const goldDark=new THREE.MeshPhysicalMaterial({color:0x8c6222,metalness:.95,roughness:.22});
+ const diamond=new THREE.MeshPhysicalMaterial({color:0xeaf5ff,metalness:.05,roughness:.04,transmission:.42,thickness:.7,ior:1.45,clearcoat:1,clearcoatRoughness:.04,transparent:true,opacity:.96});
+ const ruby=new THREE.MeshPhysicalMaterial({color:0x8c102a,metalness:.12,roughness:.08,transmission:.08,clearcoat:1,clearcoatRoughness:.06});
+
+ // Signature ring: band + halo + center stone + 4 prongs + shoulder stones
+ const band=new THREE.Mesh(new THREE.TorusGeometry(1.55,.24,48,128),gold); band.rotation.x=Math.PI/2; band.position.y=-.55; exploded.add(band);
+ const shoulderL=new THREE.Mesh(new THREE.TorusGeometry(.58,.095,30,80,Math.PI),goldDark); shoulderL.rotation.set(Math.PI/2,0,.25); shoulderL.position.set(-.72,-.05,0); exploded.add(shoulderL);
+ const shoulderR=shoulderL.clone(); shoulderR.rotation.z=-.25; shoulderR.position.x=.72; exploded.add(shoulderR);
+ const halo=new THREE.Mesh(new THREE.TorusGeometry(.83,.12,40,100),gold); halo.position.y=.62; exploded.add(halo);
+ const stone=new THREE.Mesh(new THREE.OctahedronGeometry(.72,3),diamond); stone.position.y=.67; stone.scale.set(1,1.18,1); exploded.add(stone);
+ const rubyAccent=new THREE.Mesh(new THREE.OctahedronGeometry(.22,2),ruby); rubyAccent.position.set(0,.67,.69); rubyAccent.scale.set(.8,1.25,.65); exploded.add(rubyAccent);
+ const prongs=[];
+ [[.48,.73,.38],[-.48,.73,.38],[.48,.73,-.38],[-.48,.73,-.38]].forEach(([x,y,z])=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(.055,.08,.65,18),gold);m.position.set(x,y,z);m.rotation.z=(x>0?-1:1)*.25;exploded.add(m);prongs.push(m)});
+ const gemRing=new THREE.Mesh(new THREE.TorusGeometry(.48,.045,20,64),goldDark); gemRing.position.y=.67; exploded.add(gemRing);
+
+ const parts=[band,shoulderL,shoulderR,halo,stone,rubyAccent,...prongs,gemRing];
+ const base=parts.map(o=>o.position.clone());
+ const directions=[new THREE.Vector3(0,-.1,0),new THREE.Vector3(-1.15,.35,.2),new THREE.Vector3(1.15,.35,.2),new THREE.Vector3(0,1.25,0),new THREE.Vector3(0,2.05,.1),new THREE.Vector3(0,2.5,.75),new THREE.Vector3(.85,1.65,.4),new THREE.Vector3(-.85,1.65,.4),new THREE.Vector3(.85,1.65,-.4),new THREE.Vector3(-.85,1.65,-.4),new THREE.Vector3(0,1.65,0)];
+ let explode=0, autoSpin=true, dragging=false,px=0;
+ function setExplode(v){explode=Math.max(0,Math.min(1,v));parts.forEach((o,i)=>o.position.copy(base[i]).add(directions[i].clone().multiplyScalar(explode)));}
+ function resize(){const w=wrap.clientWidth,h=wrap.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+ window.addEventListener('resize',resize);resize();
+ canvas.addEventListener('pointerdown',e=>{dragging=true;px=e.clientX;wrap.classList.add('dragging');canvas.setPointerCapture(e.pointerId)});
+ canvas.addEventListener('pointermove',e=>{if(!dragging)return;root.rotation.y+=(e.clientX-px)*.009;root.rotation.x+=(e.clientY-(canvas._py||e.clientY))*.004;root.rotation.x=Math.max(-.65,Math.min(.65,root.rotation.x));px=e.clientX;canvas._py=e.clientY});
+ canvas.addEventListener('pointerup',()=>{dragging=false;wrap.classList.remove('dragging');canvas._py=null});
+ canvas.addEventListener('wheel',e=>{e.preventDefault();setExplode(explode+e.deltaY*.0012)},{passive:false});
+ document.getElementById('pxExplode').onclick=()=>{const target=explode>.45?0:1;motionAnimate(explode,target,{type:spring,stiffness:180,damping:22}).then?.(()=>{});let start=explode,t0=performance.now();function go(t){const p=Math.min(1,(t-t0)/700);setExplode(start+(target-start)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(go)}requestAnimationFrame(go)};
+ document.getElementById('pxSpin').onclick=e=>{autoSpin=!autoSpin;e.currentTarget.textContent=autoSpin?'Pause 360°':'Play 360°';motionAnimate(e.currentTarget,{scale:autoSpin?1:0.96},{duration:.22})};
+ document.getElementById('pxReset').onclick=()=>{root.rotation.set(0,0,0);setExplode(0)};
+ window.addEventListener('scroll',()=>{const r=document.getElementById('premium-experience').getBoundingClientRect();const progress=Math.max(0,Math.min(1,(innerHeight-r.top)/(r.height+innerHeight*.25)));setExplode(progress*.92);root.rotation.y=progress*Math.PI*1.35+(dragging?root.rotation.y:0)});
+
+ document.querySelectorAll('.hero-jump').forEach(btn=>{btn.addEventListener('click',function(e){const id=this.dataset.target;const target=document.getElementById(id);if(!target)return;e.preventDefault();const header=document.getElementById('header');const offset=(header?header.offsetHeight:0)+8;const y=target.getBoundingClientRect().top+window.pageYOffset-offset;window.scrollTo({top:Math.max(0,y),behavior:'smooth'});});});
+ const tl=createTimeline({defaults:{duration:900,ease:'out(4)'}});tl.add('.px-kicker',{opacity:[0,1],translateY:[24,0]}).add('.px-title',{opacity:[0,1],translateY:[45,0]},'-=650').add('.px-copy p',{opacity:[0,1],translateY:[25,0]},'-=600').add('.px-actions',{opacity:[0,1],translateY:[20,0]},'-=650');
+ function loop(){if(autoSpin&&!dragging)root.rotation.y+=.0032;renderer.render(scene,camera);requestAnimationFrame(loop)}
+ loop();
+}
+</script>
+
+
+<script>
+(function(){
+  function goCart(e){
+    var b=e.target.closest('.cart-wrap');
+    if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    var cart=document.getElementById('cart')||document.querySelector('#cart-modal,.cart-modal,[data-cart]');
+    if(cart){
+      cart.classList.add('open','show','active');
+      cart.style.display='block';
+      cart.removeAttribute('hidden');
+      if(typeof window.renderCart==='function') window.renderCart();
+      if(typeof window.openCart==='function') window.openCart();
+      return;
+    }
+    var candidates=['cart.html','cart/','checkout.html'];
+    for(var i=0;i<candidates.length;i++){ if(location.href.indexOf(candidates[i])>=0) return; }
+  }
+  document.addEventListener('click',goCart,true);
+  document.addEventListener('touchend',goCart,{capture:true,passive:false});
+})();
+</script>
+<script id="bulletproof-modal-close">
+(function(){
+  function closeByButton(el){
+    var id=el && el.getAttribute('data-close-modal');
+    if(!id) return false;
+    var modal=document.getElementById(id);
+    if(!modal) return false;
+    modal.classList.remove('open','show','active');
+    modal.style.display='none';
+    modal.setAttribute('aria-hidden','true');
+    return true;
+  }
+  document.addEventListener('click',function(e){
+    var btn=e.target && e.target.closest ? e.target.closest('.close[data-close-modal]') : null;
+    if(btn && closeByButton(btn)){ e.preventDefault(); e.stopImmediatePropagation(); }
+  },true);
+  document.addEventListener('pointerup',function(e){
+    var btn=e.target && e.target.closest ? e.target.closest('.close[data-close-modal]') : null;
+    if(btn && closeByButton(btn)){ e.preventDefault(); e.stopImmediatePropagation(); }
+  },true);
+  document.addEventListener('touchend',function(e){
+    var btn=e.target && e.target.closest ? e.target.closest('.close[data-close-modal]') : null;
+    if(btn && closeByButton(btn)){ e.preventDefault(); e.stopImmediatePropagation(); }
+  },{capture:true,passive:false});
+  document.addEventListener('click',function(e){
+    if(e.target.classList && e.target.classList.contains('modal')){
+      e.target.classList.remove('open','show','active');
+      e.target.style.display='none';
+    }
+  },true);
+})();
+</script>
+<script src="./firebase-config.js"></script>
+<script type="module">
+import { sendOrder } from './firebase-client.js';
+window.hcSendOrderToCloud = async function(order){
+  const r = await sendOrder(order);
+  if(!r.ok && r.reason!=='firebase-not-configured') console.warn('Online order sync failed:',r.reason);
+  return r;
+};
+</script>
+</body></html>
