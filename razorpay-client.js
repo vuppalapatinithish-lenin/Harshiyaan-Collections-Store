@@ -1,5 +1,5 @@
 (function(){
-  const DEFAULT_API_BASE = 'https://harshiyaan-collections-igbnf4dda-nithish-746f.vercel.app';
+  const DEFAULT_API_BASE = 'https://harshiyaan-collections-store.vercel.app';
   function apiBase(){ return (window.HC_RAZORPAY_API_BASE || DEFAULT_API_BASE).replace(/\/$/,''); }
   function loadCheckout(){
     if(window.Razorpay) return Promise.resolve();
