@@ -12,7 +12,7 @@
 body{background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);}
 
 :root{--ink:#1d1714;--muted:#766c66;--gold:#b08a48;--gold2:#d7bd83;--cream:#f8f3eb;--paper:#fffdf9;--line:rgba(29,23,20,.12);--shadow:0 24px 70px rgba(55,37,20,.12)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}a{text-decoration:none;color:inherit}button,input,select{font:inherit}.container{width:min(1180px,92%);margin:auto}.serif{font-family:'Cormorant Garamond',serif}.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600}.btn{border:0;background:var(--ink);color:#fff;padding:14px 21px;border-radius:999px;cursor:pointer;transition:.3s}.btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(0,0,0,.12)}.btn.light{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn.gold{background:var(--gold);color:#fff}.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}.reveal.show{opacity:1;transform:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}a{text-decoration:none;color:inherit}button,input,select{font:inherit}.container{width:min(1180px,92%);margin:auto}.serif{font-family:'Cormorant Garamond',serif}.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600}.btn{border:0;background:var(--ink);color:#fff;padding:14px 21px;border-radius:999px;cursor:pointer;transition:.3s}.btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(0,0,0,.12)}.btn.light{background:transparent;color:var(--ink);border:1px solid var(--line)}.btn.gold{background:var(--gold);color:#fff}.reveal{opacity:1;transform:none;transition:opacity .8s ease,transform .8s ease}.reveal.show{opacity:1;transform:none}
 
 /* Universal cart + responsive mobile menu fix */
 .mobile-menu-panel{position:fixed;top:64px;left:12px;right:12px;z-index:120;background:rgba(255,253,249,.98);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:0 22px 60px #0003;display:none}
@@ -237,7 +237,7 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
   <input type="hidden" name="longitude" id="longitude">
   <input type="hidden" name="mapsLink" id="mapsLink">
 </div>
-<div class="payment-box"><b>SECURE PAYMENT VIA RAZORPAY</b><div class="qr"></div><div class="mini">Razorpay-ready checkout · Live payment verification is handled securely by the merchant backend.</div><button type="button" class="btn gold" style="margin-top:14px" onclick="startRazorpayPayment()">Pay Securely with Razorpay</button></div><div class="notice">COD is not available. Razorpay Test Mode is enabled for checkout testing. Your order is recorded only after Razorpay payment signature verification succeeds.</div></form></div></div>
+<div class="payment-box"><b>SECURE PAYMENT VIA RAZORPAY</b><div class="qr"></div><div class="mini">Razorpay-ready checkout · Live payment verification is handled securely by the merchant backend.</div><button type="button" class="btn gold" style="margin-top:14px" onclick="startRazorpayPayment()">Pay Securely with Razorpay</button></div><div class="notice">COD is not available. Razorpay Live Mode is enabled. Your order is recorded only after Razorpay payment signature verification succeeds.</div></form></div></div>
 
 <div class="modal" id="cartModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Shopping bag</div><h2 class="serif" style="margin:4px 0;font-size:34px">Your Cart</h2></div><button type="button" class="close" data-close-modal="cartModal" aria-label="Close cart">×</button></div><div class="admin" id="cartContent"></div></div></div>
 <div class="modal" id="trackModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Harshiyaan Collections</div><h2 class="serif" style="margin:4px 0;font-size:34px">Order Status</h2></div><button type="button" class="close" data-close-modal="trackModal" aria-label="Close order status">×</button></div><div class="admin" id="trackModalContent"></div></div></div>
@@ -295,11 +295,54 @@ function useCurrentLocation(){
 }
 async function sendOrderEmailNotification(order){
   try{
-    await fetch('https://script.google.com/macros/s/AKfycbwoDEDhdSwF3f0XAs-TqdnlFfF3v36ircXF3l8h0BQ-f7kRVT2hoyHW1k_7qJuyz56_1Q/exec',{method:'POST',mode:'no-cors',body:JSON.stringify(order)});
+    await fetch('https://script.google.com/macros/s/AKfycbwoDEDhdSwF3f0XAs-TqdnlFfF3v36ircXF3l8h0BQ-f7kRVT2hoyHW1k_7qJuyz56_1Q/exec',{method:'POST',mode:'no-cors',body:JSON.stringify({action:'create',order})});
     return true;
   }catch(e){ console.warn('Order email request failed',e); return false; }
 }
-async function startRazorpayPayment(){const form=document.getElementById('orderForm');if(!form.reportValidity())return;const data=Object.fromEntries(new FormData(form).entries());const total=cart.length?cart.reduce((sum,i)=>{let p=products.find(x=>x.id===i.id);return sum+(p?p.price*i.qty:0)},0):selected?.price||0;if(!total)return;const delivery=new Date(Date.now()+6*86400000).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});const orderId='HC-'+Date.now().toString().slice(-8);const items=cart.length?cart.map(i=>{let p=products.find(x=>x.id===i.id);return p?p.name+' × '+i.qty:''}).filter(Boolean).join(', '):(selected?selected.name:'');const notes={customer_name:data.name||'',customer_mobile:data.mobile||'',customer_email:data.email||'',order_ref:orderId};try{showToast('Opening secure Razorpay checkout…');const result=await hcOpenRazorpayCheckout({amount:total,receipt:orderId,description:items,customer:data,notes});const order={id:orderId,date:new Date().toLocaleString(),product:items,productId:selected?selected.id:null,amount:total,payment:'Razorpay Test Mode',status:'Paid',delivery,customer:data,razorpayOrderId:result.response.razorpay_order_id,razorpayPaymentId:result.response.razorpay_payment_id};orders.unshift(order);localStorage.setItem('hc_orders',JSON.stringify(orders));await sendOrderEmailNotification(order);try{if(window.hcSendOrderToCloud)window.hcSendOrderToCloud(order)}catch(e){console.warn(e)}try{if('BroadcastChannel' in window){const ch=new BroadcastChannel('harshiyaan_orders');ch.postMessage({type:'NEW_ORDER',order});setTimeout(()=>ch.close(),500)}}catch(e){}cart=[];saveCart();closeModal('orderModal');document.getElementById('trackResult').innerHTML=`<div class="admin-card"><b>Payment Successful ✅</b><p>Order ID: <strong>${order.id}</strong><br>Total Paid: <strong>${money(order.amount)}</strong><br>Payment ID: <strong>${order.razorpayPaymentId}</strong><br>Expected Delivery: <strong>${order.delivery}</strong></p></div>`;document.getElementById('trackModalContent').innerHTML=document.getElementById('trackResult').innerHTML;document.getElementById('trackModal').classList.add('open');showToast('Payment successful — order confirmed');renderAdmin()}catch(e){console.error(e);showToast('Payment not completed: '+(e.message||'Please try again'))}}
+function hcApiBase(){
+  if(window.HC_API_BASE) return String(window.HC_API_BASE).replace(/\/$/,'');
+  if(location.hostname.endsWith('.vercel.app')) return '';
+  return 'https://harshiyaan-collections-igbnf4dda-nithish-746f.vercel.app';
+}
+async function hcCloudOrder(action, orderOrData){
+  try{
+    const payload=action==='create'?{action:'create',order:orderOrData}:Object.assign({action},orderOrData||{});
+    const r=await fetch(hcApiBase()+'/api/order-sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok) throw new Error('Central order sync failed');
+    return await r.json();
+  }catch(e){console.warn(e); return {ok:false};}
+}
+function hcOrderSuccessHtml(order){
+  const safeId=String(order.id).replace(/[^A-Z0-9-]/gi,'');
+  return `<div class="admin-card"><b>Payment Successful ✅</b><p style="line-height:1.8"><strong>Order ID:</strong> <span id="successOrderId">${safeId}</span><br><strong>Total Paid:</strong> ${money(order.amount)}<br><strong>Payment ID:</strong> ${order.razorpayPaymentId}<br><strong>Status:</strong> ${order.status}<br><strong>Expected Delivery:</strong> ${order.delivery}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn light" onclick="copyOrderId('${safeId}')">📋 Copy Order ID</button><button class="btn light" onclick="saveOrderDetails('${safeId}')">💾 Save Order Details</button><button class="btn gold" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'});closeModal('trackModal');document.getElementById('trackId').value='${safeId}';document.getElementById('trackMobile').value='${String(order.customer.mobile||'').replace(/[^0-9+]/g,'')}';trackOrder()">📦 Track My Order</button></div></div>`;
+}
+async function copyOrderId(id){try{await navigator.clipboard.writeText(id);showToast('Order ID copied: '+id)}catch(e){showToast('Order ID: '+id)}}
+function saveOrderDetails(id){
+  const o=(orders||[]).find(x=>x.id===id)||JSON.parse(localStorage.getItem('hc_orders')||'[]').find(x=>x.id===id);
+  if(!o)return;
+  const text=`Harshiyaan Collections\nOrder ID: ${o.id}\nAmount Paid: ${money(o.amount)}\nStatus: ${o.status}\nPayment ID: ${o.razorpayPaymentId||''}\nExpected Delivery: ${o.delivery||''}`;
+  const blob=new Blob([text],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=o.id+'.txt'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500); showToast('Order details saved');
+}
+async function trackOrder(){
+  const id=(document.getElementById('trackId')?.value||'').trim().toUpperCase();
+  const mobile=(document.getElementById('trackMobile')?.value||'').replace(/\D/g,'');
+  const box=document.getElementById('trackResult'); if(!box)return;
+  if(!id||!mobile){box.innerHTML='<div class="admin-card">Please enter both Order ID and mobile number.</div>';return;}
+  box.innerHTML='<div class="admin-card">Checking order status…</div>';
+  try{
+    const r=await fetch(hcApiBase()+'/api/order-sync?id='+encodeURIComponent(id)+'&mobile='+encodeURIComponent(mobile));
+    const data=await r.json();
+    if(!r.ok||!data.order) throw new Error(data.error||'Order not found');
+    const o=data.order;
+    const steps=['Confirmed','Processing','Shipped','Out for Delivery','Delivered']; const idx=steps.indexOf(o.status);
+    box.innerHTML=`<div class="admin-card"><div class="row"><b>${o.id}</b><strong>${money(o.amount)}</strong></div><p class="mini">${o.product||''}<br>Status: <b>${o.status}</b><br>Expected Delivery: ${o.delivery||'—'}</p><div class="track-status">${steps.map((x,i)=>`<span class="status-pill ${i<=idx?'active':''}">${x}</span>`).join('')}</div></div>`;
+  }catch(e){
+    const local=(orders||[]).find(o=>o.id===id && String(o.customer?.mobile||'').replace(/\D/g,'')===mobile);
+    if(local){const steps=['Confirmed','Processing','Shipped','Out for Delivery','Delivered'];const idx=steps.indexOf(local.status);box.innerHTML=`<div class="admin-card"><div class="row"><b>${local.id}</b><strong>${money(local.amount)}</strong></div><p class="mini">${local.product||''}<br>Status: <b>${local.status}</b><br>Expected Delivery: ${local.delivery||'—'}</p><div class="track-status">${steps.map((x,i)=>`<span class="status-pill ${i<=idx?'active':''}">${x}</span>`).join('')}</div></div>`;}
+    else box.innerHTML='<div class="admin-card">Order not found. Please check the Order ID and mobile number.</div>';
+  }
+}
+async function startRazorpayPayment(){const form=document.getElementById('orderForm');if(!form.reportValidity())return;const data=Object.fromEntries(new FormData(form).entries());const total=cart.length?cart.reduce((sum,i)=>{let p=products.find(x=>x.id===i.id);return sum+(p?p.price*i.qty:0)},0):selected?.price||0;if(!total)return;const delivery=new Date(Date.now()+6*86400000).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});const orderId='HC-'+String(Date.now()).slice(-8);const items=cart.length?cart.map(i=>{let p=products.find(x=>x.id===i.id);return p?p.name+' × '+i.qty:''}).filter(Boolean).join(', '):(selected?selected.name:'');const notes={customer_name:data.name||'',customer_mobile:data.mobile||'',customer_email:data.email||'',order_ref:orderId};try{showToast('Opening secure Razorpay checkout…');const result=await hcOpenRazorpayCheckout({amount:total,receipt:orderId,description:items,customer:data,notes});const order={id:orderId,date:new Date().toLocaleString(),product:items,productId:selected?selected.id:null,amount:total,payment:'Razorpay Live',status:'Confirmed',delivery,customer:data,razorpayOrderId:result.response.razorpay_order_id,razorpayPaymentId:result.response.razorpay_payment_id};orders.unshift(order);localStorage.setItem('hc_orders',JSON.stringify(orders));await sendOrderEmailNotification(order);await hcCloudOrder('create',order);try{if('BroadcastChannel' in window){const ch=new BroadcastChannel('harshiyaan_orders');ch.postMessage({type:'NEW_ORDER',order});setTimeout(()=>ch.close(),500)}}catch(e){}cart=[];saveCart();closeModal('orderModal');document.getElementById('trackResult').innerHTML=hcOrderSuccessHtml(order);document.getElementById('trackModalContent').innerHTML=document.getElementById('trackResult').innerHTML;document.getElementById('trackModal').classList.add('open');showToast('Payment successful — order confirmed');renderAdmin()}catch(e){console.error(e);showToast('Payment not completed: '+(e.message||'Please try again'))}}
 </script>
 <script>document.addEventListener("error",function(e){if(e.target&&e.target.tagName==="IMG"){e.target.classList.add("hc-img-fallback");}},true);</script>
 <script id="universal-cart-menu-fix">
@@ -473,13 +516,15 @@ if(canvas){
   },true);
 })();
 </script>
-<script src="./firebase-config.js"></script>
-<script type="module">
-import { sendOrder } from './firebase-client.js';
-window.hcSendOrderToCloud = async function(order){
-  const r = await sendOrder(order);
-  if(!r.ok && r.reason!=='firebase-not-configured') console.warn('Online order sync failed:',r.reason);
-  return r;
-};
+<script id="hc-reveal-fallback">
+(function(){
+  function revealNow(){
+    document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('show');});
+    document.querySelectorAll('.scroll-fade').forEach(function(el){el.classList.add('is-visible');});
+    document.querySelectorAll('.reveal-letters').forEach(function(el){el.classList.add('is-visible');});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',revealNow);
+  else revealNow();
+})();
 </script>
 </body></html>
