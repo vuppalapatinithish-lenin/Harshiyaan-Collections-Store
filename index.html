@@ -583,6 +583,7 @@ if(canvas){
   else revealNow();
 })();
 </script>
+<script id="hc-open-cart-anywhere">document.addEventListener('DOMContentLoaded',function(){try{if(sessionStorage.getItem('hc_open_cart')==='1'){sessionStorage.removeItem('hc_open_cart');setTimeout(function(){if(typeof window.openCart==='function')window.openCart();},180);}}catch(e){}});</script>
 <script id="hc-offer-search-jump">document.addEventListener('DOMContentLoaded',function(){var id=sessionStorage.getItem('hc_offer_search_id');if(id){sessionStorage.removeItem('hc_offer_search_id');var input=document.getElementById('productIdSearch');if(input){input.value=id;window.searchProductById();}}});</script>
 <script id="hc-hero-person-image">document.addEventListener('DOMContentLoaded',function(){try{var img=document.getElementById('hcHeroPersonImage');var v=localStorage.getItem('hc_home_hero_image');var bad=!v||v==='__removed__'||/products\/product\d+\.png/i.test(v);if(img)img.src=bad?'images/owner-lady.jpg':v;}catch(e){var img=document.getElementById('hcHeroPersonImage');if(img)img.src='images/owner-lady.jpg';}});</script>
 
@@ -774,7 +775,19 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
-<script src="shared-cart.js"></script></body></html>
+<style id="hc-final-mobile-polish">@media(max-width:600px){.hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important;width:calc(100vw - 28px)!important;margin-left:auto!important;margin-right:auto!important}.hero-actions .btn{width:100%!important;min-width:0!important;padding:14px 8px!important;font-size:14px!important}.hc-product-search{width:calc(100vw - 28px)!important;margin-left:auto!important;margin-right:auto!important}.hc-product-search .search-row{width:100%!important}.hc-product-search input{min-width:0!important;width:100%!important}.hc-product-search button{flex:0 0 auto!important}.hero-copy{padding-left:14px!important;padding-right:14px!important}.hero-person{margin-right:10px!important}}</style><style id="hc-final-mobile-polish-v2">
+@media(max-width:600px){
+  .hc-hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;width:100%!important;margin:18px 0 16px!important}
+  .hc-hero-actions .btn{width:100%!important;min-width:0!important;min-height:54px!important;padding:0 8px!important;font-size:13px!important;white-space:nowrap!important}
+  .hc-product-search{width:100%!important;max-width:none!important;margin:0!important;padding:12px!important;box-sizing:border-box!important}
+  .hc-search-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;width:100%!important;gap:7px!important}
+  .hc-search-row input{width:100%!important;min-width:0!important;font-size:13px!important;box-sizing:border-box!important}
+  .hc-search-row .btn{min-height:46px!important;padding:0 16px!important}
+  .hc-offers-heading{display:flex!important;flex-direction:column!important;align-items:center!important;gap:12px!important;text-align:center!important}
+  .hc-offers-heading .btn{width:min(88vw,330px)!important;min-height:50px!important;padding:0 22px!important;border-radius:999px!important;background:linear-gradient(135deg,#2b1c2e,#6d2745)!important;color:#fff!important;border:1px solid rgba(184,138,50,.6)!important;box-shadow:0 12px 28px rgba(70,30,60,.18)!important;font-weight:700!important;font-size:14px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+}
+@media(min-width:601px){.hc-offers-heading .btn{padding:13px 22px!important;border-radius:999px!important}}
+</style></body></html>
 <style id="hc-mobile-phone-focus-final">
 /* Phone-first hero: keep brand/copy on the left and a compact lady portrait on the right. */
 @media (max-width:560px){
