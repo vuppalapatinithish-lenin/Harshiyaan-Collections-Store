@@ -29,3 +29,7 @@ Note: Product/offer settings in this existing demo admin continue to use browser
 - Special Offers Add to Cart remains on-page and writes to the same localStorage cart used by the homepage.
 - Removed the old floating cart button from homepage/category pages.
 - Preserved Razorpay, Vercel API files, admin, order tracking and 3D section.
+
+## V9 - Razorpay production endpoint fix
+- Updated the storefront order-sync API base to the current production Vercel domain: `https://harshiyaan-collections-store.vercel.app`.
+- Preserved the existing Razorpay create-order and verify-payment APIs and live checkout flow.

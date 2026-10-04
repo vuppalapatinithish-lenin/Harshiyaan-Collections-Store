@@ -391,7 +391,7 @@ async function sendOrderEmailNotification(order){
 function hcApiBase(){
   if(window.HC_API_BASE) return String(window.HC_API_BASE).replace(/\/$/,'');
   if(location.hostname.endsWith('.vercel.app')) return '';
-  return 'https://harshiyaan-collections-igbnf4dda-nithish-746f.vercel.app';
+  return 'https://harshiyaan-collections-store.vercel.app';
 }
 async function hcCloudOrder(action, orderOrData){
   try{
