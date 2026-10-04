@@ -35,12 +35,16 @@ body{padding-bottom:82px!important}
   function getCart(){try{return JSON.parse(localStorage.getItem('hc_cart')||'[]')}catch(e){return []}}
   function saveCart(cart){localStorage.setItem('hc_cart',JSON.stringify(cart))}
   function addOfferToCart(id,button){
-    const products=JSON.parse(localStorage.getItem('hc_products')||'[]');
-    const p=products.find(x=>String(x.id)===String(id));
-    if(!p){showToast('Product is unavailable');return}
+    let products=[],offers=[];
+    try{products=JSON.parse(localStorage.getItem('hc_products')||'[]');offers=JSON.parse(localStorage.getItem('hc_offers')||'[]')}catch(e){}
+    const offer=offers.find(o=>o.active && String(o.productId)===String(id));
+    const linked=products.find(x=>String(x.id)===String(id));
+    const p=linked || (offer ? {id:offer.productId,name:offer.productName||offer.title||'Special Offer',price:Number(offer.price)||0,old:Number(offer.old)||0,img:offer.img||''} : null);
+    if(!p){showToast('Offer is unavailable');return}
     const cart=getCart();
-    const item=cart.find(x=>String(x.id)===String(id));
-    if(item){item.qty=(Number(item.qty)||0)+1}else{cart.push({id:p.id,qty:1})}
+    const item=cart.find(x=>String(x.id)===String(p.id));
+    if(item){item.qty=(Number(item.qty)||0)+1}
+    else{cart.push({id:p.id,qty:1,source:'offer',name:p.name,price:Number(p.price)||0,old:Number(p.old)||0,img:p.img||'',offer:true})}
     saveCart(cart);
     if(window.hcUpdateOfferCartBadge) window.hcUpdateOfferCartBadge();
     button.innerHTML='✓ Added to Cart';
@@ -58,7 +62,7 @@ body{padding-bottom:82px!important}
   function render(){
     let products=[],offers=[];
     try{products=JSON.parse(localStorage.getItem('hc_products')||'[]');offers=JSON.parse(localStorage.getItem('hc_offers')||'[]')}catch(e){}
-    const active=offers.filter(o=>o.active).map(o=>{const p=products.find(x=>Number(x.id)===Number(o.productId));return p?{...p,title:o.title,text:o.text,old:o.old||p.old,price:o.price||p.price}:null}).filter(Boolean);
+    const active=offers.filter(o=>o.active).map(o=>{const p=products.find(x=>Number(x.id)===Number(o.productId));return p?{...p,title:o.title,text:o.text,old:o.old||p.old,price:o.price||p.price}:({...o,id:o.productId,name:o.productName||o.title||'Special Offer',text:o.text,old:o.old,price:o.price,img:o.img||''});});
     const fallback=products.filter(p=>Number(p.old)>Number(p.price));
     const list=active.length?active:fallback;
     const grid=document.getElementById('offerGrid');
