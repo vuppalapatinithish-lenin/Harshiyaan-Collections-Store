@@ -198,7 +198,7 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
     <div class="hc-hero-person"><div class="hc-portrait-ring"><img id="hcHeroPersonImage" src="images/owner-lady.jpg" alt="Harshiyaan Collections" loading="eager"></div><div class="hc-person-badge"><span>HARSHIYAAN COLLECTIONS</span><b>Jewellery for every you</b></div></div>
   </div>
 </section>
-<section class="hc-offers-preview" id="offers"><div class="container"><div class="hc-offers-heading"><div><div class="eyebrow">LIMITED TIME</div><h2 class="serif">Special Offers</h2><p>Exclusive deals on handpicked jewellery.</p></div><a class="btn light" href="offers.html">View All Offers ↗</a></div><div id="homeOffersGrid" class="hc-home-offers-grid"></div></div></section>
+<section class="hc-offers-preview" id="offers"><div class="container"><div class="hc-offers-heading"><div><div class="eyebrow">LIMITED TIME</div><h2 class="serif">Special Offers</h2><p>Exclusive deals on handpicked jewellery.</p></div><a class="btn view-all-offers" href="offers.html">View All Offers ↗</a></div><div id="homeOffersGrid" class="hc-home-offers-grid"></div></div></section>
 
 <!-- PREMIUM 3D JEWELLERY EXPERIENCE -->
 <style id="premium-3d-style">
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(/^data:image\//i.test(candidate)) return candidate;
     return (p&&/^products\/product[1-4]\.png$/i.test(p.img||'')) ? p.img : (fallback[pid]||'products/product1.png');
   }
-  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join('');
+  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'<button type="button" class="btn gold hc-home-offer-cart" data-offer-id="'+String(o.productId||'').replace(/[^0-9A-Za-z_-]/g,'')+'">🛒 Add to Cart</button></div></article>'}).join('');
  }catch(e){}
 });
 </script>
@@ -774,6 +774,20 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
+
+<style id="hc-mobile-requested-final">
+@media(max-width:560px){
+  .hc-hero-actions{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:18px!important}
+  .hc-hero-actions .btn{width:100%!important;min-height:48px!important;height:48px!important;padding:0 6px!important;font-size:11px!important}
+  .hc-product-search{width:100%!important;box-sizing:border-box!important;margin-top:22px!important}
+  .hc-search-row{grid-template-columns:minmax(0,1fr) 96px!important}
+  .hc-search-row input{width:100%!important;font-size:13px!important}
+  .hc-search-row .btn{width:100%!important}
+  .hc-offers-heading .btn.view-all-offers{min-height:46px!important;padding:0 22px!important;border:1px solid #b88a32!important;background:linear-gradient(135deg,#fff,#fff8ed)!important;color:#6d1830!important;box-shadow:0 10px 25px rgba(176,138,72,.18)!important}
+  .hc-home-offer-cart{display:flex!important;width:100%!important;min-height:42px!important;margin-top:10px!important;align-items:center!important;justify-content:center!important;font-size:11px!important;padding:0 8px!important}
+}
+</style>
+<script id="hc-open-cart-query">document.addEventListener('DOMContentLoaded',function(){try{if(new URLSearchParams(location.search).get('openCart')==='1' && typeof window.openCart==='function'){setTimeout(function(){window.openCart()},250)}}catch(e){}});</script>
 </body></html>
 <style id="hc-mobile-phone-focus-final">
 /* Phone-first hero: keep brand/copy on the left and a compact lady portrait on the right. */
