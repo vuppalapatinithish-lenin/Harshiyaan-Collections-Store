@@ -86,7 +86,7 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 @media(max-width:560px){.nav{height:64px}.brand-mark{width:34px;height:34px;flex-basis:34px}.brand-mark svg{width:34px;height:34px}.brand-wordmark strong{font-size:18px}.brand-wordmark small{font-size:8px;margin-top:4px}.brand-subline{display:none}.nav-actions{gap:6px}.map-top-btn,.iconbtn{width:37px;height:37px;min-height:37px}.map-label{display:none}.hero{padding-top:82px}}
 
 .location-box .btn{min-height:42px}.location-box button:disabled{opacity:.65;cursor:wait}@media(max-width:560px){.location-box{padding:14px!important}.location-box>div:first-child{align-items:flex-start}.location-box .btn{width:100%;font-size:13px;padding:11px 14px}.location-box .mini{line-height:1.5}}.hc-floating-cart{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:1px solid rgba(184,138,50,.45);background:linear-gradient(135deg,#15100c,#6e4a18);color:#fff;font-size:24px;display:grid;place-items:center;z-index:9999;box-shadow:0 12px 35px rgba(0,0,0,.25);cursor:pointer}.hc-float-badge{position:absolute;right:-2px;top:-4px;min-width:21px;height:21px;padding:0 5px;border-radius:999px;background:#b88a32;color:#fff;font:700 11px Arial;display:grid;place-items:center}.hc-cart-pulse{animation:hcPulse .45s ease}@keyframes hcPulse{50%{transform:scale(1.12)}}@media(max-width:600px){.hc-floating-cart{right:16px;bottom:16px;width:56px;height:56px}}
-</style>
+.hc-offers-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 24px;border-radius:999px;background:linear-gradient(135deg,#281a2e,#4b2b50);color:#fff;text-decoration:none;box-shadow:0 14px 35px rgba(40,26,46,.18);border:1px solid rgba(184,138,50,.55);font-size:13px;letter-spacing:.04em;white-space:nowrap;transition:.25s}.hc-offers-cta:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(40,26,46,.24)}.hc-offers-cta span:first-child{font-size:15px}.hc-offers-cta span:last-child{font-size:18px;color:#e0bd72}@media(max-width:560px){.hc-offers-cta{width:100%;justify-content:center;padding:15px 18px}.hc-offers-heading{display:flex;flex-direction:column;gap:18px;text-align:center}.hc-offers-heading>div{width:100%}}</style>
 
 
 <style id="scroll-letter-animation">
@@ -198,7 +198,7 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
     <div class="hc-hero-person"><div class="hc-portrait-ring"><img id="hcHeroPersonImage" src="images/owner-lady.jpg" alt="Harshiyaan Collections" loading="eager"></div><div class="hc-person-badge"><span>HARSHIYAAN COLLECTIONS</span><b>Jewellery for every you</b></div></div>
   </div>
 </section>
-<section class="hc-offers-preview" id="offers"><div class="container"><div class="hc-offers-heading"><div><div class="eyebrow">LIMITED TIME</div><h2 class="serif">Special Offers</h2><p>Exclusive deals on handpicked jewellery.</p></div><a class="btn light" href="offers.html">View All Offers ↗</a></div><div id="homeOffersGrid" class="hc-home-offers-grid"></div></div></section>
+<section class="hc-offers-preview" id="offers"><div class="container"><div class="hc-offers-heading"><div><div class="eyebrow">LIMITED TIME</div><h2 class="serif">Special Offers</h2><p>Exclusive deals on handpicked jewellery.</p></div><a class="hc-offers-cta" href="offers.html"><span>✨</span><b>Explore Special Offers</b><span>→</span></a></div></div></section>
 
 <!-- PREMIUM 3D JEWELLERY EXPERIENCE -->
 <style id="premium-3d-style">
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(/^data:image\//i.test(candidate)) return candidate;
     return (p&&/^products\/product[1-4]\.png$/i.test(p.img||'')) ? p.img : (fallback[pid]||'products/product1.png');
   }
-  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'<button class="btn gold hc-home-add-cart" type="button" data-offer-id="'+String(o.productId||'')+'">🛒 Add to Cart</button></div></article>'}).join('');
+  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join('');
  }catch(e){}
 });
 </script>
@@ -774,41 +774,6 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
-
-<script id="hc-home-offer-cart-v5">
-document.addEventListener('click',function(e){
-  var b=e.target.closest&&e.target.closest('.hc-home-add-cart');
-  if(!b)return;
-  var id=String(b.getAttribute('data-offer-id')||''); if(!id)return;
-  try{
-    var cart=JSON.parse(localStorage.getItem('hc_cart')||'[]');
-    var item=cart.find(function(x){return String(x.id)===id});
-    if(item)item.qty=(Number(item.qty)||0)+1; else cart.push({id:id,qty:1});
-    localStorage.setItem('hc_cart',JSON.stringify(cart));
-    b.textContent='✓ Added to Cart'; b.disabled=true; b.classList.add('added');
-    setTimeout(function(){b.innerHTML='🛒 Add to Cart';b.disabled=false;b.classList.remove('added')},1400);
-    if(typeof updateCartBadge==='function') updateCartBadge();
-  }catch(err){console.error(err)}
-});
-</script>
-<style id="hc-mobile-v5-final">
-.hc-home-add-cart{width:100%;margin-top:10px!important;min-height:38px!important;font-size:12px!important}
-.hc-home-add-cart.added{background:#5d7d4a!important}
-.hc-offers-heading>a.btn.light{border:1px solid #b88a32!important;background:linear-gradient(135deg,#fffaf0,#f7ead0)!important;color:#6e1020!important;box-shadow:0 8px 20px rgba(176,138,72,.16)!important;font-weight:700!important}
-@media(max-width:560px){
-  .hc-new-hero{padding-top:88px!important;padding-left:12px!important;padding-right:12px!important;padding-bottom:28px!important}
-  .hc-hero-inner{grid-template-columns:58% 42%!important;gap:0!important}
-  .hc-hero-copy h1{font-size:clamp(35px,10.8vw,44px)!important;margin-top:10px!important}
-  .hc-hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;width:100%!important;margin:18px 0 0!important}
-  .hc-hero-actions .btn{width:100%!important;min-height:50px!important;height:50px!important;padding:0 6px!important;font-size:11px!important;border-radius:26px!important}
-  .hc-product-search{width:100%!important;max-width:none!important;margin-top:20px!important;padding:12px!important}
-  .hc-search-row{grid-template-columns:minmax(0,1fr) auto!important;gap:7px!important}
-  .hc-search-row input{min-height:48px!important;height:48px!important;font-size:13px!important}
-  .hc-search-row .btn{min-height:48px!important;height:48px!important;padding:0 18px!important;font-size:12px!important}
-  .hc-offers-heading>a.btn.light{display:flex!important;width:min(250px,100%)!important;margin:14px auto 0!important;min-height:46px!important;align-items:center!important;justify-content:center!important;font-size:12px!important}
-  .hc-home-add-cart{min-height:36px!important;font-size:10px!important;padding:0 6px!important}
-}
-</style>
 </body></html>
 <style id="hc-mobile-phone-focus-final">
 /* Phone-first hero: keep brand/copy on the left and a compact lady portrait on the right. */
