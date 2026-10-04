@@ -86,7 +86,36 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 @media(max-width:560px){.nav{height:64px}.brand-mark{width:34px;height:34px;flex-basis:34px}.brand-mark svg{width:34px;height:34px}.brand-wordmark strong{font-size:18px}.brand-wordmark small{font-size:8px;margin-top:4px}.brand-subline{display:none}.nav-actions{gap:6px}.map-top-btn,.iconbtn{width:37px;height:37px;min-height:37px}.map-label{display:none}.hero{padding-top:82px}}
 
 .location-box .btn{min-height:42px}.location-box button:disabled{opacity:.65;cursor:wait}@media(max-width:560px){.location-box{padding:14px!important}.location-box>div:first-child{align-items:flex-start}.location-box .btn{width:100%;font-size:13px;padding:11px 14px}.location-box .mini{line-height:1.5}}.hc-floating-cart{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:1px solid rgba(184,138,50,.45);background:linear-gradient(135deg,#15100c,#6e4a18);color:#fff;font-size:24px;display:grid;place-items:center;z-index:9999;box-shadow:0 12px 35px rgba(0,0,0,.25);cursor:pointer}.hc-float-badge{position:absolute;right:-2px;top:-4px;min-width:21px;height:21px;padding:0 5px;border-radius:999px;background:#b88a32;color:#fff;font:700 11px Arial;display:grid;place-items:center}.hc-cart-pulse{animation:hcPulse .45s ease}@keyframes hcPulse{50%{transform:scale(1.12)}}@media(max-width:600px){.hc-floating-cart{right:16px;bottom:16px;width:56px;height:56px}}
-.hc-offers-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 24px;border-radius:999px;background:linear-gradient(135deg,#281a2e,#4b2b50);color:#fff;text-decoration:none;box-shadow:0 14px 35px rgba(40,26,46,.18);border:1px solid rgba(184,138,50,.55);font-size:13px;letter-spacing:.04em;white-space:nowrap;transition:.25s}.hc-offers-cta:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(40,26,46,.24)}.hc-offers-cta span:first-child{font-size:15px}.hc-offers-cta span:last-child{font-size:18px;color:#e0bd72}@media(max-width:560px){.hc-offers-cta{width:100%;justify-content:center;padding:15px 18px}.hc-offers-heading{display:flex;flex-direction:column;gap:18px;text-align:center}.hc-offers-heading>div{width:100%}}</style>
+.hc-offers-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 24px;border-radius:999px;background:linear-gradient(135deg,#281a2e,#4b2b50);color:#fff;text-decoration:none;box-shadow:0 14px 35px rgba(40,26,46,.18);border:1px solid rgba(184,138,50,.55);font-size:13px;letter-spacing:.04em;white-space:nowrap;transition:.25s}.hc-offers-cta:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(40,26,46,.24)}.hc-offers-cta span:first-child{font-size:15px}.hc-offers-cta span:last-child{font-size:18px;color:#e0bd72}@media(max-width:560px){.hc-offers-cta{width:100%;justify-content:center;padding:15px 18px}.hc-offers-heading{display:flex;flex-direction:column;gap:18px;text-align:center}.hc-offers-heading>div{width:100%}}
+/* HC MOBILE BOTTOM NAV V6 */
+.hc-bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:9998;
+  height:70px;padding:7px max(10px, env(safe-area-inset-right)) max(7px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  display:flex;align-items:stretch;justify-content:center;gap:0;
+  background:rgba(255,253,249,.97);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(29,23,20,.12);box-shadow:0 -10px 30px rgba(30,20,10,.10);
+}
+.hc-bottom-nav a,.hc-bottom-nav button{
+  flex:1;max-width:170px;border:0;background:transparent;color:#2b2521;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  text-decoration:none;font:600 11px/1.1 'DM Sans',Arial,sans-serif;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.hc-bottom-nav .hc-nav-icon{font-size:25px;line-height:25px;font-weight:400}
+.hc-bottom-nav .hc-nav-label{font-size:11px}
+.hc-bottom-nav .hc-nav-cart{position:relative}
+.hc-bottom-nav .hc-nav-badge{
+  position:absolute;top:1px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;
+  border-radius:999px;background:#b88a32;color:#fff;border:2px solid #fff;
+  font:700 9px/14px Arial,sans-serif;text-align:center;
+}
+.hc-bottom-nav .active{color:#6d1830}
+@media(min-width:901px){
+  .hc-bottom-nav{max-width:520px;left:50%;right:auto;transform:translateX(-50%);border:1px solid rgba(29,23,20,.12);border-bottom:0;border-radius:22px 22px 0 0}
+}
+body{padding-bottom:82px!important}
+
+</style>
 
 
 <style id="scroll-letter-animation">
@@ -172,7 +201,7 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 @media(max-width:560px){.hc-wa-top{width:37px;height:37px;min-height:37px;padding:0;border-radius:50%}.hc-wa-label,.map-label{display:none}.map-top-btn{width:37px;height:37px;min-height:37px;padding:0;border-radius:50%}.nav-actions{gap:5px}.hc-new-hero{padding:82px 14px 30px}.hc-hero-copy h1{font-size:clamp(48px,15vw,60px)}.hc-hero-copy p{font-size:14px}.hc-hero-actions{display:grid;grid-template-columns:1fr 1fr}.hc-hero-actions .btn{min-height:48px;display:flex;align-items:center;justify-content:center}.hc-product-search{padding:13px}.hc-search-row{gap:7px}.hc-search-row input{font-size:13px;min-height:46px}.hc-search-row .btn{min-height:46px;padding:0 17px}.hc-search-card{grid-template-columns:58px 1fr}.hc-search-card img{width:58px;height:58px}.hc-search-card .hc-actions{grid-column:1/-1;justify-content:stretch}.hc-search-card .hc-actions .btn{flex:1}.hc-portrait-ring{width:84vw}.hc-person-badge{position:relative;right:auto;bottom:auto;margin-top:-35px}.hc-offers-card h2{font-size:43px}.hc-offers-grid{grid-template-columns:1fr}.hc-offers-page{padding:95px 14px 55px}}
 </style></head>
 <body data-admin-url="admin.html">
-<header id="header"><div class="container nav"><a href="#home" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="#collections">Collections</a><a href="#offers">Offers</a><a href="#contact">Contact</a><a href="#track">Track Order</a></nav><div class="nav-actions"><a class="hc-wa-top" href="https://wa.me/919703322305" target="_blank" rel="noopener" aria-label="Chat with Harshiyaan Collections on WhatsApp"><span class="hc-wa-icon">WA</span><span class="hc-wa-label">WhatsApp</span></a><a class="map-top-btn" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" aria-label="Open Harshiyaan Collections location in Google Maps"><span class="map-pin">⌖</span><span class="map-label">Location</span></a><button type="button" class="iconbtn menu" onclick="toggleMobileMenu(event)" title="Menu" aria-label="Open menu">☰</button></div></div></header><button type="button" id="hcFloatingCart" class="hc-floating-cart" onclick="hcSafeOpenCart(event)" aria-label="Open shopping cart" title="Open Cart">🛒<span id="hcFloatingCartBadge" class="hc-float-badge">0</span></button>
+<header id="header"><div class="container nav"><a href="#home" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="#collections">Collections</a><a href="#offers">Offers</a><a href="#contact">Contact</a><a href="#track">Track Order</a></nav><div class="nav-actions"><a class="hc-wa-top" href="https://wa.me/919703322305" target="_blank" rel="noopener" aria-label="Chat with Harshiyaan Collections on WhatsApp"><span class="hc-wa-icon">WA</span><span class="hc-wa-label">WhatsApp</span></a><a class="map-top-btn" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" aria-label="Open Harshiyaan Collections location in Google Maps"><span class="map-pin">⌖</span><span class="map-label">Location</span></a><button type="button" class="iconbtn menu" onclick="toggleMobileMenu(event)" title="Menu" aria-label="Open menu">☰</button></div></div></header>
 <div id="mobileMenuPanel" class="mobile-menu-panel" aria-hidden="true">
   <a href="#collections" onclick="closeMobileMenu()">Collections</a>
   <a href="#offers" onclick="closeMobileMenu()">Offers</a>
@@ -773,6 +802,29 @@ document.addEventListener('DOMContentLoaded',function(){
     im.onerror=function(){this.onerror=null; this.style.objectFit='contain'; this.src='products/product1.png';};
   });
 });
+</script>
+
+<nav class="hc-bottom-nav" aria-label="Primary mobile navigation">
+  <a href="#home" class="active" aria-label="Home"><span class="hc-nav-icon">⌂</span><span class="hc-nav-label">Home</span></a>
+  <a href="#track" aria-label="Track Order"><span class="hc-nav-icon">⌖</span><span class="hc-nav-label">Track</span></a>
+  <button type="button" class="hc-nav-cart" onclick="hcSafeOpenCart(event)" aria-label="Open Cart"><span class="hc-nav-icon">🛒</span><span id="hcBottomCartBadge" class="hc-nav-badge">0</span><span class="hc-nav-label">Cart</span></button>
+</nav>
+
+<script>(function(){function u(){var c=[];try{c=JSON.parse(localStorage.getItem('hc_cart')||'[]')}catch(e){}var n=c.reduce(function(a,x){return a+(Number(x.qty)||0)},0);var b=document.getElementById('hcBottomCartBadge');if(b)b.textContent=n;}u();window.addEventListener('storage',u);setInterval(u,800);})();</script>
+
+<script id="hc-bottom-nav-hash">
+(function(){
+  function handleHash(){
+    if(location.hash==='#cart'){
+      setTimeout(function(){
+        if(typeof window.hcSafeOpenCart==='function') window.hcSafeOpenCart();
+        else if(typeof window.openCart==='function') window.openCart();
+      },180);
+    }
+  }
+  window.addEventListener('hashchange',handleHash);
+  document.addEventListener('DOMContentLoaded',handleHash);
+})();
 </script>
 </body></html>
 <style id="hc-mobile-phone-focus-final">

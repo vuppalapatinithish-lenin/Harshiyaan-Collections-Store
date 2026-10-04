@@ -22,9 +22,39 @@ footer{background:#16120f;color:#fff;padding:55px 0 30px}.foot{display:flex;just
 @media(max-width:560px){.hc-floating-cart{right:16px;bottom:16px;width:58px;height:58px}.toast{right:16px;bottom:86px}}
 /* hc-purple-white-final */
 body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);background-attachment:fixed;}
+
+/* HC MOBILE BOTTOM NAV V6 */
+.hc-bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:9998;
+  height:70px;padding:7px max(10px, env(safe-area-inset-right)) max(7px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  display:flex;align-items:stretch;justify-content:center;gap:0;
+  background:rgba(255,253,249,.97);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(29,23,20,.12);box-shadow:0 -10px 30px rgba(30,20,10,.10);
+}
+.hc-bottom-nav a,.hc-bottom-nav button{
+  flex:1;max-width:170px;border:0;background:transparent;color:#2b2521;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  text-decoration:none;font:600 11px/1.1 'DM Sans',Arial,sans-serif;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.hc-bottom-nav .hc-nav-icon{font-size:25px;line-height:25px;font-weight:400}
+.hc-bottom-nav .hc-nav-label{font-size:11px}
+.hc-bottom-nav .hc-nav-cart{position:relative}
+.hc-bottom-nav .hc-nav-badge{
+  position:absolute;top:1px;right:calc(50% - 22px);min-width:18px;height:18px;padding:0 5px;
+  border-radius:999px;background:#b88a32;color:#fff;border:2px solid #fff;
+  font:700 9px/14px Arial,sans-serif;text-align:center;
+}
+.hc-bottom-nav .active{color:#6d1830}
+@media(min-width:901px){
+  .hc-bottom-nav{max-width:520px;left:50%;right:auto;transform:translateX(-50%);border:1px solid rgba(29,23,20,.12);border-bottom:0;border-radius:22px 22px 0 0}
+}
+body{padding-bottom:82px!important}
+
+.hc-floating-cart{display:none!important}
 </style><style id="hc-img-fallback">img{font-family:Arial,sans-serif;}img.hc-img-fallback{object-fit:contain!important;background:linear-gradient(135deg,#fff,#f4edff);padding:18px}</style><script src="../razorpay-client.js"></script>
 </head><body>
-<header id="header"><div class="container nav"><a href="../index.html" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="../index.html#collections">Collections</a><a href="../index.html#offers">Offers</a><a href="../index.html#track">Track Order</a><a href="../index.html#contact">Contact</a></nav><div class="nav-actions"></div></div></header><button type="button" id="hcFloatingCart" class="hc-floating-cart" onclick="openCart()" aria-label="Open shopping cart" title="Open Cart">🛒<span id="hcFloatingCartBadge" class="hc-float-badge">0</span></button>
+<header id="header"><div class="container nav"><a href="../index.html" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="../index.html#collections">Collections</a><a href="../index.html#offers">Offers</a><a href="../index.html#track">Track Order</a><a href="../index.html#contact">Contact</a></nav><div class="nav-actions"></div></div></header>
 <main>
 <section class="category-hero"><div class="category-hero-inner" id="categoryHero" data-category="Combos" data-fallback="../category-images/combos.jpg" style="background-image:url('../category-images/combos.jpg')"><div class="category-hero-copy"><div class="eyebrow">Harshiyaan Collections · 1 Gram Gold</div><h1>Combos<br><span style="color:#e0c07a">Collection.</span></h1><p>More to love, beautifully paired. Explore the curated combos collection from Harshiyaan Collections, presented with timeless Indian jewellery elegance.</p><a class="back-link" href="../index.html#collections">← Back to Collections</a></div></div></section>
 <section class="collection-section container"><div class="section-head reveal"><div><div class="eyebrow">Selected pieces</div><h2>Combos Collection</h2></div><p>Browse the latest pieces in this collection. Products added through the admin dashboard will appear here automatically.</p></div><div class="products" id="productGrid" data-category="Combos"></div></section>
@@ -74,6 +104,19 @@ renderProducts();updateCartBadge();observe();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',revealNow);
   else revealNow();
+})();
+</script>
+
+<nav class="hc-bottom-nav" aria-label="Primary mobile navigation">
+  <a href="../index.html#home" aria-label="Home"><span class="hc-nav-icon">⌂</span><span class="hc-nav-label">Home</span></a>
+  <a href="../index.html#track" aria-label="Track Order"><span class="hc-nav-icon">⌖</span><span class="hc-nav-label">Track</span></a>
+  <a href="../index.html#cart" class="hc-nav-cart" aria-label="Open Cart"><span class="hc-nav-icon">🛒</span><span id="hcBottomCartBadge" class="hc-nav-badge">0</span><span class="hc-nav-label">Cart</span></a>
+</nav>
+
+<script id="hc-category-cart-sync">
+(function(){
+ function update(){var c=[];try{c=JSON.parse(localStorage.getItem('hc_cart')||'[]')}catch(e){}var n=c.reduce(function(a,x){return a+(Number(x.qty)||0)},0);var b=document.getElementById('hcBottomCartBadge');if(b)b.textContent=n;}
+ update();window.addEventListener('storage',update);setInterval(update,800);
 })();
 </script>
 </body></html>

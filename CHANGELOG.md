@@ -21,3 +21,11 @@ Note: Product/offer settings in this existing demo admin continue to use browser
 - Compact left copy + right lady portrait.
 - Full-width Product ID search below hero grid.
 - Added image fallbacks for lady and offer cards.
+
+
+## Mobile Bottom Navigation V6
+- Replaced floating/duplicate cart controls with a fixed bottom navigation: Home, Track, Cart.
+- Added shared `hc_cart` badge synchronization on offers and category pages.
+- Special Offers Add to Cart remains on-page and writes to the same localStorage cart used by the homepage.
+- Removed the old floating cart button from homepage/category pages.
+- Preserved Razorpay, Vercel API files, admin, order tracking and 3D section.
