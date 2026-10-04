@@ -9,6 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* hc-gradient-added */
+/* WhatsApp + mobile navigation refinement */
+.hc-wa-top{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 15px;border-radius:999px;border:1px solid rgba(31,107,56,.22);background:#fff;color:#1f6b38;font-size:12px;font-weight:700;white-space:nowrap}.hc-wa-icon{font-size:14px;line-height:1}.map-top-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 15px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.72);color:#6d1830;font-size:12px;font-weight:700;white-space:nowrap}.nav-actions{align-items:center}.mobile-menu-panel a:nth-last-child(2){color:#1f6b38;font-weight:700}.mobile-menu-panel .mobile-menu-location{margin-top:5px;background:#17120f;color:#fff}
+
 body{background:linear-gradient(135deg,#ffffff 0%,#f5efff 48%,#d8c2ff 100%);}
 
 :root{--ink:#1d1714;--muted:#766c66;--gold:#b08a48;--gold2:#d7bd83;--cream:#f8f3eb;--paper:#fffdf9;--line:rgba(29,23,20,.12);--shadow:0 24px 70px rgba(55,37,20,.12)}
@@ -156,19 +159,46 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 }
 </style>
 <style id="hc-razorpay-review-css">.hc-review-products{padding:72px 20px;background:linear-gradient(135deg,#fff,#faf5ff,#fff);border-top:1px solid #eee;border-bottom:1px solid #eee}.hc-review-inner{max-width:1180px;margin:auto;text-align:center}.hc-review-kicker{font-size:12px;font-weight:800;letter-spacing:.18em;opacity:.65;margin-bottom:10px}.hc-review-products h2{margin:0;font-size:clamp(28px,4vw,44px)}.hc-review-sub{margin:12px auto 32px;opacity:.72}.hc-review-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:left}.hc-review-card{background:#fff;border:1px solid #eadff2;border-radius:20px;overflow:hidden;box-shadow:0 12px 35px #32145014}.hc-review-card img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f7f2fb}.hc-review-info{padding:18px}.hc-review-info h3{margin:0 0 10px;font-size:18px}.hc-review-price{margin-bottom:15px}.hc-review-price s{opacity:.5;margin-right:7px}.hc-review-price strong{font-size:21px}.hc-review-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:12px;text-decoration:none;background:#6d3aa8;color:#fff;font-weight:700}@media(max-width:900px){.hc-review-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.hc-review-grid{grid-template-columns:1fr}.hc-review-products{padding:52px 14px}}</style>
-</head>
+<style id="hc-home-refresh">
+.hc-new-hero{min-height:calc(100vh - 76px);padding:110px 6vw 65px;background:linear-gradient(115deg,#fff 0%,#faf7ff 48%,#e9dcff 100%);position:relative;overflow:hidden}
+.hc-new-hero:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-90px;top:5%;background:radial-gradient(circle,rgba(190,153,232,.28),transparent 68%);pointer-events:none}
+.hc-hero-inner{width:min(1240px,100%);margin:auto;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;position:relative;z-index:1}
+.hc-hero-copy{max-width:650px}.hc-hero-copy h1{font-size:clamp(58px,7vw,102px);line-height:.84;letter-spacing:-.05em;margin:18px 0 25px}.hc-hero-copy h1 em{color:#b17d2e;font-style:normal}.hc-hero-copy p{max-width:520px;color:#716875;font-size:16px;line-height:1.8}.hc-hero-actions{display:flex;gap:10px;margin:27px 0 26px;flex-wrap:wrap}
+.hc-hero-person{display:grid;place-items:center;position:relative;min-height:560px}.hc-portrait-ring{width:min(480px,90%);aspect-ratio:1;border-radius:50%;padding:9px;background:linear-gradient(145deg,#d8b875,#fff,#b58a3a);box-shadow:0 30px 80px rgba(78,47,102,.18)}.hc-portrait-ring img{width:100%;height:100%;object-fit:cover;object-position:center 34%;border-radius:50%;display:block}.hc-person-badge{position:absolute;right:2%;bottom:7%;padding:16px 20px;border-radius:16px;background:rgba(255,255,255,.86);backdrop-filter:blur(15px);border:1px solid rgba(176,138,72,.2);box-shadow:0 15px 35px rgba(73,45,27,.12)}.hc-person-badge span{display:block;font-size:9px;letter-spacing:.18em;color:#a77b3d}.hc-person-badge b{display:block;font-family:'Cormorant Garamond';font-size:22px;margin-top:5px}
+.hc-product-search{max-width:600px;padding:16px;border:1px solid rgba(176,138,72,.2);background:rgba(255,255,255,.65);border-radius:18px;box-shadow:0 12px 35px rgba(70,40,90,.08)}.hc-search-label{font-size:10px;letter-spacing:.18em;color:#8b6b31;font-weight:700;margin-bottom:9px}.hc-search-row{display:flex;gap:8px}.hc-search-row input{flex:1;min-width:0;border:1px solid rgba(40,25,50,.12);background:#fff;border-radius:999px;padding:13px 16px;outline:none}.hc-search-row input:focus{border-color:#b08a48}.hc-search-row .btn{white-space:nowrap}.hc-search-result{margin-top:10px}.hc-search-result:empty{display:none}.hc-search-card{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid #eadff2;border-radius:14px;padding:9px}.hc-search-card img{width:72px;height:72px;border-radius:10px;object-fit:contain;background:#f8f2ff}.hc-search-card h4{margin:0 0 4px;font-family:'Cormorant Garamond';font-size:22px}.hc-search-card .hc-price{font-weight:700}.hc-search-card .hc-old{text-decoration:line-through;color:#9a918a;font-size:12px;margin-right:6px}.hc-search-card .hc-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.hc-search-card .hc-actions .btn{padding:10px 13px;font-size:11px}
+.hc-offers-preview{padding:50px 0;background:linear-gradient(135deg,#fff,#f7efff,#eadcff)}.hc-offers-card{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:34px 40px;border:1px solid rgba(176,138,72,.2);border-radius:24px;background:rgba(255,255,255,.7);box-shadow:0 18px 50px rgba(75,44,95,.09)}.hc-offers-card h2{font-size:50px;margin:8px 0}.hc-offers-card p{color:#716875;margin:0}.hc-offers-card .btn{white-space:nowrap}
+.hc-offers-page{padding:130px 0 80px;min-height:100vh;background:linear-gradient(135deg,#fff 0%,#faf7ff 48%,#eadcff 100%)}.hc-offers-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:35px}.hc-offer-card{background:#fff;border:1px solid #eadff2;border-radius:20px;overflow:hidden;box-shadow:0 15px 45px rgba(60,35,80,.08)}.hc-offer-card img{width:100%;aspect-ratio:1;object-fit:contain;background:#f7f1e8}.hc-offer-body{padding:18px}.hc-offer-body h3{font-family:'Cormorant Garamond';font-size:26px;margin:0 0 8px}.hc-offer-price s{color:#9a918a;margin-right:8px}.hc-offer-price strong{font-size:20px}.hc-offer-body p{color:#716875;line-height:1.6;font-size:13px}.hc-wa{background:#1f6b38!important}
+@media(max-width:900px){.nav-actions{gap:6px}.hc-wa-top{min-height:39px;padding:0 11px}.map-top-btn{min-height:39px;padding:0 11px}.hc-hero-inner{grid-template-columns:1fr;gap:25px}.hc-new-hero{padding:92px 6vw 45px}.hc-hero-copy{text-align:center;max-width:none}.hc-hero-copy p{margin-left:auto;margin-right:auto}.hc-hero-actions{justify-content:center}.hc-product-search{margin:0 auto;text-align:left}.hc-hero-person{min-height:auto}.hc-portrait-ring{width:min(390px,82vw)}.hc-person-badge{right:5%;bottom:2%}.hc-offers-card{padding:28px;display:block;text-align:center}.hc-offers-card .btn{margin-top:18px}.hc-offers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.hc-wa-top{width:37px;height:37px;min-height:37px;padding:0;border-radius:50%}.hc-wa-label,.map-label{display:none}.map-top-btn{width:37px;height:37px;min-height:37px;padding:0;border-radius:50%}.nav-actions{gap:5px}.hc-new-hero{padding:82px 14px 30px}.hc-hero-copy h1{font-size:clamp(48px,15vw,60px)}.hc-hero-copy p{font-size:14px}.hc-hero-actions{display:grid;grid-template-columns:1fr 1fr}.hc-hero-actions .btn{min-height:48px;display:flex;align-items:center;justify-content:center}.hc-product-search{padding:13px}.hc-search-row{gap:7px}.hc-search-row input{font-size:13px;min-height:46px}.hc-search-row .btn{min-height:46px;padding:0 17px}.hc-search-card{grid-template-columns:58px 1fr}.hc-search-card img{width:58px;height:58px}.hc-search-card .hc-actions{grid-column:1/-1;justify-content:stretch}.hc-search-card .hc-actions .btn{flex:1}.hc-portrait-ring{width:84vw}.hc-person-badge{position:relative;right:auto;bottom:auto;margin-top:-35px}.hc-offers-card h2{font-size:43px}.hc-offers-grid{grid-template-columns:1fr}.hc-offers-page{padding:95px 14px 55px}}
+</style></head>
 <body data-admin-url="admin.html">
-<header id="header"><div class="container nav"><a href="#home" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="#collections">Collections</a><a href="#offers">Offers</a><a href="#house">The House</a><a href="#contact">Contact</a><a href="#track">Track Order</a></nav><div class="nav-actions"><a class="map-top-btn" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" aria-label="Open Harshiyaan Collections location in Google Maps"><span class="map-pin">⌖</span><span class="map-label">Location</span></a><button type="button" class="iconbtn menu" onclick="toggleMobileMenu(event)" title="Menu" aria-label="Open menu">☰</button></div></div></header><button type="button" id="hcFloatingCart" class="hc-floating-cart" onclick="hcSafeOpenCart(event)" aria-label="Open shopping cart" title="Open Cart">🛒<span id="hcFloatingCartBadge" class="hc-float-badge">0</span></button>
+<header id="header"><div class="container nav"><a href="#home" class="brand" aria-label="Harshiyaan Collections home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></a><nav class="navlinks"><a href="#collections">Collections</a><a href="#offers">Offers</a><a href="#contact">Contact</a><a href="#track">Track Order</a></nav><div class="nav-actions"><a class="hc-wa-top" href="https://wa.me/919703322305" target="_blank" rel="noopener" aria-label="Chat with Harshiyaan Collections on WhatsApp"><span class="hc-wa-icon">WA</span><span class="hc-wa-label">WhatsApp</span></a><a class="map-top-btn" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" aria-label="Open Harshiyaan Collections location in Google Maps"><span class="map-pin">⌖</span><span class="map-label">Location</span></a><button type="button" class="iconbtn menu" onclick="toggleMobileMenu(event)" title="Menu" aria-label="Open menu">☰</button></div></div></header><button type="button" id="hcFloatingCart" class="hc-floating-cart" onclick="hcSafeOpenCart(event)" aria-label="Open shopping cart" title="Open Cart">🛒<span id="hcFloatingCartBadge" class="hc-float-badge">0</span></button>
 <div id="mobileMenuPanel" class="mobile-menu-panel" aria-hidden="true">
   <a href="#collections" onclick="closeMobileMenu()">Collections</a>
   <a href="#offers" onclick="closeMobileMenu()">Offers</a>
   <a href="#house" onclick="closeMobileMenu()">The House</a>
   <a href="#contact" onclick="closeMobileMenu()">Contact</a>
   <a href="#track" onclick="closeMobileMenu()">Track Order</a>
-  <a class="mobile-menu-location" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" onclick="closeMobileMenu()">📍 Location</a>
+  <a href="https://wa.me/919703322305" target="_blank" rel="noopener" onclick="closeMobileMenu()">💬 WhatsApp</a><a class="mobile-menu-location" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener" onclick="closeMobileMenu()">📍 Location</a>
 </div>
 <main>
-<section class="hero container" id="home"><div class="hero-copy reveal"><div class="eyebrow">Harshiyaan Collections · 1 Gram Gold</div><h1 class="serif"><span>Jewellery <em>with</em></span><br><span class="presence-line">presence.</span></h1><p>Timeless pieces designed to bring traditional beauty into everyday elegance. Discover curated necklaces, earrings, bridal styles and more.</p><div class="hero-actions" style="display:flex;gap:10px;margin-top:27px;position:relative;z-index:20;pointer-events:auto"><a class="btn hero-jump" href="#collections" data-target="collections" onclick="event.stopPropagation();document.getElementById('collections').scrollIntoView({behavior:'smooth',block:'start'});return false;">Explore Collections</a><a class="btn light hero-jump" href="#offers" data-target="offers" onclick="event.stopPropagation();document.getElementById('offers').scrollIntoView({behavior:'smooth',block:'start'});return false;">View Offers</a></div></div><div class="hero-visual reveal"><div class="hero-card" id="homeHeroVisual"><img src="products/product1.png" alt="Featured Harshiyaan Collections jewellery"></div><div class="hero-label"><span>FEATURED COLLECTION</span><b>Harshiyaan Collections</b></div></div></section>
+<section class="hc-new-hero" id="home">
+  <div class="hc-hero-inner">
+    <div class="hc-hero-copy">
+      <div class="eyebrow">HARSHIYAAN COLLECTIONS</div>
+      <h1 class="serif">1 Gram Gold<br><em>Jewellery.</em></h1>
+      <p>Traditional beauty, modern elegance and carefully curated jewellery for every occasion.</p>
+      <div class="hc-hero-actions"><a class="btn" href="#collections">Explore Collections</a><a class="btn light" href="offers.html">Special Offers</a></div>
+      <div class="hc-product-search" id="productSearchBox">
+        <div class="hc-search-label">SEARCH BY PRODUCT ID</div>
+        <div class="hc-search-row"><input id="productIdSearch" inputmode="numeric" placeholder="Enter Product ID e.g. 1001" autocomplete="off"><button class="btn gold" type="button" onclick="searchProductById()">Search</button></div>
+        <div id="productSearchResult" class="hc-search-result" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="hc-hero-person"><div class="hc-portrait-ring"><img id="hcHeroPersonImage" src="images/owner-lady.jpg" alt="Harshiyaan Collections" loading="eager"></div><div class="hc-person-badge"><span>HARSHIYAAN COLLECTIONS</span><b>Jewellery for every you</b></div></div>
+  </div>
+</section>
+<section class="hc-offers-preview" id="offers"><div class="container"><div class="hc-offers-heading"><div><div class="eyebrow">LIMITED TIME</div><h2 class="serif">Special Offers</h2><p>Exclusive deals on handpicked jewellery.</p></div><a class="btn light" href="offers.html">View All Offers ↗</a></div><div id="homeOffersGrid" class="hc-home-offers-grid"></div></div></section>
 
 <!-- PREMIUM 3D JEWELLERY EXPERIENCE -->
 <style id="premium-3d-style">
@@ -182,6 +212,19 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 @media(max-width:900px){.px-inner{grid-template-columns:1fr;min-height:auto;padding-top:90px}.px-copy{text-align:center;padding:0}.px-copy p{margin-left:auto;margin-right:auto}.px-actions,.px-meta{justify-content:center}.px-stage{height:620px}.px-canvas-wrap{height:620px}.px-explain{bottom:18px}.px-title{font-size:clamp(62px,16vw,100px)}.px-spec{top:5%;right:3%}.px-ring-label{left:5%;bottom:8%}.px-scroll-note{display:none}}
 @media(max-width:560px){#premium-experience{min-height:940px}.px-inner{width:92%;padding-bottom:55px}.px-stage,.px-canvas-wrap{height:500px}.px-canvas-wrap:before{width:370px;height:370px}.px-hotspot{display:none}.px-spec{display:none}.px-meta{gap:16px}.px-meta strong{font-size:21px}.px-meta span{font-size:8px}.px-ring-label{bottom:7%;padding:11px 13px}.px-ring-label b{font-size:20px}.px-explain{font-size:8px}}
 </style>
+
+
+<div class="marquee"><div class="marquee-track">HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · </div></div>
+<section class="section container" id="collections"><div class="section-head reveal"><div><div class="eyebrow">Curated for you</div><h2>Explore Collections</h2></div><p>From everyday classics to statement sets, browse the pieces that define the Harshiyaan aesthetic.</p></div><div class="categories reveal"><div class="cat" onclick="window.location.href='category-pages/new-arrivals.html'"><img class="cat-photo" src="category-images/new-arrivals.jpg" alt="New Arrivals jewellery"><div class="cat-content"><span class="cat-num">01</span><span class="cat-title">New Arrivals</span><small>Fresh styles & new stories</small></div></div><div class="cat" onclick="window.location.href='category-pages/black-beads.html'"><img class="cat-photo" src="category-images/black-beads.jpg" alt="Black Beads jewellery"><div class="cat-content"><span class="cat-num">02</span><span class="cat-title">Black Beads</span><small>Tradition in every bead</small></div></div><div class="cat" onclick="window.location.href='category-pages/bridal.html'"><img class="cat-photo" src="category-images/bridal.jpg" alt="Bridal jewellery"><div class="cat-content"><span class="cat-num">03</span><span class="cat-title">Bridal</span><small>Made for your special day</small></div></div><div class="cat" onclick="window.location.href='category-pages/long-haram.html'"><img class="cat-photo" src="category-images/long-haram.jpg" alt="Long Haram jewellery"><div class="cat-content"><span class="cat-num">04</span><span class="cat-title">Long Haram</span><small>Grace in every layer</small></div></div><div class="cat" onclick="window.location.href='category-pages/budget-range.html'"><img class="cat-photo" src="category-images/budget-range.jpg" alt="Budget Range jewellery"><div class="cat-content"><span class="cat-num">05</span><span class="cat-title">Budget Range</span><small>Beauty within your budget</small></div></div><div class="cat" onclick="window.location.href='category-pages/tali-chains.html'"><img class="cat-photo" src="category-images/tali-chains.jpg" alt="Tali Chains jewellery"><div class="cat-content"><span class="cat-num">06</span><span class="cat-title">Tali Chains</span><small>A symbol to cherish forever</small></div></div><div class="cat" onclick="window.location.href='category-pages/bangles.html'"><img class="cat-photo" src="category-images/bangles.jpg" alt="Bangles jewellery"><div class="cat-content"><span class="cat-num">07</span><span class="cat-title">Bangles</span><small>Tradition on your wrist</small></div></div><div class="cat" onclick="window.location.href='category-pages/nakshi.html'"><img class="cat-photo" src="category-images/nakshi.jpg" alt="Nakshi jewellery"><div class="cat-content"><span class="cat-num">08</span><span class="cat-title">Nakshi</span><small>Heritage crafted in art</small></div></div><div class="cat" onclick="window.location.href='category-pages/rings.html'"><img class="cat-photo" src="category-images/rings.jpg" alt="Rings jewellery"><div class="cat-content"><span class="cat-num">09</span><span class="cat-title">Rings</span><small>Tiny details, big statements</small></div></div><div class="cat" onclick="window.location.href='category-pages/bracelets.html'"><img class="cat-photo" src="category-images/bracelets.jpg" alt="Bracelets jewellery"><div class="cat-content"><span class="cat-num">10</span><span class="cat-title">Bracelets</span><small>Subtle, elegant & stylish</small></div></div><div class="cat" onclick="window.location.href='category-pages/combos.html'"><img class="cat-photo" src="category-images/combos.jpg" alt="Combos jewellery"><div class="cat-content"><span class="cat-num">11</span><span class="cat-title">Combos</span><small>More to love, beautifully paired</small></div></div><div class="cat" onclick="window.location.href='category-pages/beads.html'"><img class="cat-photo" src="category-images/beads.jpg" alt="Beads jewellery"><div class="cat-content"><span class="cat-num">12</span><span class="cat-title">Beads</span><small>Colour your style</small></div></div></div></section>
+
+
+
+
+
+<section class="section container" id="how"><div class="section-head reveal"><div><div class="eyebrow">Simple shopping</div><h2>From selection<br>to doorstep.</h2></div></div><div class="steps reveal"><div class="step"><div class="num">01</div><h3>Select</h3><p>Choose the jewellery you love and select Buy Now.</p></div><div class="step"><div class="num">02</div><h3>Details</h3><p>Enter your name, mobile, email and complete delivery address with pincode.</p></div><div class="step"><div class="num">03</div><h3>UPI only</h3><p>Secure UPI payment is the only payment method. Cash on Delivery is not available.</p></div><div class="step"><div class="num">04</div><h3>Confirmed</h3><p>Once payment is confirmed, the order appears in the Harshiyaan admin dashboard.</p></div></div></section>
+<section class="section container" id="track"><div class="section-head reveal"><div><div class="eyebrow">Order tracking</div><h2>Track My Order</h2></div><p>Enter your Order ID and mobile number to view the latest order status and estimated delivery.</p></div><div class="track-card reveal"><div class="form-grid"><div class="field"><label>Order ID</label><input id="trackId" placeholder="HC-12345678"></div><div class="field"><label>Mobile Number</label><input id="trackMobile" inputmode="tel" placeholder="Your mobile number"></div></div><button class="btn gold" style="margin-top:15px" onclick="trackOrder()">Track Order</button><div id="trackResult" style="margin-top:18px"></div></div></section>
+
+</main>
 <section id="premium-experience" aria-label="Harshiyaan 360 degree jewellery experience">
   <div class="px-inner">
     <div class="px-copy">
@@ -211,18 +254,6 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
     </div>
   </div>
 </section>
-
-<div class="marquee"><div class="marquee-track">HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · HARSHIYAAN COLLECTIONS · TIMELESS ELEGANCE · 1 GRAM GOLD · NEW ARRIVALS · SPECIAL OFFERS · </div></div>
-<section class="section container" id="collections"><div class="section-head reveal"><div><div class="eyebrow">Curated for you</div><h2>Explore Collections</h2></div><p>From everyday classics to statement sets, browse the pieces that define the Harshiyaan aesthetic.</p></div><div class="categories reveal"><div class="cat" onclick="window.location.href='category-pages/new-arrivals.html'"><img class="cat-photo" src="category-images/new-arrivals.jpg" alt="New Arrivals jewellery"><div class="cat-content"><span class="cat-num">01</span><span class="cat-title">New Arrivals</span><small>Fresh styles & new stories</small></div></div><div class="cat" onclick="window.location.href='category-pages/black-beads.html'"><img class="cat-photo" src="category-images/black-beads.jpg" alt="Black Beads jewellery"><div class="cat-content"><span class="cat-num">02</span><span class="cat-title">Black Beads</span><small>Tradition in every bead</small></div></div><div class="cat" onclick="window.location.href='category-pages/bridal.html'"><img class="cat-photo" src="category-images/bridal.jpg" alt="Bridal jewellery"><div class="cat-content"><span class="cat-num">03</span><span class="cat-title">Bridal</span><small>Made for your special day</small></div></div><div class="cat" onclick="window.location.href='category-pages/long-haram.html'"><img class="cat-photo" src="category-images/long-haram.jpg" alt="Long Haram jewellery"><div class="cat-content"><span class="cat-num">04</span><span class="cat-title">Long Haram</span><small>Grace in every layer</small></div></div><div class="cat" onclick="window.location.href='category-pages/budget-range.html'"><img class="cat-photo" src="category-images/budget-range.jpg" alt="Budget Range jewellery"><div class="cat-content"><span class="cat-num">05</span><span class="cat-title">Budget Range</span><small>Beauty within your budget</small></div></div><div class="cat" onclick="window.location.href='category-pages/tali-chains.html'"><img class="cat-photo" src="category-images/tali-chains.jpg" alt="Tali Chains jewellery"><div class="cat-content"><span class="cat-num">06</span><span class="cat-title">Tali Chains</span><small>A symbol to cherish forever</small></div></div><div class="cat" onclick="window.location.href='category-pages/bangles.html'"><img class="cat-photo" src="category-images/bangles.jpg" alt="Bangles jewellery"><div class="cat-content"><span class="cat-num">07</span><span class="cat-title">Bangles</span><small>Tradition on your wrist</small></div></div><div class="cat" onclick="window.location.href='category-pages/nakshi.html'"><img class="cat-photo" src="category-images/nakshi.jpg" alt="Nakshi jewellery"><div class="cat-content"><span class="cat-num">08</span><span class="cat-title">Nakshi</span><small>Heritage crafted in art</small></div></div><div class="cat" onclick="window.location.href='category-pages/rings.html'"><img class="cat-photo" src="category-images/rings.jpg" alt="Rings jewellery"><div class="cat-content"><span class="cat-num">09</span><span class="cat-title">Rings</span><small>Tiny details, big statements</small></div></div><div class="cat" onclick="window.location.href='category-pages/bracelets.html'"><img class="cat-photo" src="category-images/bracelets.jpg" alt="Bracelets jewellery"><div class="cat-content"><span class="cat-num">10</span><span class="cat-title">Bracelets</span><small>Subtle, elegant & stylish</small></div></div><div class="cat" onclick="window.location.href='category-pages/combos.html'"><img class="cat-photo" src="category-images/combos.jpg" alt="Combos jewellery"><div class="cat-content"><span class="cat-num">11</span><span class="cat-title">Combos</span><small>More to love, beautifully paired</small></div></div><div class="cat" onclick="window.location.href='category-pages/beads.html'"><img class="cat-photo" src="category-images/beads.jpg" alt="Beads jewellery"><div class="cat-content"><span class="cat-num">12</span><span class="cat-title">Beads</span><small>Colour your style</small></div></div></div></section>
-
-
-
-<section class="section container" id="featured-products"><div class="section-head reveal"><div><div class="eyebrow">Shop our pieces</div><h2>Featured Jewellery</h2></div><p>Authentic product listings with clear Indian Rupee pricing. Prices shown include current offer pricing where applicable.</p></div><div class="products reveal"><article class="product"><div class="product-img"><span class="tag">20% OFF</span><img src="products/product1.png" alt="Temple Heritage Set jewellery" loading="lazy"></div><div class="product-body"><h3>Temple Heritage Set</h3><div class="price"><span class="old">₹2,500</span><span class="new">₹1,999</span></div><div class="offer">20% OFF</div><a class="btn" href="category-pages/new-arrivals.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">17% OFF</span><img src="products/product2.png" alt="Royal Ruby Pendant Set jewellery" loading="lazy"></div><div class="product-body"><h3>Royal Ruby Pendant Set</h3><div class="price"><span class="old">₹4,200</span><span class="new">₹3,499</span></div><div class="offer">17% OFF</div><a class="btn" href="category-pages/bridal.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">16% OFF</span><img src="products/product3.png" alt="Classic Black Bead Gold jewellery" loading="lazy"></div><div class="product-body"><h3>Classic Black Bead Gold</h3><div class="price"><span class="old">₹3,100</span><span class="new">₹2,599</span></div><div class="offer">16% OFF</div><a class="btn" href="category-pages/black-beads.html">View Collection</a></div></article><article class="product"><div class="product-img"><span class="tag">21% OFF</span><img src="products/product4.png" alt="Floral Layered Collection jewellery" loading="lazy"></div><div class="product-body"><h3>Floral Layered Collection</h3><div class="price"><span class="old">₹3,800</span><span class="new">₹2,999</span></div><div class="offer">21% OFF</div><a class="btn" href="category-pages/combos.html">View Collection</a></div></article></div><p class="mini" style="margin-top:18px">All prices are displayed in Indian Rupees (₹). Product availability may vary.</p></section><section class="section offers" id="offers"><div class="container"><div class="section-head reveal"><div><div class="eyebrow">Limited time</div><h2>Special Offers</h2></div><p>Admin-managed offers can be changed anytime. Original price is shown with a strike-through and the current offer price is highlighted.</p></div><div class="offer-banner reveal" id="offerBanner"></div></div></section>
-<section class="section story" id="house"><div class="container story-grid"><div class="reveal"><div class="eyebrow">The House</div><h2>Made to feel<br>beautifully yours.</h2><p>Harshiyaan Collections brings together traditional Indian jewellery character with a clean, contemporary shopping experience. Every collection is presented with space, detail and a quiet luxury that lets the jewellery speak first.</p><p>For the final live store, product details, UPI payment verification and order notifications can be connected to a secure backend.</p></div><div class="story-art reveal" id="houseVisual"><img src="products/product2.png" alt="Harshiyaan Collections jewellery" style="width:100%;height:100%;object-fit:cover;border-radius:18px"></div></div></section>
-<section class="section container" id="how"><div class="section-head reveal"><div><div class="eyebrow">Simple shopping</div><h2>From selection<br>to doorstep.</h2></div></div><div class="steps reveal"><div class="step"><div class="num">01</div><h3>Select</h3><p>Choose the jewellery you love and select Buy Now.</p></div><div class="step"><div class="num">02</div><h3>Details</h3><p>Enter your name, mobile, email and complete delivery address with pincode.</p></div><div class="step"><div class="num">03</div><h3>UPI only</h3><p>Secure UPI payment is the only payment method. Cash on Delivery is not available.</p></div><div class="step"><div class="num">04</div><h3>Confirmed</h3><p>Once payment is confirmed, the order appears in the Harshiyaan admin dashboard.</p></div></div></section>
-<section class="section container" id="track"><div class="section-head reveal"><div><div class="eyebrow">Order tracking</div><h2>Track My Order</h2></div><p>Enter your Order ID and mobile number to view the latest order status and estimated delivery.</p></div><div class="track-card reveal"><div class="form-grid"><div class="field"><label>Order ID</label><input id="trackId" placeholder="HC-12345678"></div><div class="field"><label>Mobile Number</label><input id="trackMobile" inputmode="tel" placeholder="Your mobile number"></div></div><button class="btn gold" style="margin-top:15px" onclick="trackOrder()">Track Order</button><div id="trackResult" style="margin-top:18px"></div></div></section>
-<section id="razorpay-products" class="hc-review-products"><div class="hc-review-inner"><div class="hc-review-kicker">SHOP ONLINE</div><h2>Featured Jewellery &amp; Pricing</h2><p class="hc-review-sub">Browse our jewellery collections with clear product names and prices.</p><div class="hc-review-grid"><article class="hc-review-card"><img src="products/product1.png" alt="Temple Heritage Set"><div class="hc-review-info"><h3>Temple Heritage Set</h3><div class="hc-review-price"><s>₹2,500</s> <strong>₹1,999</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product2.png" alt="Royal Ruby Pendant Set"><div class="hc-review-info"><h3>Royal Ruby Pendant Set</h3><div class="hc-review-price"><s>₹4,200</s> <strong>₹3,499</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product3.png" alt="Classic Black Bead Gold"><div class="hc-review-info"><h3>Classic Black Bead Gold</h3><div class="hc-review-price"><s>₹3,100</s> <strong>₹2,599</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article><article class="hc-review-card"><img src="products/product4.png" alt="Floral Layered Collection"><div class="hc-review-info"><h3>Floral Layered Collection</h3><div class="hc-review-price"><s>₹3,800</s> <strong>₹2,999</strong></div><a href="#collections" class="hc-review-btn">Shop Now</a></div></article></div></div></section>
-</main>
 <footer id="contact"><div class="container foot"><div><div class="brand" aria-label="Harshiyaan Collections"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4C19 10 16 15 16 20c0 3 2 5 4 6-5-1-9 1-12 5 7 1 12-1 16-5-2 7-1 12 0 17 1-5 2-10 0-17 4 4 9 6 16 5-3-4-7-6-12-5 2-1 4-3 4-6 0-5-3-10-8-16Z" stroke="#B88A32" stroke-width="1.5"/><path d="M24 25c-4-5-9-7-13-6 3 5 7 8 13 8m0-2c4-5 9-7 13-6-3 5-7 8-13 8" stroke="#B88A32" stroke-width="1.2" stroke-linecap="round"/><path d="M9 34h30" stroke="#B88A32" stroke-width="1"/></svg></span><span class="brand-wordmark"><strong>Harshiyaan</strong><small>Collections</small><span class="brand-subline">Jewellery for every you</span></span></div><p>A premium jewellery storefront demo — designed for product discovery, UPI-only ordering and easy admin management.</p><div class="social-links"><a id="contactEmail" href="mailto:harshiayaan4@gmail.com">✉ Email</a><a id="contactInstagram" href="https://www.instagram.com/harshiyaan_jewellery?stkn=OWEzajh1b3VqMTgy" target="_blank" rel="noopener">Instagram ↗</a><a id="contactYoutube" href="https://youtu.be/F_3NiSjTQKc?si=CkRa06LFcFOqEsqU" target="_blank" rel="noopener">YouTube ↗</a></div><div class="policy-links" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px"><a href="contact.html">Contact Us</a><a href="pricing.html">Pricing</a><a href="shipping.html">Shipping Policy</a><a href="terms.html">Terms & Conditions</a><a href="privacy.html">Privacy Policy</a><a href="refund.html">Cancellation & Refund Policy</a></div></div><div><div class="eyebrow">Store</div><small>Online Payment: UPI only<br>COD: Not Available<br>© 2026 Harshiyaan Collections</small></div></div></footer>
 
 <div class="modal" id="orderModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Order enquiry</div><h2 class="serif" style="margin:4px 0;font-size:34px">Complete your order</h2></div><button type="button" class="close" data-close-modal="orderModal" aria-label="Close order">×</button></div><form class="form" id="orderForm"><div class="order-summary" id="orderSummary"></div><div class="form-grid"><div class="field"><label>Full Name</label><input required name="name"></div><div class="field"><label>Mobile Number</label><input required name="mobile" inputmode="tel"></div><div class="field"><label>Email</label><input type="email" name="email" placeholder="Optional"></div><div class="field"><label>House / Door No.</label><input required name="house"></div><div class="field"><label>Street</label><input required name="street"></div><div class="field"><label>Area / Locality</label><input required name="area"></div><div class="field"><label>City / Town</label><input required name="city"></div><div class="field"><label>District</label><input required name="district"></div><div class="field"><label>State</label><input required name="state" value="Andhra Pradesh"></div><div class="field"><label>Pincode</label><input required name="pincode" inputmode="numeric"></div></div>
@@ -244,6 +275,27 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 <div class="modal" id="adminLoginModal"><div class="panel"><div class="login-lock"><div class="eyebrow">Restricted Area</div><h2 class="serif" style="font-size:38px;margin:8px 0">Admin Lock 🔒</h2><p class="mini">Enter the admin password to open the dashboard.</p><div class="field" style="margin-top:18px"><label>Password</label><input id="adminPassword" type="password" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkAdmin()"></div><button class="btn gold" style="margin-top:14px;width:100%" onclick="checkAdmin()">Unlock Admin</button><div id="adminError" class="mini" style="color:#9a3d2f;margin-top:10px"></div></div></div></div>
 <div class="modal" id="adminModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Harshiyaan Collections</div><h2 class="serif" style="margin:4px 0;font-size:34px">Admin Dashboard</h2></div><button type="button" class="close" data-close-modal="adminModal" aria-label="Close admin">×</button></div><div class="admin" id="adminContent"></div></div></div>
 <div class="toast" id="toast"></div>
+<script id="hc-product-search">
+(function(){
+  const WA='919703322305';
+  function getProducts(){try{return JSON.parse(localStorage.getItem('hc_products')||'[]')}catch(e){return []}}
+  window.searchProductById=function(){
+    const raw=(document.getElementById('productIdSearch')?.value||'').trim();
+    const box=document.getElementById('productSearchResult'); if(!box)return;
+    if(!raw){box.innerHTML='<div class="mini" style="color:#9a3d2f">Please enter a Product ID.</div>';return;}
+    const p=getProducts().find(x=>String(x.id)===raw);
+    if(!p){box.innerHTML='<div class="mini" style="color:#9a3d2f">No product found for ID <b>'+raw+'</b>. Please check the Product ID.</div>';return;}
+    const msg=encodeURIComponent('Hi Harshiyaan Collections, I am interested in Product ID '+p.id+' — '+p.name+' at ₹'+Number(p.price||0).toLocaleString('en-IN')+'. Please share availability and details.');
+    box.innerHTML='<div class="hc-search-card"><img src="'+p.img+'" alt="'+p.name+'"><div><h4>'+p.name+'</h4><div><span class="hc-old">'+(p.old?'₹'+Number(p.old).toLocaleString('en-IN'):'')+'</span><span class="hc-price">₹'+Number(p.price||0).toLocaleString('en-IN')+'</span></div><div class="mini">Product ID: <b>'+p.id+'</b>'+(p.discount?' · '+p.discount+'% OFF':'')+'</div></div><div class="hc-actions"><button class="btn gold" type="button" onclick="buySearchedProduct('+JSON.stringify(String(p.id))+')">Select</button></div></div>';
+  };
+  window.buySearchedProduct=function(id){
+    const p=getProducts().find(x=>String(x.id)===String(id)); if(!p)return;
+    if(typeof window.addToCart==='function'){window.addToCart(p.id);window.setTimeout(()=>{if(typeof window.openCart==='function')window.openCart();else document.getElementById('cartModal')?.classList.add('open');},120);}
+    else location.href='#collections';
+  };
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target?.id==='productIdSearch')window.searchProductById();});
+})();
+</script>
 <script>
 const defaultProducts=[
 {id:1001,name:'Temple Heritage Set',old:2500,price:1999,img:'products/product1.png',tag:'Special Offer',category:'New Arrivals'},
@@ -254,13 +306,17 @@ const defaultProducts=[
 if(!localStorage.getItem('hc_demo_seed_v3')){
   const existingProducts=JSON.parse(localStorage.getItem('hc_products')||'[]');
   if(!existingProducts.length) localStorage.setItem('hc_products',JSON.stringify(defaultProducts));
-  const existingHero=localStorage.getItem('hc_home_hero_image');
-  if(!existingHero || existingHero==='__removed__') localStorage.setItem('hc_home_hero_image','products/product1.png');
   localStorage.setItem('hc_demo_seed_v3','1');
 }
 let products=JSON.parse(localStorage.getItem('hc_products')||'[]');
 let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');
 let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
+// Homepage hero defaults to the supplied lady photo. Replace the earlier broken product-image default only.
+const existingHeroImage=localStorage.getItem('hc_home_hero_image');
+if(!existingHeroImage || existingHeroImage==='__removed__' || /(^|\/)products\/product1\.png$/.test(existingHeroImage)){
+  localStorage.setItem('hc_home_hero_image','images/owner-lady.jpg');
+}
+
 let selected=null;
 let cart=JSON.parse(localStorage.getItem('hc_cart')||'[]');
 const ADMIN_PASSWORD='Harshiyaan@2026';
@@ -527,4 +583,227 @@ if(canvas){
   else revealNow();
 })();
 </script>
+<script id="hc-offer-search-jump">document.addEventListener('DOMContentLoaded',function(){var id=sessionStorage.getItem('hc_offer_search_id');if(id){sessionStorage.removeItem('hc_offer_search_id');var input=document.getElementById('productIdSearch');if(input){input.value=id;window.searchProductById();}}});</script>
+<script id="hc-hero-person-image">document.addEventListener('DOMContentLoaded',function(){try{var img=document.getElementById('hcHeroPersonImage');var v=localStorage.getItem('hc_home_hero_image');var bad=!v||v==='__removed__'||/products\/product\d+\.png/i.test(v);if(img)img.src=bad?'images/owner-lady.jpg':v;}catch(e){var img=document.getElementById('hcHeroPersonImage');if(img)img.src='images/owner-lady.jpg';}});</script>
+
+<style id="hc-mobile-final-fix">
+.hc-offers-preview{padding:52px 0;background:linear-gradient(135deg,#fff 0%,#fbf4ff 55%,#eadcff 100%)}
+.hc-offers-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:28px}.hc-offers-heading h2{font-size:56px;margin:7px 0 5px}.hc-offers-heading p{margin:0;color:#716875}.hc-home-offers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.hc-home-offer{background:#fff;border:1px solid rgba(176,138,72,.18);border-radius:22px;overflow:hidden;box-shadow:0 16px 45px rgba(60,35,80,.09)}.hc-home-offer img{width:100%;aspect-ratio:1/0.82;object-fit:cover;background:#f7f1e8;display:block}.hc-home-offer-body{padding:15px 16px 18px}.hc-home-offer-body h3{font-family:'Cormorant Garamond',serif;font-size:27px;line-height:1.05;margin:0 0 9px}.hc-home-offer-price strong{font-size:21px;color:#b08031}.hc-home-offer-price s{color:#8f8882;margin-left:8px}.hc-home-offer-meta{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#8b7d89;margin-top:8px}.hc-home-offer .offer-badge{display:inline-block;margin:12px 0 0;background:#6e1020;color:#fff;padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700}
+.hc-wa-icon{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#18a957;color:#fff;font-size:7px;font-weight:800;letter-spacing:-.03em}
+@media(max-width:560px){
+  .hc-new-hero{padding:24px 14px 24px!important;min-height:0!important}
+  .hc-hero-inner{grid-template-columns:58% 42%!important;gap:2px!important;align-items:start!important}
+  .hc-hero-copy{padding-top:4px!important;text-align:left!important}
+  .hc-hero-copy .eyebrow{font-size:7px!important;letter-spacing:.16em!important}
+  .hc-hero-copy h1{font-size:clamp(31px,9.4vw,39px)!important;line-height:.9!important;margin:8px 0 10px!important}
+  .hc-hero-copy p{font-size:10px!important;line-height:1.42!important;max-width:180px!important}
+  .hc-hero-actions{display:flex!important;gap:5px!important;margin:13px 0 0!important}
+  .hc-hero-actions .btn{min-height:36px!important;padding:0 7px!important;font-size:9px!important;border-radius:20px!important}
+  .hc-hero-person{height:150px!important;min-height:150px!important;padding-top:2px!important;align-items:flex-start!important}
+  .hc-portrait-ring{width:142px!important;height:142px!important;padding:5px!important;flex:none!important}
+  .hc-portrait-ring img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 30%!important}
+  .hc-person-badge{display:none!important}
+  .hc-product-search{grid-column:1/-1!important;margin-top:18px!important;padding:10px!important;border-radius:17px!important}
+  .hc-search-label{font-size:8px!important;margin-bottom:6px!important}
+  .hc-search-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important}
+  .hc-search-row input{min-width:0!important;min-height:42px!important;font-size:12px!important;padding:0 11px!important}
+  .hc-search-row .btn{min-height:42px!important;padding:0 14px!important;font-size:11px!important}
+  .hc-offers-preview{padding:34px 14px 45px!important}
+  .hc-offers-heading{display:block!important;text-align:center!important;margin-bottom:18px!important}
+  .hc-offers-heading h2{font-size:42px!important;margin:5px 0!important}
+  .hc-offers-heading p{font-size:12px!important}
+  .hc-offers-heading .btn{margin-top:12px!important;font-size:10px!important;min-height:38px!important}
+  .hc-home-offers-grid{grid-template-columns:1fr 1fr!important;gap:9px!important}
+  .hc-home-offer{border-radius:14px!important}
+  .hc-home-offer img{aspect-ratio:1/1!important}
+  .hc-home-offer-body{padding:9px!important}
+  .hc-home-offer-body h3{font-size:17px!important;line-height:1.02!important;margin-bottom:6px!important}
+  .hc-home-offer-price strong{font-size:14px!important}.hc-home-offer-price s{font-size:10px!important;margin-left:4px!important}
+  .hc-home-offer-meta{font-size:7px!important;margin-top:5px!important}.hc-home-offer .offer-badge{font-size:7px!important;padding:5px 7px!important;margin-top:7px!important}
+}
+@media(max-width:370px){.hc-hero-inner{grid-template-columns:57% 43%!important}.hc-hero-copy h1{font-size:30px!important}.hc-portrait-ring{width:126px!important;height:126px!important}.hc-hero-person{height:134px!important;min-height:134px!important}.hc-hero-actions .btn{font-size:8px!important;padding:0 6px!important}}
+</style>
+<style id="hc-mobile-heading-position-final">
+@media(max-width:560px){
+  /* Header is fixed: keep the hero title safely below it. */
+  .hc-new-hero{padding-top:88px!important;}
+  .hc-hero-inner{align-items:start!important;}
+  .hc-hero-copy{padding-top:2px!important;}
+  .hc-hero-copy h1{margin-top:10px!important;}
+}
+</style>
+<script id="hc-home-offers-render">
+document.addEventListener('DOMContentLoaded',function(){
+ try{
+  var box=document.getElementById('homeOffersGrid'); if(!box)return;
+  var offers=JSON.parse(localStorage.getItem('hc_offers')||'[]').filter(function(o){return o.active!==false});
+  var products=JSON.parse(localStorage.getItem('hc_products')||'[]');
+  if(!offers.length){offers=products.filter(function(p){return Number(p.old)>Number(p.price)}).map(function(p){return {productId:p.id,productName:p.name,title:'Special Offer',old:p.old,price:p.price,img:p.img,discount:p.discount,active:true}})}
+  offers=offers.slice(0,2);
+  var fallback={1001:'products/product1.png',1002:'products/product2.png',1003:'products/product3.png',1004:'products/product4.png'};
+  function resolveImg(o){
+    var pid=String(o.productId||'');
+    var p=products.find(function(x){return String(x.id)===pid});
+    var candidate=o.img || (p&&p.img) || fallback[pid] || 'products/product1.png';
+    if(/^products\/product[1-4]\.png$/i.test(candidate)) return candidate;
+    if(/^images\//i.test(candidate)) return candidate;
+    if(/^data:image\//i.test(candidate)) return candidate;
+    return (p&&/^products\/product[1-4]\.png$/i.test(p.img||'')) ? p.img : (fallback[pid]||'products/product1.png');
+  }
+  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join('');
+ }catch(e){}
+});
+</script>
+
+<style id="hc-mobile-v4-final">
+@media (max-width:560px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  #header{z-index:9999}
+  .hc-new-hero{
+    min-height:auto!important;
+    padding:108px 14px 28px!important;
+    overflow:hidden!important;
+  }
+  .hc-hero-inner{
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,59%) minmax(0,41%)!important;
+    gap:2px!important;
+    align-items:start!important;
+  }
+  .hc-hero-copy{
+    min-width:0!important;
+    padding:0!important;
+    text-align:left!important;
+  }
+  .hc-hero-copy .eyebrow{
+    font-size:8px!important;
+    line-height:1.2!important;
+    letter-spacing:.16em!important;
+    white-space:nowrap!important;
+  }
+  .hc-hero-copy h1{
+    font-size:clamp(34px,10.5vw,43px)!important;
+    line-height:.88!important;
+    letter-spacing:-.055em!important;
+    margin:9px 0 12px!important;
+  }
+  .hc-hero-copy p{
+    font-size:11px!important;
+    line-height:1.45!important;
+    max-width:190px!important;
+    margin:0!important;
+  }
+  .hc-hero-actions{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:5px!important;
+    margin:14px 0 0!important;
+  }
+  .hc-hero-actions .btn{
+    min-height:37px!important;
+    height:37px!important;
+    padding:0 8px!important;
+    font-size:9px!important;
+    white-space:nowrap!important;
+    border-radius:22px!important;
+  }
+  .hc-hero-person{
+    min-height:0!important;
+    height:auto!important;
+    padding:4px 0 0!important;
+    display:flex!important;
+    justify-content:center!important;
+    align-items:flex-start!important;
+  }
+  .hc-portrait-ring{
+    width:min(128px,100%)!important;
+    height:auto!important;
+    aspect-ratio:1!important;
+    padding:5px!important;
+    flex:none!important;
+    box-shadow:0 14px 32px rgba(78,47,102,.16)!important;
+  }
+  .hc-portrait-ring img{
+    width:100%!important;height:100%!important;
+    object-fit:cover!important;
+    object-position:center 30%!important;
+  }
+  .hc-person-badge{display:none!important}
+  .hc-product-search{
+    grid-column:1/-1!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:22px 0 0!important;
+    padding:11px!important;
+    border-radius:18px!important;
+  }
+  .hc-search-label{font-size:8px!important;letter-spacing:.15em!important;margin-bottom:7px!important}
+  .hc-search-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:6px!important}
+  .hc-search-row input{min-width:0!important;min-height:43px!important;height:43px!important;font-size:12px!important;padding:0 12px!important}
+  .hc-search-row .btn{min-height:43px!important;height:43px!important;padding:0 14px!important;font-size:11px!important}
+  .hc-offers-preview{padding:36px 14px 48px!important}
+  .hc-offers-heading{text-align:center!important;display:block!important;margin-bottom:18px!important}
+  .hc-offers-heading h2{font-size:42px!important;line-height:.95!important;margin:5px 0!important}
+  .hc-offers-heading p{font-size:12px!important;line-height:1.45!important}
+  .hc-home-offers-grid{grid-template-columns:1fr 1fr!important;gap:9px!important}
+  .hc-home-offer{min-width:0!important;border-radius:14px!important}
+  .hc-home-offer img{width:100%!important;aspect-ratio:1!important;object-fit:cover!important;display:block!important}
+  .hc-home-offer-body{padding:9px!important}
+  .hc-home-offer-body h3{font-size:17px!important;line-height:1.05!important}
+  .hc-home-offer-price strong{font-size:14px!important}
+  .hc-home-offer-price s{font-size:10px!important}
+  .hc-home-offer-meta{font-size:7px!important}
+  .hc-home-offer .offer-badge{font-size:7px!important;padding:5px 7px!important}
+}
+@media (max-width:370px){
+  .hc-new-hero{padding-top:104px!important}
+  .hc-hero-inner{grid-template-columns:57% 43%!important}
+  .hc-hero-copy h1{font-size:32px!important}
+  .hc-hero-copy p{font-size:10px!important;max-width:165px!important}
+  .hc-hero-actions .btn{font-size:8px!important;padding:0 6px!important}
+  .hc-portrait-ring{width:116px!important}
+}
+</style>
+<script id="hc-mobile-v4-images">
+document.addEventListener('DOMContentLoaded',function(){
+  var img=document.getElementById('hcHeroPersonImage');
+  if(img){img.onerror=function(){this.onerror=null;this.src='images/owner-lady.jpg';};img.src='images/owner-lady.jpg';}
+  document.querySelectorAll('.hc-home-offer img').forEach(function(im){
+    im.onerror=function(){this.onerror=null; this.style.objectFit='contain'; this.src='products/product1.png';};
+  });
+});
+</script>
 </body></html>
+<style id="hc-mobile-phone-focus-final">
+/* Phone-first hero: keep brand/copy on the left and a compact lady portrait on the right. */
+@media (max-width:560px){
+  .hc-new-hero{min-height:auto;padding:88px 14px 26px;background:linear-gradient(135deg,#fff 0%,#fbf7ff 52%,#eee3ff 100%);}
+  .hc-new-hero:before{width:250px;height:250px;right:-90px;top:20px;opacity:.7;}
+  .hc-hero-inner{display:grid;grid-template-columns:minmax(0,58%) minmax(0,42%);align-items:start;gap:4px;width:100%;}
+  .hc-hero-copy{text-align:left;max-width:none;padding-top:10px;}
+  .hc-hero-copy .eyebrow{font-size:8px;letter-spacing:.19em;white-space:nowrap;}
+  .hc-hero-copy h1{font-size:clamp(34px,10.8vw,46px);line-height:.88;letter-spacing:-.055em;margin:9px 0 11px;}
+  .hc-hero-copy p{font-size:11px;line-height:1.45;max-width:190px;margin:0;color:#766d79;}
+  .hc-hero-actions{display:flex;gap:6px;margin:14px 0 0;flex-wrap:nowrap;}
+  .hc-hero-actions .btn{min-height:38px;padding:0 9px;font-size:10px;white-space:nowrap;border-radius:22px;}
+  .hc-hero-person{min-height:0;height:auto;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;}
+  .hc-portrait-ring{width:min(132px,100%);padding:5px;box-shadow:0 14px 32px rgba(78,47,102,.16);}
+  .hc-portrait-ring img{object-position:center 30%;}
+  .hc-person-badge{position:absolute;right:-1px;bottom:-4px;margin:0;padding:7px 8px;border-radius:9px;max-width:100px;}
+  .hc-person-badge span{font-size:5px;letter-spacing:.12em;}
+  .hc-person-badge b{font-size:11px;line-height:1.05;margin-top:2px;}
+  .hc-product-search{margin-top:20px!important;grid-column:1/-1;width:100%;padding:11px;border-radius:18px;}
+  .hc-search-label{font-size:8px!important;letter-spacing:.15em!important;margin-bottom:7px!important;}
+  .hc-search-row{display:grid!important;grid-template-columns:1fr auto;gap:6px!important;}
+  .hc-search-row input{min-width:0;font-size:12px!important;min-height:43px!important;padding:0 12px!important;}
+  .hc-search-row .btn{min-height:43px!important;padding:0 14px!important;font-size:12px!important;}
+}
+@media (max-width:370px){
+  .hc-hero-inner{grid-template-columns:57% 43%;}
+  .hc-hero-copy h1{font-size:33px;}
+  .hc-hero-copy p{font-size:10px;max-width:165px;}
+  .hc-hero-actions .btn{font-size:9px;padding:0 7px;}
+  .hc-portrait-ring{width:120px;}
+}
+</style>
