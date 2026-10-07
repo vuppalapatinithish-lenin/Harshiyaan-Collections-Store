@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 }
 function setCors(req,res){
   const origin=req.headers.origin || '';
-  const allowed=['https://harshiyaan-collections.vercel.app','https://harshiyaan-collections-igbnf4dda-nithish-746f.vercel.app','https://harshiyaan-collections-store.vercel.app','https://vuppalapatinithish-lenin.github.io','http://localhost:3000','http://localhost:5173'];
+  const allowed=['https://harshiyaan-collections.vercel.app','https://harshiyaan-collections-igbnf4dda-nithish-746f.vercel.app','https://harshiyaan-collections-store.vercel.app','https://vuppalapatinithish-lenin.github.io','https://www.vuppalapatinithish-lenin.github.io','http://localhost:3000','http://localhost:5173'];
   if(allowed.includes(origin)) res.setHeader('Access-Control-Allow-Origin',origin);
   res.setHeader('Vary','Origin');
   res.setHeader('Access-Control-Allow-Methods','POST,OPTIONS');

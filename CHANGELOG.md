@@ -33,3 +33,11 @@ Note: Product/offer settings in this existing demo admin continue to use browser
 ## V9 - Razorpay production endpoint fix
 - Updated the storefront order-sync API base to the current production Vercel domain: `https://harshiyaan-collections-store.vercel.app`.
 - Preserved the existing Razorpay create-order and verify-payment APIs and live checkout flow.
+
+## V10 - Razorpay button hardening
+- Explicit global payment handler on the main checkout and collection checkout buttons.
+- Clear required-field feedback instead of a silent no-op.
+- Razorpay Checkout loader timeout/error handling.
+- Clear payment-server HTTP/CORS errors.
+- Correct production Vercel API base preserved.
+- Payment button busy state and recovery after failure.
