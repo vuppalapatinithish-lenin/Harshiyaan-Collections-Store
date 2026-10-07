@@ -2,7 +2,7 @@
   'use strict';
   const DEFAULT_API_BASE='https://harshiyaan-collections-store.vercel.app';
   function apiBase(){
-    return String(window.HC_RAZORPAY_API_BASE || DEFAULT_API_BASE).replace(/\\/$/,'');
+    return String(window.HC_RAZORPAY_API_BASE || DEFAULT_API_BASE).replace(/\/$/,'');
   }
   async function loadCheckout(){
     if(window.Razorpay) return;

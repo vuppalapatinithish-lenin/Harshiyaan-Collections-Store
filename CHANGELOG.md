@@ -1,43 +1,6 @@
-# Harshiyaan Collections — Homepage Refresh
+# V11 — Razorpay click fix
 
-Changes in this build:
-- Reworked homepage hero for desktop/mobile with the supplied lady image in a circular presentation.
-- Added Product ID search on the homepage.
-- Product search shows image, name, original price, offer price, discount and Product ID.
-- Added WhatsApp enquiry redirect to 9703322305.
-- Added dedicated `offers.html` Special Offers page.
-- Homepage Special Offers teaser links to the dedicated offers page.
-- Removed the old Featured Jewellery, The House, and Featured Jewellery & Pricing sections from the homepage.
-- Moved the existing 3D Jewellery Experience to the bottom of the homepage before the footer.
-- Admin Products now requires a unique numeric Product ID.
-- Admin product list displays Product IDs.
-- Existing Razorpay/Vercel files are preserved.
-
-Note: Product/offer settings in this existing demo admin continue to use browser storage unless a central product-data API is added separately. Order central sync remains unchanged.
-
-
-## Mobile First V4
-- Final phone-first hero spacing and header clearance.
-- Compact left copy + right lady portrait.
-- Full-width Product ID search below hero grid.
-- Added image fallbacks for lady and offer cards.
-
-
-## Mobile Bottom Navigation V6
-- Replaced floating/duplicate cart controls with a fixed bottom navigation: Home, Track, Cart.
-- Added shared `hc_cart` badge synchronization on offers and category pages.
-- Special Offers Add to Cart remains on-page and writes to the same localStorage cart used by the homepage.
-- Removed the old floating cart button from homepage/category pages.
-- Preserved Razorpay, Vercel API files, admin, order tracking and 3D section.
-
-## V9 - Razorpay production endpoint fix
-- Updated the storefront order-sync API base to the current production Vercel domain: `https://harshiyaan-collections-store.vercel.app`.
-- Preserved the existing Razorpay create-order and verify-payment APIs and live checkout flow.
-
-## V10 - Razorpay button hardening
-- Explicit global payment handler on the main checkout and collection checkout buttons.
-- Clear required-field feedback instead of a silent no-op.
-- Razorpay Checkout loader timeout/error handling.
-- Clear payment-server HTTP/CORS errors.
-- Correct production Vercel API base preserved.
-- Payment button busy state and recovery after failure.
+- Fixed a JavaScript syntax error in `razorpay-client.js` that prevented the Razorpay client from loading at all.
+- Corrected the API-base trailing-slash regex from an invalid escaped pattern to `/\/$/`.
+- Preserved the current Vercel production endpoint: `https://harshiyaan-collections-store.vercel.app`.
+- Preserved the existing create-order, verify-payment and order-sync APIs.
