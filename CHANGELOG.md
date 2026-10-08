@@ -1,7 +1,9 @@
-# V13 – Order Email + Mobile Two-Column Layout
+# V14 — Mandatory Customer Confirmation + Single Email Flow
 
-Only these requested changes were made on top of V12:
-- Order email payload now includes flattened customer details, address, item name/ID, amount, payment IDs/status, plus the original nested order object for compatibility.
-- Mobile Categories and product cards use a 2-column grid.
-- Mobile Special Offers page uses a 2-column grid.
-- All Razorpay, admin, order tracking, 3D, backend endpoint, and other existing functionality is preserved.
+- Customer email is mandatory at checkout.
+- Removed the browser-side direct Apps Script email call that caused duplicate emails.
+- One central order-sync request now sends the store email and customer confirmation.
+- Store email includes customer details, items, Product IDs, quantities, paid amount, Razorpay IDs, delivery and tracking information.
+- Customer email includes the same order summary plus Track ID / Order ID and tracking link.
+- Email delivery flags prevent duplicate emails on retries.
+- Existing Razorpay, cart, admin, tracking and mobile layouts remain locked.
