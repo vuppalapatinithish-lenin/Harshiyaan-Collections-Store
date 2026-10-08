@@ -384,7 +384,36 @@ function useCurrentLocation(){
 }
 async function sendOrderEmailNotification(order){
   try{
-    await fetch('https://script.google.com/macros/s/AKfycbwoDEDhdSwF3f0XAs-TqdnlFfF3v36ircXF3l8h0BQ-f7kRVT2hoyHW1k_7qJuyz56_1Q/exec',{method:'POST',mode:'no-cors',body:JSON.stringify({action:'create',order})});
+    const c=order?.customer||{};
+    const payload={
+      action:'create',
+      order,
+      orderId:order?.id||'',
+      id:order?.id||'',
+      customer:c,
+      customerName:c.name||'',
+      name:c.name||'',
+      customerMobile:c.mobile||'',
+      mobile:c.mobile||'',
+      customerEmail:c.email||'',
+      email:c.email||'',
+      address:{house:c.house||'',street:c.street||'',area:c.area||'',city:c.city||'',district:c.district||'',state:c.state||'',pincode:c.pincode||'',latitude:c.latitude||'',longitude:c.longitude||'',mapsLink:c.mapsLink||''},
+      deliveryAddress:[c.house,c.street,c.area,c.city,c.district,c.state,c.pincode].filter(Boolean).join(', '),
+      itemName:order?.product||'',
+      product:order?.product||'',
+      productId:order?.productId||'',
+      amount:Number(order?.amount||0),
+      totalAmount:Number(order?.amount||0),
+      paymentStatus:'PAID',
+      status:order?.status||'Confirmed',
+      payment:order?.payment||'Razorpay Live',
+      paymentId:order?.razorpayPaymentId||'',
+      razorpayPaymentId:order?.razorpayPaymentId||'',
+      razorpayOrderId:order?.razorpayOrderId||'',
+      expectedDelivery:order?.delivery||'',
+      date:order?.date||''
+    };
+    await fetch('https://script.google.com/macros/s/AKfycbwoDEDhdSwF3f0XAs-TqdnlFfF3v36ircXF3l8h0BQ-f7kRVT2hoyHW1k_7qJuyz56_1Q/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
     return true;
   }catch(e){ console.warn('Order email request failed',e); return false; }
 }

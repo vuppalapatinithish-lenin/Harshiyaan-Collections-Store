@@ -29,7 +29,22 @@
 }
 body{padding-bottom:82px!important}
 
-</style></head><body><header class="nav"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:min(1180px,92%)"><a class="brand" href="index.html">HARSHIYAAN COLLECTIONS</a><div style="display:flex;gap:8px;align-items:center"><a class="wa-top" href="https://wa.me/919703322305" target="_blank" rel="noopener">💬 WhatsApp</a><a class="loc-top" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener">⌖ Location</a><a class="back" href="index.html">← Back</a></div></div></header><main class="wrap"><section class="hero"><div class="eyebrow">HARSHIYAAN COLLECTIONS</div><h1>Special Offers</h1><p>Current offers and featured deals managed from the Harshiyaan admin dashboard.</p></section><section id="offerGrid" class="grid"></section></main><script>
+<style id="hc-offers-two-column-mobile-final">
+@media(max-width:560px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;padding:18px 0 70px;}
+  .card{border-radius:15px;}
+  .card img{aspect-ratio:1/1;min-height:0;}
+  .body{padding:12px;}
+  .body h2{font-size:21px;line-height:1.05;}
+  .price{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+  .price strong{font-size:16px;}
+  .price s{font-size:11px;margin-right:0;}
+  .meta{font-size:9px;line-height:1.35;}
+  .msg{font-size:10px;line-height:1.4;margin:8px 0;}
+  .btn-row{display:block;}
+  .btn-row .btn{width:100%;min-width:0;padding:10px 5px;font-size:10px;}
+}
+</style></style></head><body><header class="nav"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;width:min(1180px,92%)"><a class="brand" href="index.html">HARSHIYAAN COLLECTIONS</a><div style="display:flex;gap:8px;align-items:center"><a class="wa-top" href="https://wa.me/919703322305" target="_blank" rel="noopener">💬 WhatsApp</a><a class="loc-top" href="https://www.google.com/maps/search/?api=1&query=Harshiyaan%20Collection%2C%203%20Cross%2C%20SBI%20Colony%2C%20Madanapalle%2C%20Andhra%20Pradesh%20517325" target="_blank" rel="noopener">⌖ Location</a><a class="back" href="index.html">← Back</a></div></div></header><main class="wrap"><section class="hero"><div class="eyebrow">HARSHIYAAN COLLECTIONS</div><h1>Special Offers</h1><p>Current offers and featured deals managed from the Harshiyaan admin dashboard.</p></section><section id="offerGrid" class="grid"></section></main><script>
 (function(){
   function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
   function getCart(){try{return JSON.parse(localStorage.getItem('hc_cart')||'[]')}catch(e){return []}}
