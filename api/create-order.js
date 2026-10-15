@@ -42,8 +42,8 @@ export default async function handler(req, res) {
       });
     }
 
-    const auth = Buffer.from(
-  `${key}:${secret}`
+ const auth = Buffer.from(
+  key + ":" + secret
 ).toString("base64");
 
     const upstream = await fetch(
