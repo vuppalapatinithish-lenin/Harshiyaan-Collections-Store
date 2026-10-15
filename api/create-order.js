@@ -1,4 +1,3 @@
-```javascript
 export default async function handler(req, res) {
   // CORS configuration
   const origin = req.headers.origin || "";
@@ -124,4 +123,4 @@ export default async function handler(req, res) {
     });
   }
 }
-```
+
