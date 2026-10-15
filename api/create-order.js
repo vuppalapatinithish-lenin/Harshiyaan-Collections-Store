@@ -1,12 +1,37 @@
 ```javascript
 export default async function handler(req, res) {
-  setCors(req, res);
+  // CORS configuration
+  const origin = req.headers.origin || "";
 
-  // Handle browser CORS preflight requests
+  const allowedOrigins = [
+    "https://www.harshiyaancollections.com",
+    "https://harshiyaancollections.com",
+    "https://harshiyaan-collections-store.vercel.app",
+    "https://harshiyaan-collections.vercel.app",
+    "https://vuppalapatinithish-lenin.github.io"
+  ];
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Vary", "Origin");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  res.setHeader("Access-Control-Max-Age", "86400");
+
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return res.status(204).end();
   }
 
+  // Only POST is allowed for order creation
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -14,20 +39,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const {
-      amount,
-      currency = "INR",
-      receipt,
-      notes = {}
-    } = req.body || {};
+    const body = req.body || {};
 
-    // The frontend must send the amount in paise.
+    const amount = body.amount;
+    const currency = body.currency || "INR";
+    const receipt = body.receipt;
+    const notes = body.notes || {};
+
+    // Amount must be in paise
     const paise = Number(amount);
 
-    if (
-      !Number.isSafeInteger(paise) ||
-      paise < 100
-    ) {
+    if (!Number.isSafeInteger(paise) || paise < 100) {
       return res.status(400).json({
         error: "Invalid amount"
       });
@@ -42,25 +64,27 @@ export default async function handler(req, res) {
       });
     }
 
- const auth = Buffer.from(
-  key + ":" + secret
-).toString("base64");
+    // Build Basic Auth without template literals
+    const auth = Buffer.from(
+      key + ":" + secret
+    ).toString("base64");
+
+    const payload = {
+      amount: paise,
+      currency: currency,
+      receipt: String(receipt || ("HC-" + Date.now())),
+      notes: notes
+    };
 
     const upstream = await fetch(
       "https://api.razorpay.com/v1/orders",
       {
         method: "POST",
         headers: {
-          Authorization: `Basic ${auth}`,
+          "Authorization": "Basic " + auth,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          amount: paise,
-          currency,
-          receipt:
-            String(receipt || `HC-${Date.now()}`),
-          notes
-        })
+        body: JSON.stringify(payload)
       }
     );
 
@@ -70,13 +94,16 @@ export default async function handler(req, res) {
       console.error(
         "Razorpay order creation failed:",
         upstream.status,
-        data?.error?.code || "Unknown error"
+        data && data.error
+          ? data.error.code || data.error.description
+          : "Unknown error"
       );
 
       return res.status(502).json({
         error:
-          data?.error?.description ||
-          "Razorpay order creation failed"
+          data && data.error && data.error.description
+            ? data.error.description
+            : "Razorpay order creation failed"
       });
     }
 
@@ -96,42 +123,5 @@ export default async function handler(req, res) {
       error: "Unable to create payment order"
     });
   }
-}
-
-function setCors(req, res) {
-  const origin = req.headers.origin || "";
-
-  const allowedOrigins = [
-    "https://www.harshiyaancollections.com",
-    "https://harshiyaancollections.com",
-    "https://harshiyaan-collections.vercel.app",
-    "https://harshiyaan-collections-store.vercel.app",
-    "https://vuppalapatinithish-lenin.github.io"
-  ];
-
-  // Allow only explicitly trusted origins.
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      origin
-    );
-  }
-
-  res.setHeader("Vary", "Origin");
-
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "POST, OPTIONS"
-  );
-
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-
-  res.setHeader(
-    "Access-Control-Max-Age",
-    "86400"
-  );
 }
 ```
