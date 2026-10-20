@@ -1,4 +1,6 @@
 const STORE_KEY = 'HC_ORDERS_V1';
+const CATALOG_KEY = 'HC_CATALOG_FILE_ID_V1';
+const CATALOG_FILE_NAME = 'Harshiyaan_Collections_Catalog_V1.json';
 const EMAIL_TO = 'Darlingfareed@gmail.com';
 const STATUSES = ['Confirmed','Processing','Shipped','Out for Delivery','Delivered'];
 
@@ -6,7 +8,9 @@ function json_(obj){return ContentService.createTextOutput(JSON.stringify(obj)).
 function getOrders_(){const raw=PropertiesService.getScriptProperties().getProperty(STORE_KEY);try{return raw?JSON.parse(raw):[];}catch(e){return [];}}
 function putOrders_(orders){PropertiesService.getScriptProperties().setProperty(STORE_KEY,JSON.stringify(orders));}
 function doGet(e){
-  const action=(e&&e.parameter&&e.parameter.action)||'list'; const orders=getOrders_();
+  const action=(e&&e.parameter&&e.parameter.action)||'list';
+  if(action==='catalogGet') return json_({ok:true,catalog:getCatalog_()});
+  const orders=getOrders_();
   if(action==='list') return json_({ok:true,orders});
   if(action==='track'){const id=(e.parameter.id||'').trim().toUpperCase();const mobile=(e.parameter.mobile||'').replace(/\D/g,'');const o=orders.find(x=>String(x.id).toUpperCase()===id && String(x.customer&&x.customer.mobile||'').replace(/\D/g,'')===mobile);return o?json_({ok:true,order:o}):json_({ok:false,error:'Order not found'});}
   return json_({ok:false,error:'Unknown action'});
@@ -14,7 +18,9 @@ function doGet(e){
 function doPost(e){
   const lock=LockService.getScriptLock(); lock.waitLock(15000);
   try{
-    const body=JSON.parse((e&&e.postData&&e.postData.contents)||'{}'); const action=body.action||'create'; let orders=getOrders_();
+    const body=JSON.parse((e&&e.postData&&e.postData.contents)||'{}'); const action=body.action||'create';
+    if(action==='catalogSave') return json_({ok:true,catalog:saveCatalog_(body.key,body.data)});
+    let orders=getOrders_();
     if(action==='create'){
       const incoming=body.order; if(!incoming||!incoming.id) return json_({ok:false,error:'Missing order'});
       const idx=orders.findIndex(x=>x.id===incoming.id);
@@ -50,6 +56,40 @@ function doPost(e){
     return json_({ok:false,error:'Unknown action'});
   }finally{lock.releaseLock();}
 }
+function getCatalog_(){
+  const props=PropertiesService.getScriptProperties();
+  const id=props.getProperty(CATALOG_KEY);
+  if(!id) return {products:[],offers:[]};
+  try { const raw=DriveApp.getFileById(id).getBlob().getDataAsString('UTF-8'); const d=JSON.parse(raw); return {products:Array.isArray(d.products)?d.products:[],offers:Array.isArray(d.offers)?d.offers:[]}; }
+  catch(err){ console.log('Catalog read failed: '+err); return {products:[],offers:[]}; }
+}
+function saveCatalog_(key,data){
+  if(key!=='products' && key!=='offers') throw new Error('Invalid catalog key');
+  if(!Array.isArray(data)) throw new Error('Catalog data must be an array');
+  const catalog=getCatalog_();
+  catalog[key]=data.map(function(item){ return normalizeCatalogItem_(item); });
+  const json=JSON.stringify(catalog);
+  const props=PropertiesService.getScriptProperties();
+  let id=props.getProperty(CATALOG_KEY);
+  if(id){ DriveApp.getFileById(id).setContent(json); }
+  else { const f=DriveApp.createFile(CATALOG_FILE_NAME,json,MimeType.PLAIN_TEXT); id=f.getId(); props.setProperty(CATALOG_KEY,id); }
+  return catalog;
+}
+function normalizeCatalogItem_(item){
+  const out=Object.assign({},item||{});
+  if(typeof out.img==='string' && out.img.indexOf('data:image/')===0){
+    const match=out.img.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+    if(!match) throw new Error('Invalid image data');
+    const bytes=Utilities.base64Decode(match[2]);
+    const ext=match[1].split('/')[1].replace('jpeg','jpg').replace(/[^a-z0-9]/gi,'');
+    const blob=Utilities.newBlob(bytes,match[1],'hc-'+(out.id||out.productId||Date.now())+'.'+ext);
+    const file=DriveApp.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK,DriveApp.Permission.VIEW);
+    out.img='https://drive.google.com/uc?export=view&id='+file.getId();
+  }
+  return out;
+}
+
 function sendOrderEmail_(o){
   const c=o.customer||{};
   const adminSubject='Harshiyaan Collections — New Order '+o.id;

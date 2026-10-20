@@ -12,7 +12,6 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 <div class="tabs"><button class="tab active" onclick="tab('products',this)">Products</button><button class="tab" onclick="tab('collections',this)">Collections</button><button class="tab" onclick="tab('homepage',this)">Homepage</button><button class="tab" onclick="tab('offers',this)">Offers</button><button class="tab" onclick="tab('orders',this)">Orders</button><button class="tab" onclick="tab('settings',this)">Contact</button></div>
 <section id="sec-products" class="section active"></section><section id="sec-collections" class="section"></section><section id="sec-homepage" class="section"></section><section id="sec-offers" class="section"></section><section id="sec-orders" class="section"></section><section id="sec-settings" class="section"></section><div id="hcCloudStatus" class="card" style="margin:20px auto;max-width:1180px"><h3>☁️ Central Order Sync</h3><p class="mini">Orders are synchronized through the Vercel backend + Google Apps Script storage. This keeps customer tracking and admin status updates available across devices without Firebase.</p><span id="hcCloudSyncStatus" class="mini">Checking…</span></div></main></div>
 <script>
-const PASS='Harshiyaan@2026';
 const cats=[['New Arrivals','new-arrivals.jpg'],['Black Beads','black-beads.jpg'],['Bridal','bridal.jpg'],['Long Haram','long-haram.jpg'],['Budget Range','budget-range.jpg'],['Tali Chains','tali-chains.jpg'],['Bangles','bangles.jpg'],['Nakshi','nakshi.jpg'],['Rings','rings.jpg'],['Bracelets','bracelets.jpg'],['Combos','combos.jpg'],['Beads','beads.jpg']];
 // Remove the four temporary demo products and their matching offers once, without touching real products.
 const HC_DEMO_IDS = new Set(['1001','1002','1003','1004']);
@@ -26,7 +25,7 @@ products=cleanedProducts; offers=cleanedOffers;
 localStorage.setItem('hc_demo_seed_v3','1');
 let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');let editingId=null,editingOffer=null;
 function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}function save(k,v){localStorage.setItem(k,JSON.stringify(v))}function imgData(file,cb){if(!file)return cb('');const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
-function unlock(){if(document.getElementById('password').value===PASS){sessionStorage.setItem('hc_admin','1');prepareAdminNotifications();showApp()}else document.getElementById('loginError').textContent='Incorrect password.'}function showApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderAll();loadCentralOrders()}function lock(){sessionStorage.removeItem('hc_admin');location.reload()}if(sessionStorage.getItem('hc_admin')==='1'){prepareAdminNotifications();showApp();}
+async function unlock(){const password=document.getElementById('password').value;const error=document.getElementById('loginError');error.textContent='Checking password…';try{const r=await fetch('https://harshiyaan-collections-store.vercel.app/api/catalog',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'auth',password})});const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Incorrect password.');sessionStorage.setItem('hc_admin','1');sessionStorage.setItem('hc_admin_password',password);prepareAdminNotifications();showApp();if(window.hcSyncCatalogNow)window.hcSyncCatalogNow()}catch(e){error.textContent=e.message||'Unable to verify password. Check connection.'}}function showApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderAll();loadCentralOrders()}function lock(){sessionStorage.removeItem('hc_admin');sessionStorage.removeItem('hc_admin_password');location.reload()}if(sessionStorage.getItem('hc_admin')==='1'&&sessionStorage.getItem('hc_admin_password')){prepareAdminNotifications();showApp();}
 function tab(name,el){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById('sec-'+name).classList.add('active')}
 let lastSeenOrderId=localStorage.getItem('hc_admin_last_seen_order')||'';
 let notificationAudioReady=false;
@@ -99,4 +98,5 @@ function renderSettings(){const e=document.getElementById('sec-settings');e.inne
   else revealNow();
 })();
 </script>
+<script src="shared-catalog.js"></script>
 </body></html>

@@ -35,3 +35,12 @@ See `google-apps-script/SETUP.md`. Replace the existing Apps Script code with `g
 
 ## GitHub Pages
 Upload the extracted contents of this ZIP to the repository root. Do not upload the ZIP itself. Relative paths such as `products/product1.png` and `category-images/*.jpg` are intentionally used so the site works under a repository sub-path such as `/Harshiyaan-Collections-Store/`.
+
+
+## Shared product catalogue deployment
+- `shared-catalog.js` syncs products/offers through `/api/catalog` while retaining the current localStorage renderer and page design.
+- `api/catalog.js` proxies catalogue reads/writes to the existing Apps Script URL in `HC_ORDERS_SCRIPT_URL`.
+- `google-apps-script/Code.gs` now stores catalogue JSON in Drive and uploaded product images in Drive.
+- Deploy the updated Apps Script as a new version, then redeploy Vercel. See `google-apps-script/SETUP.md`.
+
+Catalogue writes require server-side verification against the Vercel `HC_ADMIN_PASSWORD` environment variable. Set it before deployment; do not put the password in source code.
