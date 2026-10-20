@@ -220,7 +220,7 @@ body{padding-bottom:82px!important}
       <div class="hc-hero-actions"><a class="btn" href="#collections">Explore Collections</a><a class="btn light" href="offers.html">Special Offers</a></div>
       <div class="hc-product-search" id="productSearchBox">
         <div class="hc-search-label">SEARCH BY PRODUCT ID</div>
-        <div class="hc-search-row"><input id="productIdSearch" inputmode="text" placeholder="Enter Product ID e.g. HC-1001" autocomplete="off"><button class="btn gold" type="button" onclick="searchProductById()">Search</button></div>
+        <div class="hc-search-row"><input id="productIdSearch" inputmode="numeric" placeholder="Enter Product ID e.g. 1001" autocomplete="off"><button class="btn gold" type="button" onclick="searchProductById()">Search</button></div>
         <div id="productSearchResult" class="hc-search-result" aria-live="polite"></div>
       </div>
     </div>
@@ -312,12 +312,10 @@ body{padding-bottom:82px!important}
     const raw=(document.getElementById('productIdSearch')?.value||'').trim();
     const box=document.getElementById('productSearchResult'); if(!box)return;
     if(!raw){box.innerHTML='<div class="mini" style="color:#9a3d2f">Please enter a Product ID.</div>';return;}
-    const norm=v=>String(v==null?'':v).trim().toUpperCase().replace(/^HC\s*-\s*/, '');
-    const p=getProducts().find(x=>norm(x.id)===norm(raw));
+    const p=getProducts().find(x=>String(x.id)===raw);
     if(!p){box.innerHTML='<div class="mini" style="color:#9a3d2f">No product found for ID <b>'+raw+'</b>. Please check the Product ID.</div>';return;}
     const msg=encodeURIComponent('Hi Harshiyaan Collections, I am interested in Product ID '+p.id+' — '+p.name+' at ₹'+Number(p.price||0).toLocaleString('en-IN')+'. Please share availability and details.');
-    box.innerHTML='<div class="hc-search-card"><img src="'+p.img+'" alt="'+p.name+'"><div><h4>'+p.name+'</h4><div><span class="hc-old">'+(p.old?'₹'+Number(p.old).toLocaleString('en-IN'):'')+'</span><span class="hc-price">₹'+Number(p.price||0).toLocaleString('en-IN')+'</span></div><div class="mini">Product ID: <b>'+p.id+'</b>'+(p.discount?' · '+p.discount+'% OFF':'')+'</div></div><div class="hc-actions"><button class="btn gold" type="button" data-product-id="'+String(p.id)+'">Select</button></div></div>';
-    box.querySelector('[data-product-id]')?.addEventListener('click',()=>window.buySearchedProduct(p.id));
+    box.innerHTML='<div class="hc-search-card"><img src="'+p.img+'" alt="'+p.name+'"><div><h4>'+p.name+'</h4><div><span class="hc-old">'+(p.old?'₹'+Number(p.old).toLocaleString('en-IN'):'')+'</span><span class="hc-price">₹'+Number(p.price||0).toLocaleString('en-IN')+'</span></div><div class="mini">Product ID: <b>'+p.id+'</b>'+(p.discount?' · '+p.discount+'% OFF':'')+'</div></div><div class="hc-actions"><button class="btn gold" type="button" onclick="buySearchedProduct('+JSON.stringify(String(p.id))+')">Select</button></div></div>';
   };
   window.buySearchedProduct=function(id){
     const p=getProducts().find(x=>String(x.id)===String(id)); if(!p)return;
@@ -328,18 +326,16 @@ body{padding-bottom:82px!important}
 })();
 </script>
 <script>
-const defaultProducts=[
-{id:1001,name:'Temple Heritage Set',old:2500,price:1999,img:'products/product1.png',tag:'Special Offer',category:'New Arrivals'},
-{id:1002,name:'Royal Ruby Pendant Set',old:4200,price:3499,img:'products/product2.png',tag:'Featured',category:'Bridal'},
-{id:1003,name:'Classic Black Bead Gold',old:3100,price:2599,img:'products/product3.png',tag:'Bestseller',category:'Black Beads'},
-{id:1004,name:'Floral Layered Collection',old:3800,price:2999,img:'products/product4.png',tag:'New Arrival',category:'Combos'}
-];
-if(!localStorage.getItem('hc_demo_seed_v3')){
-  const existingProducts=JSON.parse(localStorage.getItem('hc_products')||'[]');
-  if(!existingProducts.length) localStorage.setItem('hc_products',JSON.stringify(defaultProducts));
-  localStorage.setItem('hc_demo_seed_v3','1');
-}
+// Keep the four temporary demo products from being re-created after they are removed.
+const HC_REMOVED_DEMO_IDS = new Set(['1001','1002','1003','1004']);
 let products=JSON.parse(localStorage.getItem('hc_products')||'[]');
+const hcCleanProducts=products.filter(p=>!HC_REMOVED_DEMO_IDS.has(String(p.id)));
+if(hcCleanProducts.length!==products.length){localStorage.setItem('hc_products',JSON.stringify(hcCleanProducts));}
+products=hcCleanProducts;
+let hcExistingOffers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
+const hcCleanOffers=hcExistingOffers.filter(o=>!HC_REMOVED_DEMO_IDS.has(String(o.productId)) && !HC_REMOVED_DEMO_IDS.has(String(o.id)));
+if(hcCleanOffers.length!==hcExistingOffers.length)localStorage.setItem('hc_offers',JSON.stringify(hcCleanOffers));
+
 let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');
 let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
 // Homepage hero defaults to the supplied lady photo. Replace the earlier broken product-image default only.
@@ -356,8 +352,8 @@ localStorage.setItem('hc_cart',JSON.stringify(cart));
 const ADMIN_PASSWORD='Harshiyaan@2026';
 function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
 function getCartProduct(item){return products.find(x=>String(x.id)===String(item.id)) || (item&&item.name?{id:item.id,name:item.name,price:Number(item.price)||0,old:Number(item.old)||0,img:item.img||'',offer:!!item.offer}:null)}
-let activeCategory='all'; function renderProducts(){const grid=document.getElementById('productGrid');if(!grid)return;const list=activeCategory==='all'?products:products.filter(p=>(p.category||'New Arrivals')===activeCategory);grid.innerHTML=list.length?list.map(p=>`<article class="product reveal"><div class="product-img"><span class="tag">${p.tag||p.category||'Collection'}</span><img src="${p.img}" alt="${p.name}"></div><div class="product-body"><h3>${p.name}</h3><div class="price"><span class="old">${money(p.old)}</span><span class="new">${money(p.price)}</span></div><div class="offer">${p.old>p.price?'Special Offer':'Enquire for Price'}</div><button class="btn" onclick="addToCart('${p.id}')" style="margin-top:13px">Add to Cart</button></div></article>`).join(''):`<div class="admin-card" style="grid-column:1/-1;text-align:center;padding:45px"><div class="eyebrow">${activeCategory==='all'?'All Collections':activeCategory}</div><h3 style="margin:8px 0;font-family:Cormorant Garamond;font-size:30px">No products yet</h3><p class="mini">Products added from Admin Dashboard will appear in this collection.</p></div>`;observe();} function filterCategory(category){activeCategory=category;renderProducts();const title=document.getElementById('categoryTitle');if(title)title.textContent=category+' Collection';const target=document.getElementById('categoryProducts');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});showToast(category+' selected');}
-function renderOffer(){let o=offers.find(x=>x.active);document.getElementById('offerBanner').innerHTML=o?`<div class="offer-copy"><div class="eyebrow">${o.title}</div><h3>${o.text}</h3><div class="price"><span class="old">${money(o.old)}</span><span class="offer-price">${money(o.price)}</span></div><button class="btn gold" onclick="openOrder('${o.productId}')" style="margin-top:20px">Shop This Offer</button></div><div class="offer-img"><img src="${o.img}" alt="Offer"></div>`:'<div class="offer-copy"><h3>No active offers</h3><p>Offers can be published from the admin dashboard.</p></div>'}
+let activeCategory='all'; function renderProducts(){const grid=document.getElementById('productGrid');if(!grid)return;const list=activeCategory==='all'?products:products.filter(p=>(p.category||'New Arrivals')===activeCategory);grid.innerHTML=list.length?list.map(p=>`<article class="product reveal"><div class="product-img"><span class="tag">${p.tag||p.category||'Collection'}</span><img src="${p.img}" alt="${p.name}"></div><div class="product-body"><h3>${p.name}</h3><div class="price"><span class="old">${money(p.old)}</span><span class="new">${money(p.price)}</span></div><div class="offer">${p.old>p.price?'Special Offer':'Enquire for Price'}</div><button class="btn" onclick="addToCart(${p.id})" style="margin-top:13px">Add to Cart</button></div></article>`).join(''):`<div class="admin-card" style="grid-column:1/-1;text-align:center;padding:45px"><div class="eyebrow">${activeCategory==='all'?'All Collections':activeCategory}</div><h3 style="margin:8px 0;font-family:Cormorant Garamond;font-size:30px">No products yet</h3><p class="mini">Products added from Admin Dashboard will appear in this collection.</p></div>`;observe();} function filterCategory(category){activeCategory=category;renderProducts();const title=document.getElementById('categoryTitle');if(title)title.textContent=category+' Collection';const target=document.getElementById('categoryProducts');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});showToast(category+' selected');}
+function renderOffer(){let o=offers.find(x=>x.active);document.getElementById('offerBanner').innerHTML=o?`<div class="offer-copy"><div class="eyebrow">${o.title}</div><h3>${o.text}</h3><div class="price"><span class="old">${money(o.old)}</span><span class="offer-price">${money(o.price)}</span></div><button class="btn gold" onclick="openOrder(${o.productId})" style="margin-top:20px">Shop This Offer</button></div><div class="offer-img"><img src="${o.img}" alt="Offer"></div>`:'<div class="offer-copy"><h3>No active offers</h3><p>Offers can be published from the admin dashboard.</p></div>'}
 function addToCart(id){let p=products.find(x=>String(x.id)===String(id));if(!p)return;let item=cart.find(x=>String(x.id)===String(id));item?item.qty=(Number(item.qty)||0)+1:cart.push({id:p.id,qty:1});saveCart();showToast(p.name+' added to cart');}
 function saveCart(){localStorage.setItem('hc_cart',JSON.stringify(cart));updateCartBadge()}
 function updateCartBadge(){const n=cart.reduce((a,x)=>a+(Number(x.qty)||0),0);const b=document.getElementById('cartBadge');if(b)b.textContent=n;const fb=document.getElementById('hcFloatingCartBadge');if(fb)fb.textContent=n;const f=document.getElementById('hcFloatingCart');if(f&&n>0){f.classList.remove('hc-cart-pulse');void f.offsetWidth;f.classList.add('hc-cart-pulse')}}
