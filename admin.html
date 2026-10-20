@@ -14,13 +14,17 @@ body{background:linear-gradient(135deg,#ffffff 0%,#f6f0ff 48%,#d8c2ff 100%);back
 <script>
 const PASS='Harshiyaan@2026';
 const cats=[['New Arrivals','new-arrivals.jpg'],['Black Beads','black-beads.jpg'],['Bridal','bridal.jpg'],['Long Haram','long-haram.jpg'],['Budget Range','budget-range.jpg'],['Tali Chains','tali-chains.jpg'],['Bangles','bangles.jpg'],['Nakshi','nakshi.jpg'],['Rings','rings.jpg'],['Bracelets','bracelets.jpg'],['Combos','combos.jpg'],['Beads','beads.jpg']];
-if(!localStorage.getItem('hc_demo_seed_v3')) { const ep=JSON.parse(localStorage.getItem('hc_products')||'[]'); if(!ep.length) localStorage.setItem('hc_products',JSON.stringify([
-{id:1001,name:'Temple Heritage Set',old:2500,price:1999,img:'products/product1.png',tag:'Special Offer',category:'New Arrivals'},
-{id:1002,name:'Royal Ruby Pendant Set',old:4200,price:3499,img:'products/product2.png',tag:'Featured',category:'Bridal'},
-{id:1003,name:'Classic Black Bead Gold',old:3100,price:2599,img:'products/product3.png',tag:'Bestseller',category:'Black Beads'},
-{id:1004,name:'Floral Layered Collection',old:3800,price:2999,img:'products/product4.png',tag:'New Arrival',category:'Combos'}
-])); localStorage.setItem('hc_demo_seed_v3','1'); }
-let products=JSON.parse(localStorage.getItem('hc_products')||'[]');let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');let editingId=null,editingOffer=null;
+// Remove the four temporary demo products and their matching offers once, without touching real products.
+const HC_DEMO_IDS = new Set(['1001','1002','1003','1004']);
+let products=JSON.parse(localStorage.getItem('hc_products')||'[]');
+let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
+const cleanedProducts=products.filter(p=>!HC_DEMO_IDS.has(String(p.id)));
+const cleanedOffers=offers.filter(o=>!HC_DEMO_IDS.has(String(o.productId)) && !HC_DEMO_IDS.has(String(o.id)));
+if(cleanedProducts.length!==products.length) localStorage.setItem('hc_products',JSON.stringify(cleanedProducts));
+if(cleanedOffers.length!==offers.length) localStorage.setItem('hc_offers',JSON.stringify(cleanedOffers));
+products=cleanedProducts; offers=cleanedOffers;
+localStorage.setItem('hc_demo_seed_v3','1');
+let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');let editingId=null,editingOffer=null;
 function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}function save(k,v){localStorage.setItem(k,JSON.stringify(v))}function imgData(file,cb){if(!file)return cb('');const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(file)}
 function unlock(){if(document.getElementById('password').value===PASS){sessionStorage.setItem('hc_admin','1');prepareAdminNotifications();showApp()}else document.getElementById('loginError').textContent='Incorrect password.'}function showApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderAll();loadCentralOrders()}function lock(){sessionStorage.removeItem('hc_admin');location.reload()}if(sessionStorage.getItem('hc_admin')==='1'){prepareAdminNotifications();showApp();}
 function tab(name,el){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById('sec-'+name).classList.add('active')}
