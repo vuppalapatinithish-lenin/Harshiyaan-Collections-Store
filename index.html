@@ -702,8 +702,6 @@ document.addEventListener('DOMContentLoaded',function(){
   var box=document.getElementById('homeOffersGrid'); if(!box)return;
   var offers=JSON.parse(localStorage.getItem('hc_offers')||'[]').filter(function(o){return o.active!==false});
   var products=JSON.parse(localStorage.getItem('hc_products')||'[]');
-  if(!offers.length){offers=products.filter(function(p){return Number(p.old)>Number(p.price)}).map(function(p){return {productId:p.id,productName:p.name,title:'Special Offer',old:p.old,price:p.price,img:p.img,discount:p.discount,active:true}})}
-  offers=offers.slice(0,2);
   var fallback={1001:'products/product1.png',1002:'products/product2.png',1003:'products/product3.png',1004:'products/product4.png'};
   function resolveImg(o){
     var pid=String(o.productId||'');
@@ -716,7 +714,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(/^https?:\/\//i.test(candidate)) return candidate;
     return (p&&/^products\/product[1-4]\.png$/i.test(p.img||'')) ? p.img : (fallback[pid]||'products/product1.png');
   }
-  box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join('');
+  box.innerHTML=offers.length?offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join(''):'<p class="mini">No active special offers right now.</p>';
  }catch(e){}
 });
 </script>

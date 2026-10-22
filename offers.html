@@ -52,7 +52,7 @@ body{padding-bottom:82px!important}
   function addOfferToCart(id,button){
     let products=[],offers=[];
     try{products=JSON.parse(localStorage.getItem('hc_products')||'[]');offers=JSON.parse(localStorage.getItem('hc_offers')||'[]')}catch(e){}
-    const offer=offers.find(o=>o.active && String(o.productId)===String(id));
+    const offer=offers.find(o=>o&&o.active!==false && String(o.productId)===String(id));
     const linked=products.find(x=>String(x.id)===String(id));
     const p=linked || (offer ? {id:offer.productId,name:offer.productName||offer.title||'Special Offer',price:Number(offer.price)||0,old:Number(offer.old)||0,img:offer.img||''} : null);
     if(!p){showToast('Offer is unavailable');return}
@@ -77,11 +77,22 @@ body{padding-bottom:82px!important}
   function render(){
     let products=[],offers=[];
     try{products=JSON.parse(localStorage.getItem('hc_products')||'[]');offers=JSON.parse(localStorage.getItem('hc_offers')||'[]')}catch(e){}
-    const active=offers.filter(o=>o.active).map(o=>{const p=products.find(x=>Number(x.id)===Number(o.productId));return p?{...p,title:o.title,text:o.text,old:o.old||p.old,price:o.price||p.price}:({...o,id:o.productId,name:o.productName||o.title||'Special Offer',text:o.text,old:o.old,price:o.price,img:o.img||''});});
-    const fallback=products.filter(p=>Number(p.old)>Number(p.price));
-    const list=active.length?active:fallback;
+    const active=offers.filter(o=>o&&o.active!==false).map(o=>{
+      const pid=String(o.productId==null?'':o.productId);
+      const linked=products.find(x=>String(x.id)==pid);
+      return {
+        ...(linked||{}),
+        ...o,
+        id: linked ? linked.id : (o.id!=null?o.id:o.productId),
+        name: o.productName || (linked&&linked.name) || o.title || 'Special Offer',
+        old: Number(o.old || (linked&&linked.old) || 0),
+        price: Number(o.price || (linked&&linked.price) || 0),
+        img: o.img || (linked&&linked.img) || '',
+        text: o.text || 'Limited-time jewellery offer.'
+      };
+    });
     const grid=document.getElementById('offerGrid');
-    grid.innerHTML=list.length?list.map(p=>`<article class="card"><img src="${p.img}" alt="${p.name}"><div class="body"><h2>${p.name}</h2><div class="price"><s>${money(p.old)}</s><strong>${money(p.price)}</strong></div><div class="meta">Product ID: <b>${p.id}</b>${p.discount?' · '+p.discount+'% OFF':''}</div><p class="msg">${p.text||'Limited-time jewellery offer.'}</p><div class="btn-row"><button class="btn gold offer-cart-btn" type="button" data-offer-id="${p.id}">🛒 Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No active offers right now. Please check again soon.</div>';
+    grid.innerHTML=active.length?active.map(p=>`<article class="card"><img src="${p.img||''}" alt="${p.name||'Special Offer'}" loading="lazy"><div class="body"><h2>${p.name||'Special Offer'}</h2><div class="price"><s>${money(p.old)}</s><strong>${money(p.price)}</strong></div><div class="meta">Product ID: <b>${p.productId||p.id||''}</b>${p.discount?' · '+p.discount+'% OFF':''}</div><p class="msg">${p.text}</p><div class="btn-row"><button class="btn gold offer-cart-btn" type="button" data-offer-id="${p.productId||p.id}">🛒 Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No active offers right now. Add offers from the Admin → Offers tab.</div>';
     grid.querySelectorAll('.offer-cart-btn').forEach(btn=>btn.addEventListener('click',()=>addOfferToCart(btn.dataset.offerId,btn)));
   }
   render();
