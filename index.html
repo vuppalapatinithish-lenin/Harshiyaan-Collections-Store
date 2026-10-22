@@ -326,16 +326,18 @@ body{padding-bottom:82px!important}
 })();
 </script>
 <script>
-// Keep the four temporary demo products from being re-created after they are removed.
-const HC_REMOVED_DEMO_IDS = new Set(['1001','1002','1003','1004']);
+const defaultProducts=[
+{id:1001,name:'Temple Heritage Set',old:2500,price:1999,img:'products/product1.png',tag:'Special Offer',category:'New Arrivals'},
+{id:1002,name:'Royal Ruby Pendant Set',old:4200,price:3499,img:'products/product2.png',tag:'Featured',category:'Bridal'},
+{id:1003,name:'Classic Black Bead Gold',old:3100,price:2599,img:'products/product3.png',tag:'Bestseller',category:'Black Beads'},
+{id:1004,name:'Floral Layered Collection',old:3800,price:2999,img:'products/product4.png',tag:'New Arrival',category:'Combos'}
+];
+if(!localStorage.getItem('hc_demo_seed_v3')){
+  const existingProducts=JSON.parse(localStorage.getItem('hc_products')||'[]');
+  if(!existingProducts.length) localStorage.setItem('hc_products',JSON.stringify(defaultProducts));
+  localStorage.setItem('hc_demo_seed_v3','1');
+}
 let products=JSON.parse(localStorage.getItem('hc_products')||'[]');
-const hcCleanProducts=products.filter(p=>!HC_REMOVED_DEMO_IDS.has(String(p.id)));
-if(hcCleanProducts.length!==products.length){localStorage.setItem('hc_products',JSON.stringify(hcCleanProducts));}
-products=hcCleanProducts;
-let hcExistingOffers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
-const hcCleanOffers=hcExistingOffers.filter(o=>!HC_REMOVED_DEMO_IDS.has(String(o.productId)) && !HC_REMOVED_DEMO_IDS.has(String(o.id)));
-if(hcCleanOffers.length!==hcExistingOffers.length)localStorage.setItem('hc_offers',JSON.stringify(hcCleanOffers));
-
 let orders=JSON.parse(localStorage.getItem('hc_orders')||'[]');
 let offers=JSON.parse(localStorage.getItem('hc_offers')||'[]');
 // Homepage hero defaults to the supplied lady photo. Replace the earlier broken product-image default only.
@@ -710,6 +712,8 @@ document.addEventListener('DOMContentLoaded',function(){
     if(/^products\/product[1-4]\.png$/i.test(candidate)) return candidate;
     if(/^images\//i.test(candidate)) return candidate;
     if(/^data:image\//i.test(candidate)) return candidate;
+    // Cloud catalogue images are hosted on Google Drive (HTTPS URLs); preserve them.
+    if(/^https?:\/\//i.test(candidate)) return candidate;
     return (p&&/^products\/product[1-4]\.png$/i.test(p.img||'')) ? p.img : (fallback[pid]||'products/product1.png');
   }
   box.innerHTML=offers.map(function(o){var img=resolveImg(o); var d=o.discount|| (o.old&&o.price?Math.round((1-o.price/o.old)*100):0); return '<article class="hc-home-offer"><img src="'+img+'" alt="'+(o.productName||'Jewellery Offer').replace(/"/g,'&quot;')+'" loading="lazy"><div class="hc-home-offer-body"><h3>'+(o.productName||o.title||'Special Offer')+'</h3><div class="hc-home-offer-price"><strong>₹ '+Number(o.price||0).toLocaleString('en-IN')+'</strong> <s>₹ '+Number(o.old||0).toLocaleString('en-IN')+'</s></div><div class="hc-home-offer-meta">Product ID: '+(o.productId||'—')+'</div>'+(d?'<span class="offer-badge">'+d+'% OFF</span>':'')+'</div></article>'}).join('');
@@ -859,8 +863,7 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('DOMContentLoaded',handleHash);
 })();
 </script>
-<script src="shared-catalog.js"></script>
-</body></html>
+
 <style id="hc-mobile-phone-focus-final">
 /* Phone-first hero: keep brand/copy on the left and a compact lady portrait on the right. */
 @media (max-width:560px){
@@ -893,3 +896,5 @@ document.addEventListener('DOMContentLoaded',function(){
   .hc-portrait-ring{width:120px;}
 }
 </style>
+<script src="shared-catalog.js"></script>
+</body></html>

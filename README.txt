@@ -1,15 +1,15 @@
-Harshiyaan Collections — Product ID and Special Offers update
+Harshiyaan Collections — Public Product Image / Catalogue Sync Fix
 
-Files:
-- admin.html: Product item numbers are entered as digits and saved with an HC- prefix (for example HC-1001). Special Offers form now includes an optional offer-specific image upload/preview.
-- index.html: Homepage product-ID search accepts HC-1001 and legacy 1001 inputs; product/cart/offer actions support string IDs.
-- offers.html: Special Offers page matches HC-prefixed IDs and uses the uploaded offer image when provided.
+Files in this package:
+- index.html: preserves the provided storefront layout, loads the cloud catalog, and no longer discards HTTPS images in the homepage offers renderer.
+- offers.html: loads the same cloud catalog so offers show on other devices.
+- shared-catalog.js: removes the duplicate save wrapper, serializes product/offer writes, normalizes Google Drive image links to thumbnail URLs, and does not wipe local products when the cloud catalogue is empty.
 
-Install:
-1. Back up your current files first.
-2. In the GitHub repository, replace the existing root-level admin.html, index.html, and offers.html with these files.
-3. Commit the changes and wait for GitHub Pages/Vercel deployment as applicable.
-4. Test with a new product ID such as 1005 (saved as HC-1005), then add an offer with the same number and upload an offer image.
+Deployment steps:
+1. Back up the current GitHub files first.
+2. Replace repository index.html, offers.html and shared-catalog.js with these same-named files.
+3. Commit/push and wait for GitHub Pages to deploy.
+4. On the storefront, hard refresh with Ctrl+Shift+R (Windows/Linux) or Cmd+Shift+R (Mac).
+5. Test the same product image on the homepage and Special Offers page, including a second device.
 
-Important:
-The current admin implementation saves product and offer data/images in browser localStorage. These UI changes do not make product/offer edits shared across different visitors or devices. Shared storefront updates require connecting the admin and storefront to a central database/API.
+Do NOT replace Code.gs or delete the cloud catalog for this fix. This package does not modify the cloud's existing product/offer records. If an uploaded Drive image is still broken after deployment, verify the Drive file is shared as Anyone with the link / Viewer; the front-end cannot display a private Drive file.

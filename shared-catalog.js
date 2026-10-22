@@ -1,12 +1,9 @@
-/* Shared catalogue bridge for Harshiyaan Collections.
-   Keeps the current admin UI/localStorage renderers, serializes catalogue writes,
-   and reports cloud failures without silently losing the local edit. */
+/* Shared catalogue bridge for Admin and public storefront pages. */
 (function () {
   'use strict';
-
   var API = 'https://harshiyaan-collections-store.vercel.app/api/catalog';
   var keys = { products: 'hc_products', offers: 'hc_offers' };
-  var writeQueue = Promise.resolve();
+  var queues = { products: Promise.resolve(), offers: Promise.resolve() };
 
   function local(key) {
     try {
@@ -14,75 +11,77 @@
       return Array.isArray(value) ? value : [];
     } catch (_) { return []; }
   }
-
   function setLocal(key, value) {
     localStorage.setItem(keys[key], JSON.stringify(value));
   }
-
   function same(a, b) {
-    try { return JSON.stringify(a) === JSON.stringify(b); }
-    catch (_) { return false; }
+    try { return JSON.stringify(a) === JSON.stringify(b); } catch (_) { return false; }
   }
-
+  function normalizeImage(value) {
+    if (typeof value !== 'string' || !value) return value || '';
+    // Drive's /uc?export=view links may return a preview/redirect page in an <img>.
+    // Use its thumbnail endpoint for a direct embeddable image instead.
+    if (/drive\.google\.com/i.test(value)) {
+      var match = value.match(/[?&]id=([^&]+)/i) || value.match(/\/file\/d\/([^/?]+)/i) || value.match(/\/d\/([^/?]+)/i);
+      if (match && match[1]) {
+        try { return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(decodeURIComponent(match[1])) + '&sz=w1200'; }
+        catch (_) { return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(match[1]) + '&sz=w1200'; }
+      }
+    }
+    return value;
+  }
+  function normalizeItems(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map(function (item) {
+      if (!item || typeof item !== 'object') return item;
+      var copy = Object.assign({}, item);
+      if (typeof copy.img === 'string') copy.img = normalizeImage(copy.img);
+      return copy;
+    });
+  }
+  function apiError(response, data) {
+    return (data && (data.error || data.message)) || ('Catalogue API failed (' + response.status + ')');
+  }
   async function postNow(key, data) {
     var response = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        action: 'save',
-        key: key,
-        data: data,
+        action: 'save', key: key, data: data,
         password: sessionStorage.getItem('hc_admin_password') || ''
       })
     });
-
-    var raw = await response.text();
-    var result;
-    try { result = JSON.parse(raw); }
-    catch (_) {
-      throw new Error('Catalogue API returned a non-JSON response (HTTP ' + response.status + '): ' + raw.replace(/\s+/g, ' ').slice(0, 180));
-    }
-
-    if (!response.ok || !result || result.ok !== true) {
-      throw new Error((result && result.error) || ('Catalogue save failed (HTTP ' + response.status + ')'));
-    }
+    var result = await response.json().catch(function () { return null; });
+    if (!response.ok || !result || !result.ok) throw new Error(apiError(response, result));
     if (result.catalog && Array.isArray(result.catalog[key])) {
-      setLocal(key, result.catalog[key]);
+      setLocal(key, normalizeItems(result.catalog[key]));
+    } else {
+      setLocal(key, normalizeItems(data));
     }
     return result;
   }
-
-  // Serialize full-catalogue writes so near-simultaneous product/offer changes
-  // do not overwrite each other when both POST requests read/write the same file.
-  function saveSharedCatalog(key, data) {
-    if (!Object.prototype.hasOwnProperty.call(keys, key)) {
-      return Promise.reject(new Error('Invalid catalogue key: ' + key));
-    }
-    var snapshot;
-    try { snapshot = JSON.parse(JSON.stringify(data)); }
-    catch (_) { return Promise.reject(new Error('Catalogue data could not be copied.')); }
-    if (!Array.isArray(snapshot)) return Promise.reject(new Error('Catalogue data must be an array.'));
-
-    var task = writeQueue.catch(function () {}).then(function () {
-      return postNow(key, snapshot);
-    });
-    writeQueue = task.catch(function () {});
+  function post(key, data) {
+    var snapshot = Array.isArray(data) ? data.slice() : [];
+    var task = queues[key].catch(function () {}).then(function () { return postNow(key, snapshot); });
+    queues[key] = task.catch(function () {});
     return task;
   }
 
-  window.hcSaveSharedCatalog = saveSharedCatalog;
+  window.hcSaveSharedCatalog = post;
 
-  // Wrap the legacy local save helper exactly once. Local state is saved first,
-  // and the returned Promise allows add/edit/delete handlers to await cloud sync.
+  // Admin uses save(key, value) for products/offers. Keep its local write and mirror to cloud.
   if (typeof window.save === 'function' && !window.save.__hcSharedWrapped) {
     var originalSave = window.save;
-    var wrappedSave = function (storageKey, value) {
-      originalSave(storageKey, value);
-      if (storageKey === 'hc_products' || storageKey === 'hc_offers') {
-        var catalogueKey = storageKey === 'hc_products' ? 'products' : 'offers';
-        return saveSharedCatalog(catalogueKey, value);
+    var wrappedSave = function (key, value) {
+      var result = originalSave.apply(this, arguments);
+      if (key === 'hc_products' || key === 'hc_offers') {
+        var catalogKey = key === 'hc_products' ? 'products' : 'offers';
+        post(catalogKey, value).catch(function (error) {
+          console.error('Shared catalogue save failed:', error);
+          alert('Saved only in this browser. Cloud sync failed: ' + (error.message || error) + '. Please check the connection and retry.');
+        });
       }
-      return undefined;
+      return result;
     };
     wrappedSave.__hcSharedWrapped = true;
     window.save = wrappedSave;
@@ -91,33 +90,31 @@
   async function boot() {
     try {
       var response = await fetch(API, { cache: 'no-store' });
-      var raw = await response.text();
-      var data;
-      try { data = JSON.parse(raw); }
-      catch (_) { throw new Error('Catalogue API returned a non-JSON response (HTTP ' + response.status + ').'); }
-      if (!response.ok || !data.ok || !data.catalog) {
-        throw new Error(data.error || ('Catalogue fetch failed (HTTP ' + response.status + ')'));
-      }
+      var data = await response.json().catch(function () { return null; });
+      if (!response.ok || !data || !data.ok || !data.catalog) throw new Error(apiError(response, data));
 
-      var remote = data.catalog;
+      var remoteProducts = normalizeItems(data.catalog.products);
+      var remoteOffers = normalizeItems(data.catalog.offers);
       var localProducts = local('products');
       var localOffers = local('offers');
-      var canMigrateLocal = !!sessionStorage.getItem('hc_admin_password');
+      var password = sessionStorage.getItem('hc_admin_password') || '';
+      var changed = false;
 
-      // Migrate this authenticated admin browser's data only when cloud arrays are empty.
-      if ((!Array.isArray(remote.products) || !remote.products.length) && localProducts.length && canMigrateLocal) {
-        await saveSharedCatalog('products', localProducts);
-      } else if (Array.isArray(remote.products) && !same(localProducts, remote.products)) {
-        setLocal('products', remote.products);
+      // If cloud is empty, only an authenticated Admin page may bootstrap local data.
+      if (!remoteProducts.length && localProducts.length && password) {
+        await post('products', localProducts);
+        remoteProducts = local('products');
+      } else if (remoteProducts.length && !same(localProducts, remoteProducts)) {
+        setLocal('products', remoteProducts); changed = true;
+      }
+      if (!remoteOffers.length && localOffers.length && password) {
+        await post('offers', localOffers);
+        remoteOffers = local('offers');
+      } else if (remoteOffers.length && !same(localOffers, remoteOffers)) {
+        setLocal('offers', remoteOffers); changed = true;
       }
 
-      if ((!Array.isArray(remote.offers) || !remote.offers.length) && localOffers.length && canMigrateLocal) {
-        await saveSharedCatalog('offers', localOffers);
-      } else if (Array.isArray(remote.offers) && !same(localOffers, remote.offers)) {
-        setLocal('offers', remote.offers);
-      }
-
-      var changed = !same(localProducts, local('products')) || !same(localOffers, local('offers'));
+      // Public pages read localStorage during initial parsing, so reload once after cloud data changes.
       if (changed && !sessionStorage.getItem('hc_catalog_reloaded')) {
         sessionStorage.setItem('hc_catalog_reloaded', '1');
         location.reload();
