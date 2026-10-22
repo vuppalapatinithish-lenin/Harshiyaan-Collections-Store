@@ -305,24 +305,233 @@ body{padding-bottom:82px!important}
 <div class="modal" id="adminModal"><div class="panel"><div class="panel-head"><div><div class="eyebrow">Harshiyaan Collections</div><h2 class="serif" style="margin:4px 0;font-size:34px">Admin Dashboard</h2></div><button type="button" class="close" data-close-modal="adminModal" aria-label="Close admin">×</button></div><div class="admin" id="adminContent"></div></div></div>
 <div class="toast" id="toast"></div>
 <script id="hc-product-search">
-(function(){
-  const WA='919703322305';
-  function getProducts(){try{return JSON.parse(localStorage.getItem('hc_products')||'[]')}catch(e){return []}}
-  window.searchProductById=function(){
-    const raw=(document.getElementById('productIdSearch')?.value||'').trim();
-    const box=document.getElementById('productSearchResult'); if(!box)return;
-    if(!raw){box.innerHTML='<div class="mini" style="color:#9a3d2f">Please enter a Product ID.</div>';return;}
-    const p=getProducts().find(x=>String(x.id)===raw);
-    if(!p){box.innerHTML='<div class="mini" style="color:#9a3d2f">No product found for ID <b>'+raw+'</b>. Please check the Product ID.</div>';return;}
-    const msg=encodeURIComponent('Hi Harshiyaan Collections, I am interested in Product ID '+p.id+' — '+p.name+' at ₹'+Number(p.price||0).toLocaleString('en-IN')+'. Please share availability and details.');
-    box.innerHTML='<div class="hc-search-card"><img src="'+p.img+'" alt="'+p.name+'"><div><h4>'+p.name+'</h4><div><span class="hc-old">'+(p.old?'₹'+Number(p.old).toLocaleString('en-IN'):'')+'</span><span class="hc-price">₹'+Number(p.price||0).toLocaleString('en-IN')+'</span></div><div class="mini">Product ID: <b>'+p.id+'</b>'+(p.discount?' · '+p.discount+'% OFF':'')+'</div></div><div class="hc-actions"><button class="btn gold" type="button" onclick="buySearchedProduct('+JSON.stringify(String(p.id))+')">Select</button></div></div>';
+(function () {
+  'use strict';
+  const API = 'https://harshiyaan-collections-store.vercel.app/api/catalog';
+  let lastCatalog = { products: [], offers: [] };
+  let lastRenderedResults = [];
+
+  function readList(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(value) ? value : [];
+    } catch (e) { return []; }
+  }
+
+  function idKey(value) {
+    return String(value == null ? '' : value).trim().toUpperCase();
+  }
+
+  function mergeByKey(localItems, remoteItems, getKey) {
+    const map = new Map();
+    (localItems || []).forEach(function (item) {
+      const key = getKey(item);
+      if (key) map.set(key, item);
+    });
+    // Remote copy wins when the same record exists in both places.
+    (remoteItems || []).forEach(function (item) {
+      const key = getKey(item);
+      if (key) map.set(key, item);
+    });
+    return Array.from(map.values());
+  }
+
+  async function getSearchCatalog() {
+    const localProducts = readList('hc_products');
+    const localOffers = readList('hc_offers');
+    let products = localProducts;
+    let offers = localOffers;
+
+    try {
+      const response = await fetch(API, { cache: 'no-store' });
+      const data = await response.json();
+      if (response.ok && data && data.ok && data.catalog) {
+        if (Array.isArray(data.catalog.products)) {
+          products = mergeByKey(
+            localProducts,
+            data.catalog.products,
+            function (item) { return idKey(item && (item.id != null ? item.id : item.productId)); }
+          );
+        }
+        if (Array.isArray(data.catalog.offers)) {
+          offers = mergeByKey(
+            localOffers,
+            data.catalog.offers,
+            function (item) {
+              if (!item) return '';
+              if (item.id != null && String(item.id).trim() !== '') return 'offer:' + idKey(item.id);
+              return 'product:' + idKey(item.productId) + '|title:' + idKey(item.title);
+            }
+          );
+        }
+      }
+    } catch (e) {
+      // If cloud catalogue is temporarily unreachable, search this browser's saved catalogue.
+      console.warn('Global Product ID search is using locally cached catalogue:', e);
+    }
+
+    lastCatalog = { products: products, offers: offers };
+    return lastCatalog;
+  }
+
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch];
+    });
+  }
+
+  function productCard(item, resultIndex) {
+    const id = String(item.id != null ? item.id : item.productId);
+    const image = item.img || '';
+    const oldPrice = Number(item.old || 0);
+    const price = Number(item.price || 0);
+    return '<div class="hc-search-card">' +
+      '<img src="' + esc(image) + '" alt="' + esc(item.name || 'Product') + '">' +
+      '<div><h4>' + esc(item.name || 'Product') + '</h4>' +
+      '<div><span class="hc-old">' + (oldPrice ? '₹' + oldPrice.toLocaleString('en-IN') : '') + '</span>' +
+      '<span class="hc-price">₹' + price.toLocaleString('en-IN') + '</span></div>' +
+      '<div class="mini">Product ID: <b>' + esc(id) + '</b> · Category: ' + esc(item.category || 'Collection') +
+      (item.discount ? ' · ' + esc(item.discount) + '% OFF' : '') + '</div></div>' +
+      '<div class="hc-actions"><button class="btn gold hc-search-action" type="button" data-result-index="' + resultIndex + '">Select Product</button></div>' +
+      '</div>';
+  }
+
+  function offerCard(offer, linkedProduct, resultIndex) {
+    const id = String(offer.productId != null ? offer.productId : (linkedProduct && linkedProduct.id));
+    const name = offer.productName || (linkedProduct && linkedProduct.name) || offer.title || 'Special Offer';
+    const image = offer.img || (linkedProduct && linkedProduct.img) || '';
+    const oldPrice = Number(offer.old != null && offer.old !== '' ? offer.old : (linkedProduct && linkedProduct.old) || 0);
+    const price = Number(offer.price != null && offer.price !== '' ? offer.price : (linkedProduct && linkedProduct.price) || 0);
+    return '<div class="hc-search-card">' +
+      '<img src="' + esc(image) + '" alt="' + esc(name) + '">' +
+      '<div><h4>' + esc(name) + '</h4>' +
+      '<div><span class="hc-old">' + (oldPrice ? '₹' + oldPrice.toLocaleString('en-IN') : '') + '</span>' +
+      '<span class="hc-price">₹' + price.toLocaleString('en-IN') + '</span></div>' +
+      '<div class="mini">Product ID: <b>' + esc(id) + '</b> · <b>Special Offer</b>' +
+      (offer.discount ? ' · ' + esc(offer.discount) + '% OFF' : '') + '</div></div>' +
+      '<div class="hc-actions"><button class="btn gold hc-search-action" type="button" data-result-index="' + resultIndex + '">Add Offer to Cart</button></div>' +
+      '</div>';
+  }
+
+  window.searchProductById = async function () {
+    const raw = (document.getElementById('productIdSearch') && document.getElementById('productIdSearch').value || '').trim();
+    const box = document.getElementById('productSearchResult');
+    if (!box) return;
+    if (!raw) {
+      box.innerHTML = '<div class="mini" style="color:#9a3d2f">Please enter a Product ID.</div>';
+      return;
+    }
+
+    box.innerHTML = '<div class="mini">Searching all products and active Special Offers…</div>';
+    const catalog = await getSearchCatalog();
+    const target = idKey(raw);
+    const products = catalog.products.filter(function (item) {
+      return item && idKey(item.id != null ? item.id : item.productId) === target;
+    });
+    const offers = catalog.offers.filter(function (item) {
+      return item && item.active !== false && idKey(item.productId) === target;
+    });
+
+    if (!products.length && !offers.length) {
+      box.innerHTML = '<div class="mini" style="color:#9a3d2f">No product or active Special Offer found for ID <b>' + esc(raw) + '</b>. Please check the ID or confirm the offer was saved to the cloud.</div>';
+      return;
+    }
+
+    lastRenderedResults = [];
+    let html = '';
+    products.forEach(function (item) {
+      const resultIndex = lastRenderedResults.length;
+      lastRenderedResults.push({ kind: 'product', id: String(item.id != null ? item.id : item.productId), item: item });
+      html += productCard(item, resultIndex);
+    });
+    offers.forEach(function (offer) {
+      const linked = catalog.products.find(function (item) {
+        return item && idKey(item.id != null ? item.id : item.productId) === idKey(offer.productId);
+      }) || null;
+      const resultIndex = lastRenderedResults.length;
+      lastRenderedResults.push({ kind: 'offer', id: String(offer.productId), item: offer, linked: linked });
+      html += offerCard(offer, linked, resultIndex);
+    });
+
+    box.innerHTML = html;
+    box.querySelectorAll('.hc-search-action').forEach(function (button) {
+      button.addEventListener('click', function () {
+        const index = Number(button.dataset.resultIndex);
+        const result = lastRenderedResults[index];
+        if (result) window.buySearchedProduct(result.id, result.kind, result.item, result.linked);
+      });
+    });
   };
-  window.buySearchedProduct=function(id){
-    const p=getProducts().find(x=>String(x.id)===String(id)); if(!p)return;
-    if(typeof window.addToCart==='function'){window.addToCart(p.id);window.setTimeout(()=>{if(typeof window.openCart==='function')window.openCart();else document.getElementById('cartModal')?.classList.add('open');},120);}
-    else location.href='#collections';
+
+  window.buySearchedProduct = function (id, kind, selectedItem, selectedLinkedProduct) {
+    const target = idKey(id);
+    if (kind === 'offer') {
+      const offer = selectedItem || lastCatalog.offers.find(function (item) {
+        return item && item.active !== false && idKey(item.productId) === target;
+      });
+      if (!offer) return alert('This offer is no longer available. Please search again.');
+      const linked = lastCatalog.products.find(function (item) {
+        return item && idKey(item.id != null ? item.id : item.productId) === target;
+      });
+      const itemData = {
+        id: offer.productId,
+        name: offer.productName || (linked && linked.name) || offer.title || 'Special Offer',
+        price: Number(offer.price != null && offer.price !== '' ? offer.price : (linked && linked.price) || 0),
+        old: Number(offer.old != null && offer.old !== '' ? offer.old : (linked && linked.old) || 0),
+        img: offer.img || (linked && linked.img) || '',
+        offer: true
+      };
+      let nextCart = readList('hc_cart');
+      const existing = nextCart.find(function (entry) { return entry && idKey(entry.id) === target; });
+      if (existing) {
+        existing.qty = (Number(existing.qty) || 0) + 1;
+        existing.name = itemData.name;
+        existing.price = itemData.price;
+        existing.old = itemData.old;
+        existing.img = itemData.img;
+        existing.offer = true;
+        existing.source = 'offer';
+      } else {
+        nextCart.push(Object.assign({ qty: 1, source: 'offer' }, itemData));
+      }
+      localStorage.setItem('hc_cart', JSON.stringify(nextCart));
+      try { cart = nextCart; if (typeof saveCart === 'function') saveCart(); } catch (e) {}
+      if (typeof window.openCart === 'function') window.openCart();
+      else window.location.href = 'offers.html?productId=' + encodeURIComponent(id);
+      return;
+    }
+
+    const product = selectedItem || lastCatalog.products.find(function (item) {
+      return item && idKey(item.id != null ? item.id : item.productId) === target;
+    });
+    if (!product) return alert('Product is no longer available. Please search again.');
+
+    // Make sure a cloud-found product is present in the local cache used by addToCart().
+    const localProducts = readList('hc_products');
+    const index = localProducts.findIndex(function (item) {
+      return item && idKey(item.id != null ? item.id : item.productId) === target;
+    });
+    if (index >= 0) localProducts[index] = product;
+    else localProducts.unshift(product);
+    localStorage.setItem('hc_products', JSON.stringify(localProducts));
+    try { products = localProducts; } catch (e) {}
+
+    if (typeof window.addToCart === 'function') {
+      window.addToCart(product.id != null ? product.id : product.productId);
+      window.setTimeout(function () {
+        if (typeof window.openCart === 'function') window.openCart();
+        else document.getElementById('cartModal') && document.getElementById('cartModal').classList.add('open');
+      }, 120);
+    } else {
+      window.location.href = 'index.html#collections';
+    }
   };
-  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target?.id==='productIdSearch')window.searchProductById();});
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && event.target && event.target.id === 'productIdSearch') {
+      window.searchProductById();
+    }
+  });
 })();
 </script>
 <script>
